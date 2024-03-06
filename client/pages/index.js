@@ -31,7 +31,7 @@ function Index() {
           <div style={{height: "100vh", width: "100%"}}>
             <Map streetViewControl={false}  zoomControl ={false} mapTypeControl = {false} defaultCenter={position} defaultZoom={15} mapId={process.env.NEXT_PUBLIC_MAP_ID}>
               {FoodTrucks.map((FoodTruck) => 
-                <AdvancedMarker position={{lat: parseFloat(FoodTruck.lat), lng: parseFloat(FoodTruck.lng)}}></AdvancedMarker>
+                <AdvancedMarker key={FoodTruck.id} position={{lat: parseFloat(FoodTruck.lat), lng: parseFloat(FoodTruck.lng)}}></AdvancedMarker>
               )}
             </Map>
           </div>
