@@ -5,8 +5,13 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
+<<<<<<< HEAD
+    "static/6HTslodfQPQXj4fzPUcpB/_buildManifest.js",
+    "static/6HTslodfQPQXj4fzPUcpB/_ssgManifest.js"
+=======
     "static/RtWrN7eQiriB-p5iLJ8Ji/_buildManifest.js",
     "static/RtWrN7eQiriB-p5iLJ8Ji/_ssgManifest.js"
+>>>>>>> main
   ],
   "rootMainFiles": [],
   "pages": {
@@ -30,6 +35,24 @@
       "static/chunks/framework-5429a50ba5373c56.js",
       "static/chunks/main-930135e47dff83e9.js",
       "static/chunks/pages/_error-5a00309fd5f4b49e.js"
+    ],
+    "/foodtruck/[id]": [
+      "static/chunks/webpack-8fa1640cc84ba8fe.js",
+      "static/chunks/framework-5429a50ba5373c56.js",
+      "static/chunks/main-930135e47dff83e9.js",
+      "static/chunks/pages/foodtruck/[id]-e1a4d40e34d21963.js"
+    ],
+    "/login": [
+      "static/chunks/webpack-8fa1640cc84ba8fe.js",
+      "static/chunks/framework-5429a50ba5373c56.js",
+      "static/chunks/main-930135e47dff83e9.js",
+      "static/chunks/pages/login-522d1f7e612f38d4.js"
+    ],
+    "/signup": [
+      "static/chunks/webpack-8fa1640cc84ba8fe.js",
+      "static/chunks/framework-5429a50ba5373c56.js",
+      "static/chunks/main-930135e47dff83e9.js",
+      "static/chunks/pages/signup-23eb09e01af5fed6.js"
     ]
   },
   "ampFirstPages": []
