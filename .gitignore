@@ -1,0 +1,9 @@
+client/node_modules/
+client/.next/
+client/.swc/
+client/.*.env
+
+server/node_modules/
+server/.next/
+server/.swc/
+server/.*.env
