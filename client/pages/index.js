@@ -8,31 +8,42 @@ import {
   Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
+import React from "react" 
+React.useLayoutEffect = React.useEffect 
 require('dotenv').config();
 
 function Index() {
   const position = { lat: 40.76785, lng: -73.96455 };
   const [foodTrucks, setFoodTrucks] = useState([]);
+  const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  //For Searching
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/getFoodTrucks`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/searchFoodTrucks?search=${searchTerm}`);
         const data = await response.json();
-        setFoodTrucks(data.FoodTrucks);
+        setSearchFoodTrucks(data.FoodTrucks);
       } catch (error) {
         console.error("Error fetching food trucks:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [searchTerm]);
 
-  // Filter food trucks based on search term
-  const filteredFoodTrucks = foodTrucks.filter(foodTruck =>
-    foodTruck.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  //For Map
+  useEffect(() => {
+    var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks',{})
+    .then((res) => {
+      return res.json()})
+    .then((data) => {
+      setFoodTrucks(data.FoodTrucks);
+    }).then(() => {return true}).catch((err) => console.log(err));
+    
+    get();
+  }, [position]) 
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
@@ -47,7 +58,7 @@ function Index() {
           style={{ width: "100%", marginBottom: "10px", padding: "10px 20px"}}
         />
         <ul style={{textAlign: "left", color: "white"}}>
-          {filteredFoodTrucks.map((foodTruck) => (
+          {searchFoodTrucks.map((foodTruck) => (
             <li key={foodTruck.id}>{foodTruck.name}</li>
           ))}
         </ul>
@@ -57,7 +68,7 @@ function Index() {
           <div style={{ height: "100%", position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
             <Map streetViewControl={false} zoomControl={false} mapTypeControl={false} defaultCenter={position} defaultZoom={15} mapId={process.env.NEXT_PUBLIC_MAP_ID}>
               {foodTrucks.map((foodTruck) =>
-                <AdvancedMarker key={foodTruck.id} position={{ lat: parseFloat(foodTruck.lat), lng: parseFloat(foodTruck.lng) }}></AdvancedMarker>
+                <AdvancedMarker key={foodTruck.id} position={{ lat: parseFloat(foodTruck.lat), lng: parseFloat(foodTruck.lng)}} ></AdvancedMarker>
               )}
             </Map>
           </div>
