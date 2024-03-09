@@ -15,6 +15,19 @@ const itemsPool = new Pool({
 
 app.use(cors());
 
+app.get('/api/searchFoodTrucks', async(req, res) =>{
+    try {
+        const allItems = await itemsPool.query(
+            'SELECT * FROM public."FoodTruck" where lower(name) like lower(\'%' + req.query.search + '%\')' 
+        );
+        const FoodTrucks = allItems.rows;
+        res.json({ FoodTrucks });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message)
+    }
+    })
+
 app.get('/api/getFoodTrucks', async(req, res) => {
     try {
         const allItems = await itemsPool.query(
@@ -26,7 +39,6 @@ app.get('/api/getFoodTrucks', async(req, res) => {
         console.log(error);
         res.status(500).send(error.message)
     }
-
 }
 );
 
