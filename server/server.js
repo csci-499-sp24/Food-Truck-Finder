@@ -29,11 +29,31 @@ app.get('/api/searchFoodTrucks', async(req, res) =>{
     })
 
 app.get('/api/getFoodTrucks', async(req, res) => {
+    const x = Number(parseFloat(req.query.lat).toFixed(6));
+    const y = Number(parseFloat(req.query.lng).toFixed(6));
+
+    const bounds = {
+        north: y + 0.003,
+        south: y - 0.003,
+        east: x - 0.0038,
+        west: x + 0.0038
+    }
+    
+    console.log('SELECT * FROM public."FoodTruck" where' +
+    '( lat < ' + bounds.north + 
+    ' and lat > ' + bounds.south  + 
+    ' and lng > ' + bounds.east +
+    ' and lng < ' + bounds.west + ')');
     try {
         const allItems = await itemsPool.query(
-            'SELECT * FROM public."FoodTruck"'
+            'SELECT * FROM public."FoodTruck" where' +
+            '( lng < ' + bounds.north + 
+            ' and lng > ' + bounds.south  + 
+            ' and lat > ' + bounds.east +
+            ' and lat < ' + bounds.west + ')'
         );
         const FoodTrucks = allItems.rows;
+        console.log(FoodTrucks);
         res.json({ FoodTrucks });
     } catch (error) {
         console.log(error);

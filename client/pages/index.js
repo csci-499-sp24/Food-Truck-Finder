@@ -1,22 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   APIProvider,
   Map,
   AdvancedMarker,
   Pin,
   InfoWindow,
+  MapCameraChangedEvent,
+  GoogleMapsContext,
+  MapCameraProps
+  
 } from "@vis.gl/react-google-maps";
-import React from "react" 
-React.useLayoutEffect = React.useEffect 
 require('dotenv').config();
 
 function Index() {
-  const position = { lat: 40.76785, lng: -73.96455 };
   const [foodTrucks, setFoodTrucks] = useState([]);
   const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [center, setCenter] = useState({ lat: 40.76785, lng: -73.96455 });
+
+  const handleCenterChange = (ev) => {
+    setCenter(ev.detail.center);
+    console.log(ev.detail.bounds.north + " " + ev.detail.bounds.south);
+    console.log(ev.detail.bounds.west + " " + ev.detail.bounds.east);
+  }
 
   //For Searching
   useEffect(() => {
@@ -35,15 +43,15 @@ function Index() {
 
   //For Map
   useEffect(() => {
-    var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks',{})
+    var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
     .then((res) => {
       return res.json()})
     .then((data) => {
       setFoodTrucks(data.FoodTrucks);
     }).then(() => {return true}).catch((err) => console.log(err));
-    
     get();
-  }, [position]) 
+  }, [center]) 
+
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
@@ -66,7 +74,14 @@ function Index() {
       <div style={{ width: "80%", position: "relative" }}>
         <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
           <div style={{ height: "100%", position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
-            <Map streetViewControl={false} zoomControl={false} mapTypeControl={false} defaultCenter={position} defaultZoom={15} mapId={process.env.NEXT_PUBLIC_MAP_ID}>
+            <Map 
+            streetViewControl={false} 
+            zoomControl={false} 
+            mapTypeControl={false} 
+            defaultCenter={center} 
+            defaultZoom={17} 
+            onCenterChanged={handleCenterChange}
+            mapId={process.env.NEXT_PUBLIC_MAP_ID} >
               {foodTrucks.map((foodTruck) =>
                 <AdvancedMarker key={foodTruck.id} position={{ lat: parseFloat(foodTruck.lat), lng: parseFloat(foodTruck.lng)}} ></AdvancedMarker>
               )}
