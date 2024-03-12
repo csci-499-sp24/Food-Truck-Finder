@@ -59,8 +59,7 @@ app.get('/api/getFoodTrucks', async(req, res) => {
         console.log(error);
         res.status(500).send(error.message)
     }
-}
-);
+});
 
 app.get("/api/home", (req, res) => {
     res.json({message: "Hello World!"});
