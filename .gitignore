@@ -2,8 +2,10 @@ client/node_modules/
 client/.next/
 client/.swc/
 client/.*.env
+client/npm-debug.log
 
 server/node_modules/
 server/.next/
 server/.swc/
 server/.*.env
+
