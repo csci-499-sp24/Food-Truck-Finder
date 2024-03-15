@@ -1,21 +1,7 @@
 'use client';
 
-<<<<<<< Updated upstream
 import Sidebar from "./sidebar";
 import FoodTruckMap from "./map";
-=======
-import { useCallback, useEffect, useState } from "react";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin,
-  InfoWindow,
-  MapCameraChangedEvent,
-  GoogleMapsContext,
-  MapCameraProps
-} from "@vis.gl/react-google-maps";
->>>>>>> Stashed changes
 require('dotenv').config();
 
 function Index() {
