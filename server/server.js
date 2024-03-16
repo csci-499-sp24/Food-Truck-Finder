@@ -39,11 +39,11 @@ app.get('/api/getFoodTrucks', async(req, res) => {
         west: x + 0.0038
     }
     
-    console.log('SELECT * FROM public."FoodTruck" where' +
-    '( lat < ' + bounds.north + 
-    ' and lat > ' + bounds.south  + 
-    ' and lng > ' + bounds.east +
-    ' and lng < ' + bounds.west + ')');
+    // console.log('SELECT * FROM public."FoodTruck" where' +
+    // '( lat < ' + bounds.north + 
+    // ' and lat > ' + bounds.south  + 
+    // ' and lng > ' + bounds.east +
+    // ' and lng < ' + bounds.west + ')');
     try {
         const allItems = await itemsPool.query(
             'SELECT * FROM public."FoodTruck" where' +
@@ -60,6 +60,33 @@ app.get('/api/getFoodTrucks', async(req, res) => {
         res.status(500).send(error.message)
     }
 });
+
+app.get("/api/FoodTruckInfo", async(req, res) => {
+    const id = parseInt(req.query.id);
+    try{
+
+        const reviews = await itemsPool.query(
+            'SELECT name, review, rating FROM public."Reviews" where FoodTruckID =' + id + ';'  
+        ).then((e) => { return e.rows; });
+
+        const menu = await itemsPool.query(
+            'SELECT item, price FROM public."Menu Item" where FoodTruckID =' + id + ';'  
+        ).then((e) => { return e.rows; });
+
+        const location = await itemsPool.query(
+            'Select name, lng, lat From public."FoodTruck" where id =' + id + ';'
+        ).then((e) => {  return e.rows; });
+
+
+        const result = {
+            location, menu, reviews
+        }
+        res.json({result});
+    }catch (error){
+        console.log(error);
+        res.status(500).send(error.message);
+    }
+})
 
 app.get("/api/home", (req, res) => {
     res.json({message: "Hello World!"});
