@@ -61,44 +61,44 @@ app.get('/api/getFoodTrucks', async(req, res) => {
     }
 });
 
-app.get("/api/FoodTruckInfo", async(req, res) => {
-    const id = parseInt(req.query.id);
-    try{
-
-        const reviews = await itemsPool.query(
-            'SELECT name, review, rating FROM public."Reviews" where FoodTruckID =' + id + ';'  
-        ).then((e) => { return e.rows; });
-
-        const menu = await itemsPool.query(
-            'SELECT item, price FROM public."Menu Item" where FoodTruckID =' + id + ';'  
-        ).then((e) => { return e.rows; });
-
-        const location = await itemsPool.query(
-            'Select name, lng, lat From public."FoodTruck" where id =' + id + ';'
-        ).then((e) => {  return e.rows; });
-
-
-        const result = {
-            location, menu, reviews
-        }
-        res.json({result});
-    }catch (error){
-        console.log(error);
-        res.status(500).send(error.message);
-    }
-})
-
-app.get('/api/foodtrucks/:id', async (req, res) => {
-    const id = req.params.id; 
+app.get('/api/foodtrucks/:id/info', async (req, res) => {
+    const id = req.params.id;
     try {
-        const result = await itemsPool.query(
+        const foodTruckQuery = await itemsPool.query(
             'SELECT * FROM public."FoodTruck" WHERE id = $1',
             [id]
         );
-        if (result.rows.length === 0) {
+        if (foodTruckQuery.rows.length === 0) {
             return res.status(404).json({ error: 'Food truck not found' });
         }
-        res.json(result.rows[0]);
+        const foodTruck = foodTruckQuery.rows[0];
+
+        const reviewsQuery = await itemsPool.query(
+            'SELECT name, review, rating FROM public."Reviews" WHERE FoodTruckID = $1',
+            [id]
+        );
+        const reviews = reviewsQuery.rows;
+
+        const menuQuery = await itemsPool.query(
+            'SELECT item, price FROM public."Menu Item" WHERE FoodTruckID = $1',
+            [id]
+        );
+        const menu = menuQuery.rows;
+
+        const locationQuery = await itemsPool.query(
+            'SELECT name, lng, lat FROM public."FoodTruck" WHERE id = $1',
+            [id]
+        );
+        const location = locationQuery.rows[0];
+
+        const result = {
+            foodTruck,
+            reviews,
+            menu,
+            location
+        };
+
+        res.json(result);
     } catch (error) {
         console.error("Error fetching food truck:", error);
         res.status(500).json({ error: 'Internal server error' });

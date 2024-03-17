@@ -12,7 +12,7 @@ export default function FoodTruckPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/info`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch food truck');
                 }
@@ -45,7 +45,7 @@ export default function FoodTruckPage() {
 
     return (
         <div>
-            <h1>{foodTruck.name}</h1>
+            <h1>{foodTruck.foodTruck.name}</h1>
             {/* Display other details about the food truck */}
         </div>
     );
