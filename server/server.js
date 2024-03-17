@@ -88,6 +88,23 @@ app.get("/api/FoodTruckInfo", async(req, res) => {
     }
 })
 
+app.get('/api/foodtrucks/:id', async (req, res) => {
+    const id = req.params.id; 
+    try {
+        const result = await itemsPool.query(
+            'SELECT * FROM public."FoodTruck" WHERE id = $1',
+            [id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Food truck not found' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error fetching food truck:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.get("/api/home", (req, res) => {
     res.json({message: "Hello World!"});
     console.log("test");
