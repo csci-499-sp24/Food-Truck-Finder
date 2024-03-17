@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import {useRouter} from "next/router";
 require('dotenv').config();
 
 function Sidebar(){
     const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const languages = ["English", "Spanish", "French", "German"]; // List of languages
+    const router = useRouter();
 
-    //For Searching
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -50,7 +52,11 @@ function Sidebar(){
           />
           <ul style={{ textAlign: "left", color: "white" }}>
             {searchFoodTrucks.map((foodTruck) => (
-              <li key={foodTruck.id}>{foodTruck.name}</li>
+              <li key={foodTruck.id}>
+                <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
+                  <a>{foodTruck.name}</a>
+                </Link>
+              </li>
             ))}
           </ul>
           {/* Language dropdown */}
