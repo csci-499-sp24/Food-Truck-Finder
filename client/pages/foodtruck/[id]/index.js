@@ -45,7 +45,7 @@ export default function FoodTruckPage() {
 
     return (
         <div>
-            <h1>{foodTruck.foodTruck.name}</h1>
+            <h1>{toString(foodTruck.foodTruck)}</h1>
             {/* Display other details about the food truck */}
         </div>
     );
