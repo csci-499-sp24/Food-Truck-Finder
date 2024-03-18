@@ -33,22 +33,23 @@ export default function FoodTruckPage() {
 
     if (loading) {
         return <div>Loading...</div>;
-    }
-
-    if (error) {
+    }else if (error) {
         return <div>Error: {error.message}</div>;
-    }
-
-    if (!foodTruck) {
+    }else if (!foodTruck) {
         return <div>No food truck found.</div>;
+    }else{
+        return (
+            <div>
+                <h1>FoodTruck</h1>
+                <h1>{JSON.stringify(foodTruck.foodTruck)}</h1>
+                <h1>Reviews</h1>
+                <h1>{JSON.stringify(foodTruck.reviews)}</h1>
+                <h1>Menu</h1>
+                <h1>{JSON.stringify(foodTruck.menu)}</h1>
+                {/* Display other details about the food truck */}
+            </div>
+        );
     }
-
-    return (
-        <div>
-            <h1>{toString(foodTruck.foodTruck)}</h1>
-            {/* Display other details about the food truck */}
-        </div>
-    );
 }
 
 
