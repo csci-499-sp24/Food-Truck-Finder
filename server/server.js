@@ -53,7 +53,6 @@ app.get('/api/getFoodTrucks', async(req, res) => {
             ' and lat < ' + bounds.west + ')'
         );
         const FoodTrucks = allItems.rows;
-        console.log(FoodTrucks);
         res.json({ FoodTrucks });
     } catch (error) {
         console.log(error);
@@ -95,7 +94,6 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
             foodTruck,
             reviews,
             menu,
-            location
         };
 
         res.json(result);
