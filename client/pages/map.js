@@ -14,18 +14,19 @@ import {
 require('dotenv').config();
 
 
-function FoodTruckMap() {
+function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
     const [center, setCenter] = useState({ lat: 40.76785, lng: -73.96455 });
 
     const handleCenterChange = (ev) => {
-        setTimeout(() => {
-        }, 1000)
+      if(!selectedTruck){
         setCenter(ev.detail.center);
+      }
     }
 
       //For Map
     useEffect(() => {
+      if(!selectedTruck){
         var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
         .then((res) => {
         return res.json()})
@@ -33,7 +34,8 @@ function FoodTruckMap() {
         setFoodTrucks(data.FoodTrucks);
         }).then(() => {return true}).catch((err) => console.log(err));
         get();
-    }, [center]) 
+      }
+    }, [center, selectedTruck]) 
 
     return (
         <div style={{ width: "80%", position: "relative" }}>
@@ -46,15 +48,30 @@ function FoodTruckMap() {
             defaultCenter={center} 
             defaultZoom={17} 
             onCenterChanged={handleCenterChange}
-            mapId={process.env.NEXT_PUBLIC_MAP_ID} >
-              {foodTrucks.map((foodTruck) =>
-                <AdvancedMarker key={foodTruck.id} position={{ lat: parseFloat(foodTruck.lat), lng: parseFloat(foodTruck.lng)}} ></AdvancedMarker>
-              )}
-            </Map>
-          </div>
-        </APIProvider>
-      </div>
-    )
+            mapId={process.env.NEXT_PUBLIC_MAP_ID}
+            >
+              {foodTrucks.map((foodTruck) => (
+                <AdvancedMarker 
+                key={foodTruck.id} 
+                position={{ lat: parseFloat(foodTruck.lat), lng: parseFloat(foodTruck.lng)}}
+                onClick={() => setSelectedTruck(foodTruck)}
+                />
+                ))}
+                {selectedTruck && (
+                  <InfoWindow 
+                  position={{ lat: parseFloat(selectedTruck.lat), lng: parseFloat(selectedTruck.lng)}}
+                  onClose={() => setSelectedTruck(null)}
+                  >
+                    <div>
+                      <h3>{selectedTruck.name}</h3>
+                    </div>
+                  </InfoWindow>
+                  )}
+                  </Map>
+              </div>
+          </APIProvider>
+      </div> 
+  );
 }
 
 
