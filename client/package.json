@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.14",
     "@vis.gl/react-google-maps": "^0.7.1",
     "dotenv": "^16.4.5",
     "next": "14.1.0",
