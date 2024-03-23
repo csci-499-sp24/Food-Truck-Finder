@@ -16,7 +16,7 @@ export default function Reviews(props) {
 
     return (
         <>
-            <Card sx={{ backgroundColor: "#105372", padding: 2, height: "385px", overflowY: "auto" }}>
+            <Card sx={{ backgroundColor: "#105372", padding: 2, height: "500px", overflowY: "auto" }}>
                 <h2 style = {{color: "white", textAlign: "center"}}>REVIEWS and RATINGS</h2>
                 {reviews}
             </Card>
