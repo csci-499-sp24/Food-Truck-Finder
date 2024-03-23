@@ -1,15 +1,17 @@
-import {
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-} from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 export default function DropDown() {
-    return (
-        <>
-
-<FormControl>
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: "35px",
+        bottom: "20px",
+        display: "flex",
+        gap: "20px",
+      }}
+    >
+      <FormControl>
         <InputLabel id="demo-simple-select-label">Share Via</InputLabel>
         <Select
           color="secondary"
@@ -18,13 +20,14 @@ export default function DropDown() {
           label="Age"
           variant="standard"
           sx={{
-            width: 100,
-            background: "white",
+            width: 150,
+            background: "#105372",
+            color: "white"
           }}
         >
           <MenuItem value={10}>Facebook</MenuItem>
           <MenuItem value={20}>INSTAGRAM</MenuItem>
-          <MenuItem value={30}>TEXT</MenuItem>
+          <MenuItem value={30}>URL</MenuItem>
         </Select>
       </FormControl>
       <FormControl>
@@ -36,8 +39,9 @@ export default function DropDown() {
           label="Age"
           variant="standard"
           sx={{
-            width: 100,
-            background: "white",
+            width: 150,
+            background: "#105372",
+            color: "white"
           }}
         >
           <MenuItem value={10}>ENGLISH</MenuItem>
@@ -45,6 +49,6 @@ export default function DropDown() {
           <MenuItem value={30}>SPANISH</MenuItem>
         </Select>
       </FormControl>
-        </>
-    )
+    </div>
+  );
 }

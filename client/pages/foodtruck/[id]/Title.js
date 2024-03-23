@@ -11,7 +11,7 @@ export default function FTTitle(props) {
         color={"white"}
         textAlign={"center"}
         fontWeight={"bold"}
-        fontSize={36}
+        fontSize={50}
         >
         {foodTruck.foodTruck.name}
         </Typography>
@@ -19,7 +19,7 @@ export default function FTTitle(props) {
         color={"white"}
         textAlign={"center"}
         fontWeight={"bold"}
-        fontSize={18}
+        fontSize={20}
         >
         Rating: {foodTruck.foodTruck.rating} /5
         </Typography>

@@ -12,8 +12,6 @@ export default function Menu(props){
 
     // State to track the active view
     const [activeView, setActiveView] = useState("menu");
-    const [menuData, setMenuData] = useState(null);
-    const [promotionData, setPromotionData] = useState(null);
 
 
     // Event handler for Menu button
@@ -24,9 +22,28 @@ export default function Menu(props){
     const handlePromotionsClick = () => {
     setActiveView("promotions");
     };
+    const menuItems = foodTruck.menu && foodTruck.menu.length > 0 ?(
+      foodTruck.menu.map((item)=> (
+        <div style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
+          <h2>{item.item}: ${item.price}</h2>
+        </div>
+      ))
+    ):(
+      <p>No menu available</p>
+    );
+    const promotions = foodTruck.promotions && foodTruck.promotions.length > 0 ? (
+      foodTruck.promotions.map((promotion) => (
+          <div style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
+              <h3>Promotion</h3>
+              <p>{promotion}</p>
+          </div>
+      ))
+    ):(
+      <p>No promotions available</p>
+    );
     return (
         <>
-            <Card sx={{ backgroundColor: "#105372", padding: 2 }}>
+            <Card sx={{ backgroundColor: "#105372", padding: 3, height: "430px", overflowY: "auto" }}>
             <Stack direction={"row"} gap={1}>
               <Button variant="outlined" onClick={handleMenuClick}>
                 Menu
@@ -38,25 +55,13 @@ export default function Menu(props){
             {/* Conditionally rendering content */}
             {activeView === "menu" && (
               <div>
-                {foodTruck.menu.length != 0 ? (
-                    <>
-                    {foodTruck.menu.map(item => (
-                        <p>{JSON.stringify(item)}</p>
-                    ))}
-                  </>
-                ) : (
-                  <p>Menu Empty</p>
-                )}
+                {menuItems}
               </div>
             )}
 
             {activeView === "promotions" && (
               <div>
-                {foodTruck.promotion ? (
-                  <div>{JSON.stringify(props.promotion)}</div>
-                ) : (
-                  <p>No Promotions at this time</p>
-                )}
+                {promotions}
               </div>
             )}
 

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "../truck.module.css";
 import {
-  Stack,
+  Stack, Button
 } from "@mui/material";
 import Reviews from "./reviews";
 import FTMap from "./ftMap";
@@ -68,6 +68,9 @@ export default function FoodTruckPage() {
     lat: Number(foodTruck.foodTruck.lat),
     lng: Number(foodTruck.foodTruck.lng),
   };
+  const navigateToHome = () => {
+    router.push("/");
+  };
   return (
     <section className={styles.container}>
       <Stack direction={"row"} gap={4}>
@@ -76,6 +79,9 @@ export default function FoodTruckPage() {
             <FTTitle foodTruck={foodTruck}></FTTitle>
             <Description foodTruck ={foodTruck}></Description>
             <Menu foodTruck = {foodTruck}></Menu>
+            <Button variant="outlined" onClick={navigateToHome}>
+              Back to Home
+            </Button>
         </Stack>
 
         {/* Right side stack */}
