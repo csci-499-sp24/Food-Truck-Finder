@@ -1,68 +1,7 @@
 .container {
   background-color: #02092c;
   height: 100vh;
-  padding: 20px;
 }
-
-/* .flexRow {
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-}
-
-.flexColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.title {
-  font-size: 4rem;
-  background-color: #ffffff;
-}
-
-.reviewContainer {
-  background-color: aqua;
-  width: 75%;
-  border-radius: 1rem;
-  margin: auto;
-}
-
-.menuContainer {
-  background-color: brown;
-  width: 80%;
-  margin: auto;
-}
-
-.ratingsContainer {
-  background-color: #105372;
-  width: 425px;
-  height: 419px;
-  position: absolute;
-  top: 533px;
-  left: 965px;
-}
-
-.favorite {
-  font-size: 1.5rem;
-  font-weight: 550;
-  color: red;
-}
-
-.rating {
-  font-size: 1.2rem;
-  font-weight: 550;
-  color: red;
-}
-.description {
-  background: #105372;
-  width: 682px;
-  height: 132px;
-  top: 223px;
-  left: 70px;
-  border-radius: 30;
-} */
-
 .errorMessage {
   margin: auto;
   font-size: 30px;
