@@ -4,15 +4,15 @@ import styles from "../truck.module.css";
 import {
   Stack, Button
 } from "@mui/material";
-import Reviews from "./reviews";
-import FTMap from "./ftMap";
-import Menu from "./Menu";
-import Description from "./description";
-import FTTitle from './Title';
-import DropDown from "./dropDown";
+import Reviews from "../../../compenents/reviews";
+import FTMap from "../../../compenents/ftMap";
+import Menu from "../../../compenents/Menu";
+import Description from "../../../compenents/description";
+import FTTitle from '../../../compenents/Title';
+import DropDown from "../../../compenents/dropDown";
 require("dotenv").config();
 
-export default function FoodTruckPage() {
+export default function Index() {
   const router = useRouter();
   const { id } = router.query;
   const [foodTruck, setFoodTruck] = useState(null);
