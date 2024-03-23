@@ -3,7 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 require('dotenv').config();
 
-function Sidebar(){
+function Sidebar({ setSelectedTruck }){
     const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const languages = ["English", "Spanish", "French", "German"]; // List of languages
@@ -21,6 +21,10 @@ function Sidebar(){
         };
         fetchData();
     }, [searchTerm]);
+
+    const handleTruckHover = (truck) => {
+      setSelectedTruck(truck);
+    };
 
     return (
         <div className="sidebar" style={{ width: "20%", backgroundColor: "black", padding: "20px" }}>
@@ -52,7 +56,10 @@ function Sidebar(){
           />
           <ul style={{ textAlign: "left", color: "white" }}>
             {searchFoodTrucks.map((foodTruck) => (
-              <li key={foodTruck.id}>
+              <li 
+              key={foodTruck.id}
+              onMouseEnter={() => handleTruckHover(foodTruck)}
+              onMouseLeave={() => handleTruckHover(null)}>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                   <a>{foodTruck.name}</a>
                 </Link>
