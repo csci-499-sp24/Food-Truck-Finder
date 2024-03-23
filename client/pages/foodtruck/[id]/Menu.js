@@ -23,17 +23,17 @@ export default function Menu(props){
     setActiveView("promotions");
     };
     const menuItems = foodTruck.menu && foodTruck.menu.length > 0 ?(
-      foodTruck.menu.map((item)=> (
-        <div style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
-          <h2>{item.item}: ${item.price}</h2>
+      foodTruck.menu.map((item, index)=> (
+        <div key={index} style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
+          <h2 key={index} >{item.item}: ${item.price}</h2>
         </div>
       ))
     ):(
       <p>No menu available</p>
     );
     const promotions = foodTruck.promotions && foodTruck.promotions.length > 0 ? (
-      foodTruck.promotions.map((promotion) => (
-          <div style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
+      foodTruck.promotions.map((promotion, index) => (
+          <div key={index} style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
               <h3>Promotion</h3>
               <p>{promotion}</p>
           </div>

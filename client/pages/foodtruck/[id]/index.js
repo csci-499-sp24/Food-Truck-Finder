@@ -78,7 +78,7 @@ export default function FoodTruckPage() {
         <Stack direction="column" flexGrow={1} gap={4} padding={4}>
             <FTTitle foodTruck={foodTruck}></FTTitle>
             <Description foodTruck ={foodTruck}></Description>
-            <Menu foodTruck = {foodTruck}></Menu>
+            <Menu foodTruck ={foodTruck}></Menu>
             <Button variant="outlined" onClick={navigateToHome}>
               Back to Home
             </Button>
