@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import styles from "../truck.module.css";
 import {
   Stack, Button
@@ -56,7 +57,7 @@ export default function Index() {
           className="errorMessage"
         >
           Error: {error.message}
-          <img src="../../../404error.webp"></img>
+          <Image src="/404error.webp" height= "1000" width="1000"></Image>
         </div>
       </div>
     );
