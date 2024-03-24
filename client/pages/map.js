@@ -1,18 +1,16 @@
 'use client';
 import { useCallback, useEffect, useState } from "react";
 import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin,
-  InfoWindow,
-  MapCameraChangedEvent,
-  GoogleMapsContext,
-  MapCameraProps
-  
+ APIProvider,
+ Map,
+ AdvancedMarker,
+ Pin,
+ InfoWindow,
+ MapCameraChangedEvent,
+ GoogleMapsContext,
+ MapCameraProps
 } from "@vis.gl/react-google-maps";
 require('dotenv').config();
-
 
 function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
@@ -24,7 +22,8 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
       }
     }
 
-      //For Map
+    
+
     useEffect(() => {
       if(!selectedTruck){
         var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
@@ -54,6 +53,27 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
       setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
     };
 
+    useEffect(() => {
+      // Get user's current position
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("User's current position:", { latitude, longitude });
+            setCenter({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            });
+          },
+          (error) => {
+            console.error("Error getting user's location:", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }, []);
+
     return (
         <div style={{ width: "80%", position: "relative" }}>
         <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
@@ -76,21 +96,21 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
                 />
                 ))}
                 {selectedTruck && (
-                  <InfoWindow 
-                  position={{ lat: parseFloat(selectedTruck.lat), lng: parseFloat(selectedTruck.lng)}}
-                  onClose={handleInfoWindowClose}
-                  >
+                 <InfoWindow 
+                 position={{ lat: parseFloat(selectedTruck.lat), lng: parseFloat(selectedTruck.lng)}}
+                 onClose={handleInfoWindowClose}
+                 >
                     <div>
                       <h3>{selectedTruck.name}</h3>
                     </div>
-                  </InfoWindow>
-                  )}
-                  </Map>
+                 </InfoWindow>
+                 )}
+                 </Map>
               </div>
           </APIProvider>
+          <button onClick={getUserLocation} type="button">Move to My Location</button>
       </div> 
-  );
+ );
 }
-
 
 export default FoodTruckMap;
