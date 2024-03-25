@@ -108,7 +108,6 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
                  </Map>
               </div>
           </APIProvider>
-          <button onClick={getUserLocation} type="button">Move to My Location</button>
       </div> 
  );
 }
