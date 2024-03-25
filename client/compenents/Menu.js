@@ -31,16 +31,19 @@ export default function Menu(props){
     ):(
       <p>No menu available</p>
     );
-    const promotions = foodTruck.promotions && foodTruck.promotions.length > 0 ? (
-      foodTruck.promotions.map((promotion, index) => (
+    
+    const promotions = foodTruck.events && foodTruck.events.length > 0 ? (
+      foodTruck.events.map((event, index) => (
           <div key={index} style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
-              <h3>Promotion</h3>
-              <p>{promotion}</p>
+              <h3>{event.start_date.substring(0, 10) + ' - ' + event.end_date.substring(0, 10)}</h3>
+              <p>{event.event_description}</p>
           </div>
       ))
     ):(
       <p>No promotions available</p>
     );
+
+    console.log(foodTruck.events)
     return (
         <>
             <Card sx={{ backgroundColor: "#105372", padding: 3, height: "430px", overflowY: "auto" }}>
