@@ -31,7 +31,7 @@ export default function Menu(props){
     ):(
       <p>No menu available</p>
     );
-    console.log(foodTruck.events);
+    
     const promotions = foodTruck.events && foodTruck.events.length > 0 ? (
       foodTruck.events.map((event, index) => (
           <div key={index} style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
