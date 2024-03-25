@@ -90,10 +90,18 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
         );
         const location = locationQuery.rows[0];
 
+        const eventQuery = await itemsPool.query(
+            'Select * FROM public."Events" WHERE ft_id = $1 AND end_date >= now()',
+            [id]
+        )
+
+        const events = eventQuery.rows;
+
         const result = {
             foodTruck,
             reviews,
             menu,
+            events
         };
 
         res.json(result);
