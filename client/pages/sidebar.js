@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import Signup from "./signup/Signup";
 require('dotenv').config();
 
 function Sidebar({ setSelectedTruck }){
@@ -35,14 +36,18 @@ function Sidebar({ setSelectedTruck }){
               onMouseEnter={(e) => e.target.style.color = "red"}
               onMouseLeave={(e) => e.target.style.color = "white"}
             >
-              Sign In
+              <Link legacyBehavior href={`/signup`}>
+                  <a>Signup</a>
+                </Link>
             </button>
             <button
               style={{ color: "white", border: "2px solid white", padding: "5px 10px", backgroundColor: "black", cursor: "pointer" }}
               onMouseEnter={(e) => e.target.style.color = "red"}
               onMouseLeave={(e) => e.target.style.color = "white"}
             >
-              Sign Up
+              <Link legacyBehavior href={`/login`}>
+                  <a>Sign In</a>
+                </Link>
             </button>
           </div>
           {/* Sidebar content goes here */}
