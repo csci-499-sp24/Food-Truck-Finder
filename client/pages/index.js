@@ -7,10 +7,14 @@ require('dotenv').config();
 
 function Index() {
   const [selectedTruck, setSelectedTruck] = useState(null);
+  const [visibleMarkers, setVisibleMarkers] = useState([]);
+  const updateVisibleMarkers = (markers) => {
+    setVisibleMarkers(markers);
+  };
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      <Sidebar setSelectedTruck={setSelectedTruck}/>
-      <FoodTruckMap selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck}/>
+      <Sidebar selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck} visibleMarkers={visibleMarkers}/>
+      <FoodTruckMap selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck} updateVisibleMarkers={updateVisibleMarkers}/>
     </div>
   );
 }

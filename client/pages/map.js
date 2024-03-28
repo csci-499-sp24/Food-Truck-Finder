@@ -10,9 +10,10 @@ import {
  GoogleMapsContext,
  MapCameraProps
 } from "@vis.gl/react-google-maps";
+import Link from "next/link";
 require('dotenv').config();
 
-function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
+function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
     const [center, setCenter] = useState({ lat: 40.76785, lng: -73.96455 });
 
@@ -22,7 +23,9 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
       }
     }
 
-    
+    useEffect(() => {
+      updateVisibleMarkers(foodTrucks);
+    }, [foodTrucks, updateVisibleMarkers]);
 
     useEffect(() => {
       if(!selectedTruck){
@@ -102,6 +105,10 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
                  >
                     <div>
                       <h3>{selectedTruck.name}</h3>
+                      <br />
+                      <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
+                        <a style={{ textDecoration: 'underline' }}>Go to Food Truck Page</a>
+                      </Link>
                     </div>
                  </InfoWindow>
                  )}
