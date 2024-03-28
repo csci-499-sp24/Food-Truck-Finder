@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 require('dotenv').config();
 
-function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
+function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
     const [center, setCenter] = useState({ lat: 40.76785, lng: -73.96455 });
 
@@ -23,7 +23,9 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck }) {
       }
     }
 
-    
+    useEffect(() => {
+      updateVisibleMarkers(foodTrucks);
+    }, [foodTrucks, updateVisibleMarkers]);
 
     useEffect(() => {
       if(!selectedTruck){
