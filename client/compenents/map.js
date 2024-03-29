@@ -4,38 +4,32 @@ import {
  APIProvider,
  Map,
  AdvancedMarker,
- Pin,
  InfoWindow,
- MapCameraChangedEvent,
- GoogleMapsContext,
- MapCameraProps
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 require('dotenv').config();
 
-function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers }) {
+function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
-    const [center, setCenter] = useState({ lat: 40.76785, lng: -73.96455 });
-
+    var tempCenter = center;
+    
     const handleCenterChange = (ev) => {
-      if(!selectedTruck){
-        setCenter(ev.detail.center);
-      }
+      tempCenter = ev.detail.center;
     }
-
+    const updateCenter = () =>{
+      setCenter(tempCenter);
+    }
     useEffect(() => {
       updateVisibleMarkers(foodTrucks);
-    }, [foodTrucks, updateVisibleMarkers]);
+    }, [foodTrucks]);
 
     useEffect(() => {
-      if(!selectedTruck){
         var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
         .then((res) => res.json())
         .then((data) => {
         setFoodTrucks(data.FoodTrucks);
         }).catch((err) => console.log(err));
         get();
-      }
     }, [center, selectedTruck]) 
 
     const handleMarkerClick = (truck) => {
@@ -89,6 +83,7 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers })
             defaultZoom={17} 
             onCenterChanged={handleCenterChange}
             onDrag={handleMapDrag}
+            onDragend={updateCenter}
             mapId={process.env.NEXT_PUBLIC_MAP_ID}
             >
               {foodTrucks.map((foodTruck) => (

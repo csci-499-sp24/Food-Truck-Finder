@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import Link from "next/link";
 import {useRouter} from "next/router";
 require('dotenv').config();
 
-function Sidebar({ setSelectedTruck, visibleMarkers }){
+function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
     const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const languages = ["English", "Spanish", "French", "German"]; // List of languages
-    const router = useRouter();
+
+    const [debounceSearch] = useDebounce(searchTerm, 500);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,10 +22,12 @@ function Sidebar({ setSelectedTruck, visibleMarkers }){
             }
         };
         fetchData();
-    }, [searchTerm]);
+    }, [debounceSearch]);
 
     const handleTruckHover = (truck) => {
       setSelectedTruck(truck);
+      const cords = {lat: truck.lat, lng: truck.lng};
+      setCenter(cords);
     };
 
     return (
@@ -61,7 +65,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers }){
                 <li
                   key={foodTruck.id}
                   onMouseEnter={() => handleTruckHover(foodTruck)}
-                  onMouseLeave={() => handleTruckHover(null)}>
+                >
                   <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                     <a style={{ textDecoration: 'none', color: 'inherit', transition: 'text-decoration 0.3s' }}>
                       <span 
@@ -85,7 +89,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers }){
                 <li
                   key={foodTruck.id}
                     onMouseEnter={() => handleTruckHover(foodTruck)}
-                    onMouseLeave={() => handleTruckHover(null)}>
+                    >
                     <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                       <a style={{ textDecoration: 'none', color: 'inherit', transition: 'text-decoration 0.3s' }}>
                         <span 
