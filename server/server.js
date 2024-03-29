@@ -5,6 +5,7 @@ const app = express();
 dotenv.config();
 
 
+//Database Connection
 const { Pool } = require('pg'); 
 const itemsPool = new Pool({
     connectionString: process.env.DBConfigLink,
@@ -12,6 +13,8 @@ const itemsPool = new Pool({
         rejectUnauthorized: false
     }
 });
+
+
 
 app.use(cors());
 
@@ -26,17 +29,17 @@ app.get('/api/searchFoodTrucks', async(req, res) =>{
         console.log(error);
         res.status(500).send(error.message)
     }
-    })
+})
 
 app.get('/api/getFoodTrucks', async(req, res) => {
     const x = Number(parseFloat(req.query.lat).toFixed(6));
     const y = Number(parseFloat(req.query.lng).toFixed(6));
 
     const bounds = {
-        north: y + 0.003,
-        south: y - 0.003,
-        east: x - 0.0038,
-        west: x + 0.0038
+        north: y + 0.006,
+        south: y - 0.006,
+        east: x - 0.006,
+        west: x + 0.006
     }
     
     // console.log('SELECT * FROM public."FoodTruck" where' +
@@ -90,18 +93,10 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
         );
         const location = locationQuery.rows[0];
 
-        const eventQuery = await itemsPool.query(
-            'Select * FROM public."Events" WHERE ft_id = $1 AND end_date >= now()',
-            [id]
-        )
-
-        const events = eventQuery.rows;
-
         const result = {
             foodTruck,
             reviews,
             menu,
-            events
         };
 
         res.json(result);
@@ -111,10 +106,6 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
     }
 });
 
-app.get("/api/home", (req, res) => {
-    res.json({message: "Hello World!"});
-    console.log("test");
-});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
