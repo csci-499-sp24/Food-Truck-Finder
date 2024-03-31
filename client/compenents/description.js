@@ -13,7 +13,7 @@ export default function Description(props) {
                 <Typography color="white">
                 Description: {foodTruck.foodTruck.description}
                 </Typography>
-                <h1>No Description</h1>
+                <h6>No Description</h6>
             </Card>
         </>
     )
