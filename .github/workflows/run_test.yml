@@ -2,10 +2,7 @@ name: run_test
 on: [pull_request]
 jobs:
   build: 
-    runs-on: ubuntu-latest
-    defaults: 
-      run:
-        working-directory: ./server   
+    runs-on: ubuntu-latest  
     steps: 
       - uses: actions/checkout@v2
       - name: Install Modules
