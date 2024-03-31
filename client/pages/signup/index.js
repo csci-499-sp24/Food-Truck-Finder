@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Validation from '../../../client/pages/signup/SignupValidation';
+import Validation from '../../compenents/SignupValidation';
 
 export default function Signup() {
     // const router = useRouter();

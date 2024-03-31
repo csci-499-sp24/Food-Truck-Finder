@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Validation from '../../../client/pages/login/LoginValidation';
+import Validation from '../../compenents/LoginValidation';
 
 export default function Login() {
     // const router = useRouter();
@@ -58,7 +58,7 @@ export default function Login() {
                     </div>
                     <button type='submit' className='btn btn-success w-100'><strong>Login</strong></button>
                     <p className='mt-3'>
-                        <Link legacyBehavior href='/signup'><a className='btn btn-link'>Don't have an account? Signup</a></Link>
+                        <Link legacyBehavior href='/signup'><a className='btn btn-linknpm'>{`Don't have an account? Signup`}</a></Link>
                     </p>
                 </form>
             </div>
