@@ -99,7 +99,7 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  onClose={handleInfoWindowClose}
                  >
                     <div>
-                      <h3>{selectedTruck.name}</h3>
+                      <h5>{selectedTruck.name}</h5>
                       <br />
                       <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
                         <a style={{ textDecoration: 'underline' }}>Go to Food Truck Page</a>

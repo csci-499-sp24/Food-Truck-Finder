@@ -6,7 +6,7 @@ export default function Reviews(props) {
     const reviews = foodTruck.reviews && foodTruck.reviews.length > 0 ? (
         foodTruck.reviews.map((review, index) => (
             <div key={index} style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
-                <h3>{review.name}: {review.review} </h3>
+                <h4>{review.name}: {review.review} </h4>
                 <p>Rating: {review.rating}</p>
             </div>
         ))

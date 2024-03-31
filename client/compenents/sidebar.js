@@ -34,20 +34,12 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
         <div className="sidebar" style={{ width: "20%", backgroundColor: "black", padding: "20px" }}>
           {/* Sign-in and sign-up buttons */}
           <div style={{ marginBottom: "20px" }}>
-            <button
-              style={{ marginRight: "10px", color: "white", border: "2px solid white", padding: "5px 10px", backgroundColor: "black", cursor: "pointer" }}
-              onMouseEnter={(e) => e.target.style.color = "red"}
-              onMouseLeave={(e) => e.target.style.color = "white"}
-            >
-              Sign In
-            </button>
-            <button
-              style={{ color: "white", border: "2px solid white", padding: "5px 10px", backgroundColor: "black", cursor: "pointer" }}
-              onMouseEnter={(e) => e.target.style.color = "red"}
-              onMouseLeave={(e) => e.target.style.color = "white"}
-            >
-              Sign Up
-            </button>
+            <Link legacyBehavior href='/login'>
+              <a className="btn btn-primary" style={{ cursor: "pointer", marginRight: "10px" }}>Sign In</a>
+            </Link>
+            <Link legacyBehavior href='/signup'>
+              <a className="btn btn-secondary" style={{ cursor: "pointer" }}>Sign Up</a>
+            </Link>
           </div>
           {/* Sidebar content goes here */}
           <h1 style={{ padding: "10px 20px", textAlign: "center", fontWeight: "bold", color: "white", fontSize: "1.5em" }}>Food Truck Finder</h1>
@@ -64,8 +56,9 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
               {searchFoodTrucks.map((foodTruck) => (
                 <li
                   key={foodTruck.id}
-                  onMouseEnter={() => handleTruckHover(foodTruck)}
+                  onMouseEnter={(e) => e.stopPropagation()}
                 >
+                  <span onMouseEnter={() => handleTruckHover(foodTruck)}>
                   <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                     <a style={{ textDecoration: 'none', color: 'inherit', transition: 'text-decoration 0.3s' }}>
                       <span 
@@ -76,6 +69,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
                       </span>
                     </a>
                   </Link>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -88,8 +82,9 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
               {visibleMarkers.map((foodTruck) => (
                 <li
                   key={foodTruck.id}
-                    onMouseEnter={() => handleTruckHover(foodTruck)}
+                  onMouseEnter={(e) => e.stopPropagation()}
                     >
+                    <span onMouseEnter={() => handleTruckHover(foodTruck)}>
                     <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                       <a style={{ textDecoration: 'none', color: 'inherit', transition: 'text-decoration 0.3s' }}>
                         <span 
@@ -100,6 +95,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
                         </span>
                       </a>
                     </Link>
+                    </span>
                 </li>
               ))}
             </ul>

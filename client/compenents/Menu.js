@@ -25,7 +25,10 @@ export default function Menu(props){
     const menuItems = foodTruck.menu && foodTruck.menu.length > 0 ?(
       foodTruck.menu.map((item, index)=> (
         <div key={index} style={{ backgroundColor: '#02092c', padding: '10px', margin: '10px', borderRadius: '10px', color: "white" }}>
-          <h2 key={index} >{item.item}: ${item.price}</h2>
+          {typeof item.price === 'number' ? 
+            <h4 key={index}>{item.item}: ${item.price.toFixed(2)}</h4> :
+            <h4 key={index}>{item.item}: ${parseFloat(item.price).toFixed(2)}</h4>
+          }
         </div>
       ))
     ):(
