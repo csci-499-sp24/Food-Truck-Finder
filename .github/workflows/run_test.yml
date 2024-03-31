@@ -1,7 +1,7 @@
 name: run_test
 on: [pull_request]
 jobs:
-  build: 
+  Backend-Functions: 
     runs-on: ubuntu-latest
     defaults: 
       run:
