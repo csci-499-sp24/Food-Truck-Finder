@@ -1,12 +1,19 @@
-const dotenv = require('dotenv');
-const express = require("express");
-const cors = require('cors')
+import { checkLogin, checkSignup, getUserInfo } from './database.js';
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+
+import pkg from 'pg';
+const { Pool } = pkg;
+
+
 const app = express();
 dotenv.config();
 
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //Database Connection
-const { Pool } = require('pg'); 
 const itemsPool = new Pool({
     connectionString: process.env.DBConfigLink,
     ssl: {
@@ -17,6 +24,8 @@ const itemsPool = new Pool({
 
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/api/searchFoodTrucks', async(req, res) =>{
     try {
@@ -106,9 +115,41 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
     }
 });
 
+//Login
+app.post('/api/login', urlencodedParser , async(req, res) => {
+    console.log(req.body);
+    const info = {
+        email: req.body.email,
+        password: req.body.password
+    }
+    const result = await checkLogin(info);
+    const data = result ? await getUserInfo(info) : {};
+    res.send(
+        {
+            status: result,
+            data: data
+        }
+    )
+})
+
+app.post('/api/signup', urlencodedParser, async(req, res) => {
+    const result = await checkSignup(req.body);
+    console.log(result);
+    if(result){
+        try{
+            itemsPool.query(
+                'INSERT INTO public."Users" (name, email, password) VALUES ($1, $2, $3);',
+                [req.body.name, req.body.email, req.body.password]
+            )
+        }catch(error){
+            console.log(error);
+        }
+    }
+    res.send(result);
+})
+
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
-
 });

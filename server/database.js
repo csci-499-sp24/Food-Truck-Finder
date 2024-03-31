@@ -1,8 +1,10 @@
-const dotenv = require('dotenv');
+import * as dotenv from 'dotenv';
+import pkg from 'pg';
+const { Pool } = pkg;
+
 dotenv.config();
 
 //Database Connection
-const { Pool } = require('pg'); 
 const itemsPool = new Pool({
     connectionString: process.env.DBConfigLink,
     ssl: {
@@ -40,5 +42,20 @@ const checkSignup = async(info) => {
     }
 }
 
+const getUserInfo = async(info) => {
+    try{
+        const DBInfo = await itemsPool.query(
+            'Select * from public."Users" where email = $1',
+            [info.email]
+        );
+        return DBInfo.rows[0];
+    }catch(error){
+        return {};
+    }
+}
 
-export {checkLogin, checkSignup};
+const closeConnection = async() => {
+    await itemsPool.end();
+}
+
+export {checkLogin, checkSignup, closeConnection, getUserInfo};
