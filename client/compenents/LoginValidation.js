@@ -1,28 +1,22 @@
 function Validation(values) {
-    let error = {};
-    const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@#$%^&*!]{8,}$/;
 
-    if (values.email === "") {
-        error.email = "Email should not be empty";
-    } else if (!email_pattern.test(values.email)) {
-        error.email = "Invalid email format";
-    } else {
-        error.email = "";
+    const info = {
+        email: values.email,
+        password : values.password
     }
-
-    // Additional Email and Password Validations
-    // Add logic to verify if the provided email/username exists in the system's database
-
-    if (values.password === "") {
-        error.password = "Password should not be empty";
-    } else if (!password_pattern.test(values.password)) {
-        error.password = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character";
-    } else {
-        error.password = "";
-    }
-
-    return error;
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`, {
+                method: 'POST',
+                body: JSON.stringify(info)
+            });
+            const data = await response.json();
+            console.log(data.status);
+        } catch (error) {
+            console.error("Error fetching food trucks:", error);
+        }
+    };
+    fetchData();
 }
 
 export default Validation;
