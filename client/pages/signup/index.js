@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Validation from '../../../client/pages/signup/SignupValidation';
+import Validation from '../../compenents/SignupValidation';
+import { setCookie } from 'cookies-next';
 
 export default function Signup() {
     // const router = useRouter();
@@ -17,13 +18,38 @@ export default function Signup() {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const validationErrors = Validation(values);
         setErrors(validationErrors);
-        if (Object.keys(validationErrors).length === 0) {
+        if (validationErrors.email == "" && validationErrors.password == "" && validationErrors.confirmPassword == "" && validationErrors.name == "") {
             // Proceed with signup
-            console.log('Signup successful');
+          try{
+            const info = {
+              email: values.email,
+              password: values.password,
+              name: values.name
+            }
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/signup`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(info)
+              });
+              const data = await response.json();
+              console.log(data);
+              if(!data.status)
+                  setErrors({email: "Email already Used"});
+              else{
+                  setCookie('email', data.data.email);
+                  setCookie('password', data.data.password);
+                  setCookie('name', data.data.name);
+                  router.push('/');
+              }
+          }catch(error){
+            console.log(error);
+          }
             // Redirect to homepage
             // router.push('/');
         }

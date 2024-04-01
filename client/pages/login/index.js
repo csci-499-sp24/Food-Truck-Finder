@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Validation from '../../../client/pages/login/LoginValidation';
+import { useRouter } from 'next/navigation';
+import { setCookie } from 'cookies-next';
 
 export default function Login() {
-    // const router = useRouter();
+    const router = useRouter();
     const [values, setValues] = useState({
         email: '',
         password: ''
@@ -15,15 +16,32 @@ export default function Login() {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const validationErrors = Validation(values);
-        setErrors(validationErrors);
-        if (Object.keys(validationErrors).length === 0) {
-            // Proceed with login
-            console.log('Login successful');
-            // Redirect to dashboard or desired page
-            // router.push('/');
+        const info = {
+            email: values.email,
+            password : values.password
+        }
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(info)
+            });
+            const data = await response.json();
+            console.log(data);
+            if(!data.status)
+                setErrors({email: "Email/Password Incorrect"});
+            else{
+                setCookie('email', data.data.email);
+                setCookie('password', data.data.password);
+                setCookie('name', data.data.name);
+                router.push('/');
+            }
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -58,7 +76,7 @@ export default function Login() {
                     </div>
                     <button type='submit' className='btn btn-success w-100'><strong>Login</strong></button>
                     <p className='mt-3'>
-                        <Link legacyBehavior href='/signup'><a className='btn btn-link'>Don't have an account? Signup</a></Link>
+                        <Link legacyBehavior href='/signup'><a className='btn btn-linknpm'>{`Don't have an account? Signup`}</a></Link>
                     </p>
                 </form>
             </div>
