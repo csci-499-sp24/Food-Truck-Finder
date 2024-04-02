@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import Link from "next/link";
 import { getCookie, hasCookie, deleteCookie } from 'cookies-next';
 import {useRouter} from "next/router";
 import { Button } from "@mui/material";
+import { logout } from "./lib";
 
 require('dotenv').config();
 
@@ -28,10 +29,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
         };
         fetchData();
     }, [debounceSearch]);
-    const signout = () => {
-      deleteCookie("name");
-      deleteCookie("email");
-      deleteCookie("password");
+    const signout = async () => {
+      await logout();
       router.reload();
     }
 

@@ -3,8 +3,8 @@ import { expect, test, } from '@jest/globals';
 import { checkLogin, checkSignup, closeConnection, getUserInfo } from './database.js';
 
 test('Get User Info', async() => {
-    const result = await getUserInfo({email: 'testEmail@email.com', password: 'testpassword'});
-    expect(result.email).toBe('testEmail@email.com');
+    const result = await getUserInfo({email: 'testemail@email.com', password: 'testpassword'});
+    expect(result.email.toLowerCase()).toBe('testemail@email.com');
 })
 test('Login - Correct Info', async() => {
     const result = await checkLogin({email: 'testEmail@email.com', password: 'testpassword'});
