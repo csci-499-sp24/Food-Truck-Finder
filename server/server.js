@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import { jwtVerify } from "jose";
 
 import pkg from 'pg';
 const { Pool } = pkg;
@@ -21,7 +22,20 @@ const itemsPool = new Pool({
     }
 });
 
+const secretKey = "secret"; 
+const key = new TextEncoder().encode(secretKey);
 
+export async function decrypt(input) {
+    try {
+        const { payload } = await jwtVerify(input, key, {
+            algorithms: ["HS256"],
+        });
+        return payload;
+    } catch (error) {
+        console.error("Error decrypting:", error);
+        throw new Error("Decryption failed");
+    }
+}
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -147,6 +161,35 @@ app.post('/api/signup', urlencodedParser, async(req, res) => {
     console.log(result)
     res.send(result);
 })
+
+app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => {
+    const id = req.params.id;
+    const { Rating, Review, Session } = req.body;
+
+    try {
+        const decryptedSession = await decrypt(Session);
+
+        if (!decryptedSession) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const foodTruckQuery = await itemsPool.query(
+            'SELECT * FROM public."FoodTruck" WHERE id = $1',
+            [id]
+        );
+        if (foodTruckQuery.rows.length === 0) {
+            return res.status(404).json({ error: 'Food truck not found' });
+        }
+        await itemsPool.query(
+            'INSERT INTO public."Reviews" (FoodTruckID, Rating, Review) VALUES ($1, $2, $3);',
+            [id, Rating, Review]
+        );
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 const port = process.env.PORT || 8080;
