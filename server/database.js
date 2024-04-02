@@ -16,7 +16,7 @@ const itemsPool = new Pool({
 const checkLogin = async(info) => {
     try {
         const DBInfo = await itemsPool.query(
-            'Select * from public."Users" where email = $1',
+            'Select * from public."Users" where lower(email) = lower($1)',
             [info.email]
         )
         if(DBInfo.rowCount == 0) return false;
@@ -45,7 +45,7 @@ const checkSignup = async(info) => {
 const getUserInfo = async(info) => {
     try{
         const DBInfo = await itemsPool.query(
-            'Select * from public."Users" where email = $1',
+            'Select * from public."Users" where lower(email) = lower($1)',
             [info.email]
         );
         return DBInfo.rows[0];

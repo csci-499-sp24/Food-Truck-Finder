@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Sidebar from "../compenents/sidebar";
 import FoodTruckMap from "../compenents/map";
 require('dotenv').config();
