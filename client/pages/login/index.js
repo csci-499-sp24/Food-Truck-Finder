@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
-import { storeSession } from '@/compenents/lib';
 
 export default function Login() {
     const router = useRouter();
@@ -12,7 +11,6 @@ export default function Login() {
         password: ''
     });
     const [errors, setErrors] = useState({});
-
 
     const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
@@ -25,25 +23,21 @@ export default function Login() {
             password : values.password
         }
         try {
-            const response = await fetch('/api/auth/login',{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(info)
             });
-            
             const data = await response.json();
             console.log(data);
             if(!data.status)
                 setErrors({email: "Email/Password Incorrect"});
             else{
-                console.log(data.data);
-                storeSession(data.data);
-                // setCookie('email', data.data.email);
-                // setCookie('password', data.data.password);
-                // setCookie('name', data.data.name);
-                //await storeSession(data);
+                setCookie('email', data.data.email);
+                setCookie('password', data.data.password);
+                setCookie('name', data.data.name);
                 router.push('/');
             }
         } catch (error) {
