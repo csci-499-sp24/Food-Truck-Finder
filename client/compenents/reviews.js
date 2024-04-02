@@ -1,7 +1,9 @@
-import { Card, Typography } from "@mui/material";
+import { Card, Typography, Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Reviews(props) {
     const foodTruck = props.foodTruck;
+    const foodTruckId = foodTruck.foodTruck.id;
 
     const reviews = foodTruck.reviews && foodTruck.reviews.length > 0 ? (
         foodTruck.reviews.map((review, index) => (
@@ -11,7 +13,16 @@ export default function Reviews(props) {
             </div>
         ))
     ) : (
-        <p>No reviews available</p>
+        <div>
+            <p style = {{ textAlign: "center" }}>No reviews available</p>
+            <div style = {{ textAlign: "center" }}>
+                <Link legacyBehavior href={`/foodtruck/${foodTruckId}/addReview`}>
+                    <Button variant="outlined">
+                        ADD REVIEW 
+                    </Button>
+                </Link>
+            </div>
+        </div>
     );
 
     return (
