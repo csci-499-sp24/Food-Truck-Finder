@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -32,7 +33,7 @@ export default function Signup() {
               password: values.password,
               name: values.name
             }
-            const response = await fetch(`/api/auth/signup`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/signup`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',

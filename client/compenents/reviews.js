@@ -1,3 +1,4 @@
+"use client";
 import { Card, Typography } from "@mui/material";
 
 export default function Reviews(props) {

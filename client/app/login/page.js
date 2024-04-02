@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ export default function Login() {
             password : values.password
         }
         try {
-            const response = await fetch('/api/auth/login',{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`,{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

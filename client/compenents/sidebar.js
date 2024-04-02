@@ -1,8 +1,9 @@
+"use client";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import Link from "next/link";
 import { getCookie, hasCookie, deleteCookie } from 'cookies-next';
-import {useRouter} from "next/router";
+import {useRouter} from "next/navigation";
 import { Button } from "@mui/material";
 import { logout } from "./lib";
 
@@ -31,7 +32,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }){
     }, [debounceSearch]);
     const signout = async () => {
       await logout();
-      router.reload();
+      router.refresh();
     }
 
     const handleTruckHover = (truck) => {

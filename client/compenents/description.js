@@ -9,11 +9,10 @@ export default function Description(props) {
 
     return (
         <>
-            <Card sx={{ backgroundColor: "#105372", padding: 2, height: "333px", overflowY: "auto" }}>
+            <Card sx={{ backgroundColor: "#105372", padding: 2, height: "80px", overflowY: "auto" }}>
                 <Typography color="white">
-                Description: {foodTruck.foodTruck.description}
+                    Address: {foodTruck.foodTruck.address}
                 </Typography>
-                <h6>No Description</h6>
             </Card>
         </>
     )
