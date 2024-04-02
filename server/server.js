@@ -134,6 +134,7 @@ app.post('/api/login', urlencodedParser , async(req, res) => {
 
 app.post('/api/signup', urlencodedParser, async(req, res) => {
     const result = await checkSignup(req.body);
+    console.log(result);
     if(result){
         try{
             itemsPool.query(
@@ -144,7 +145,6 @@ app.post('/api/signup', urlencodedParser, async(req, res) => {
             console.log(error);
         }
     }
-    console.log(result)
     res.send(result);
 })
 
