@@ -8,7 +8,7 @@ import {
 import Reviews from "../../../compenents/reviews";
 import FTMap from "../../../compenents/ftMap";
 import Menu from "../../../compenents/Menu";
-import Description from "../../../compenents/description";
+import Address from "../../../compenents/address";
 import FTTitle from '../../../compenents/Title';
 import DropDown from "../../../compenents/dropDown";
 require("dotenv").config();
@@ -78,7 +78,7 @@ export default function Index() {
         {/* left side */}
         <Stack direction="column" flexGrow={1} gap={4} padding={4}>
             <FTTitle foodTruck={foodTruck}></FTTitle>
-            <Description foodTruck ={foodTruck}></Description>
+            <Address foodTruck ={foodTruck}></Address>
             <Menu foodTruck ={foodTruck}></Menu>
             <Button variant="outlined" onClick={navigateToHome}>
               Back to Home
