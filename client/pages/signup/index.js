@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Validation from '../../compenents/SignupValidation';
+import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
+import { storeSession } from '@/compenents/lib';
 
 export default function Signup() {
-    // const router = useRouter();
+    const router = useRouter();
     const [values, setValues] = useState({
         name: '',
         email: '',
@@ -30,7 +32,7 @@ export default function Signup() {
               password: values.password,
               name: values.name
             }
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/signup`, {
+            const response = await fetch(`/api/auth/signup`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -38,15 +40,12 @@ export default function Signup() {
               body: JSON.stringify(info)
               });
               const data = await response.json();
-              console.log(data);
-              if(!data.status)
-                  setErrors({email: "Email already Used"});
-              else{
-                  setCookie('email', data.data.email);
-                  setCookie('password', data.data.password);
-                  setCookie('name', data.data.name);
-                  router.push('/');
-              }
+            if(!data)
+                setErrors({email: "Email already Used"});
+            else{
+                storeSession(info);
+                router.push('/');
+            }
           }catch(error){
             console.log(error);
           }
