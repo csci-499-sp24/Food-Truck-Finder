@@ -2,10 +2,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "../truck.module.css";
 import {
-    Stack, Button, Typography
+    Stack, Button, Typography, Card, TextField, Rating
 } from "@mui/material";
-
-import FTTitle from '../../../compenents/Title';
 
 export default function AddReview() {
     const router = useRouter();
@@ -61,38 +59,55 @@ export default function AddReview() {
 
     return (
         <section className={styles.container}>
-            <Stack direction={"row"}>
-                <Stack direction="column" flexGrow={1} gap={4} padding={4}>
-                    <Typography
-                        color={"white"}
-                        textAlign={"center"}
-                        fontWeight={"bold"}
-                        fontSize={50}
-                        >
-                        Add Food Truck Review
-                    </Typography>
+            <Stack direction="column" gap={4} padding={2}>
+                <Typography
+                    color={"white"}
+                    textAlign={"center"}
+                    fontWeight={"bold"}
+                    fontSize={50}
+                    >
+                    Add a Review
+                </Typography>
+            </Stack>
 
+            <Stack direction="column" justifyContent="center" alignItems="center" paddingTop={4} paddingBottom={14} gap={8}>
+                <Card sx={{ backgroundColor: "#105372", padding: 2, width: "50%", overflowY: "auto" }}>
                     <Typography
                         color={"white"}
                         textAlign={"center"}
                         fontWeight={"bold"}
                         fontSize={35}
+                        sx={{ paddingBottom: "10px" }}
                     >
                         {foodTruck.foodTruck.name}
                     </Typography>
 
-                    <Typography
-                        color={"white"}
-                        textAlign={"center"}
-                        fontWeight={"bold"}
-                        fontSize={20}
-                    >
-                         Rating: {foodTruck.foodTruck.rating} /5
-                    </Typography>
+                    <form style = {{ margin: "auto", marginBottom: "20px", textAlign: "center" }}>
+                        <div style = {{ padding: "10px 0" }}>
+                            <Typography color="white" variant="h6" align="center">
+                                Overall Rating
+                            </Typography>
+                            <Rating
+                                name="rating"
+                            />
+                        </div>
 
-                </Stack>
+                        <TextField
+                            sx={{ width: "80%", background: "white", borderRadius: "5px"}}
+                            id="outlined-multiline-static"
+                            placeholder="Write your review here"
+                            multiline
+                            rows={7}
+                            variant="outlined"
+                        >
+                        </TextField>
+                    </form>
+                </Card>
+
+                <Button variant="outlined">
+                    Submit
+                </Button>
             </Stack>
-            Add Review
         </section>
     );
 }
