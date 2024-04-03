@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { jwtVerify } from "jose";
+import { decrypt } from './encryption.js';
 
 import pkg from 'pg';
 const { Pool } = pkg;
@@ -22,20 +23,6 @@ const itemsPool = new Pool({
     }
 });
 
-const secretKey = "secret"; 
-const key = new TextEncoder().encode(secretKey);
-
-export async function decrypt(input) {
-    try {
-        const { payload } = await jwtVerify(input, key, {
-            algorithms: ["HS256"],
-        });
-        return payload;
-    } catch (error) {
-        console.error("Error decrypting:", error);
-        throw new Error("Decryption failed");
-    }
-}
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -168,10 +155,17 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
 
     try {
         const decryptedSession = await decrypt(Session);
-
         if (!decryptedSession) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
+
+        const LoginCheck = await checkLogin({email: decryptedSession.user.email, password: decryptedSession.user.password});
+        if(!LoginCheck) return res.status(401).json({ error: 'Unauthorized' });
+
+        const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+
+        const userid = loginInfo.user_id;
+        const name = loginInfo.name;
         const foodTruckQuery = await itemsPool.query(
             'SELECT * FROM public."FoodTruck" WHERE id = $1',
             [id]
@@ -179,9 +173,10 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
         if (foodTruckQuery.rows.length === 0) {
             return res.status(404).json({ error: 'Food truck not found' });
         }
+
         await itemsPool.query(
-            'INSERT INTO public."Reviews" (FoodTruckID, Rating, Review) VALUES ($1, $2, $3);',
-            [id, Rating, Review]
+            'INSERT INTO public."Reviews" (FoodTruckID, Rating, Review, UserId, Name) VALUES ($1, $2, $3, $4, $5);',
+            [id, Rating, Review, userid, name]
         );
 
         res.json({ success: true });
