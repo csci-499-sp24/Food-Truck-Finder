@@ -87,6 +87,10 @@ export default function AddReview() {
         }
     }
 
+    const navigateToTruck = () => {
+        router.back();
+    };
+
     return (
         <section className={styles.container} style={{ height: "100vh" }}>
             <Stack direction="column" gap={4} padding={2}>
@@ -100,7 +104,7 @@ export default function AddReview() {
                 </Typography>
             </Stack>
 
-            <Stack direction="column" justifyContent="center" alignItems="center" paddingTop={4} gap={8}>
+            <Stack direction="column" justifyContent="center" alignItems="center" paddingTop={4} gap={6}>
                 <Card sx={{ backgroundColor: "#105372", padding: 2, width: "50%", overflowY: "auto" }}>
                     <Typography
                         color={"white"}
@@ -134,6 +138,7 @@ export default function AddReview() {
                             rows={7}
                             variant="outlined"
                             value={review}
+                            required
                             onChange={(e) => setReview(e.target.value)}
                         >
                         </TextField>
@@ -145,6 +150,10 @@ export default function AddReview() {
                         </div>
                     </form>
                 </Card>
+                
+                <Button variant="outlined" type="submit" style={{ width: "50%" }} onClick={navigateToTruck}>
+                    Back
+                </Button>
             </Stack>
         </section>
     );
