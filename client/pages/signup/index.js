@@ -44,7 +44,7 @@ export default function Signup() {
                 setErrors({email: "Email already Used"});
             else{
                 storeSession(info);
-                router.push('/');
+                router.back();
             }
           }catch(error){
             console.log(error);
@@ -109,7 +109,7 @@ export default function Signup() {
                     </div>
                     <button type='submit' className='btn btn-success w-100 rounded-0'><strong>Sign Up</strong></button>
                     <p></p>
-                    <Link legacyBehavior href='/login'>
+                    <Link legacyBehavior href='/login' replace={true}>
                         <a className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Already have an account? Login</a>
                     </Link>
                 </form>

@@ -5,6 +5,7 @@ import {
     Stack, Button, Typography, Card, TextField, Rating
 } from "@mui/material";
 import { getSession } from '@/compenents/lib';
+import { getCookie } from "cookies-next";
 
 export default function AddReview() {
     const router = useRouter();
@@ -41,6 +42,13 @@ export default function AddReview() {
           fetchData();
         }
       }, [id]);
+
+      useEffect(() => {
+        const session = getCookie("session");
+        if(!session){
+            router.push('/login');
+        }
+      }, []);
     
     if (loading) {
         return <div>Loading...</div>;

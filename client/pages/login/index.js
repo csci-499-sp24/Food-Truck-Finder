@@ -38,13 +38,12 @@ export default function Login() {
             if(!data.status)
                 setErrors({email: "Email/Password Incorrect"});
             else{
-                console.log(data.data);
                 storeSession(data.data);
                 // setCookie('email', data.data.email);
                 // setCookie('password', data.data.password);
                 // setCookie('name', data.data.name);
                 //await storeSession(data);
-                router.push('/');
+                router.back();
             }
         } catch (error) {
             console.error(error);
@@ -82,7 +81,7 @@ export default function Login() {
                     </div>
                     <button type='submit' className='btn btn-success w-100'><strong>Login</strong></button>
                     <p className='mt-3'>
-                        <Link legacyBehavior href='/signup'><a className='btn btn-linknpm'>{`Don't have an account? Signup`}</a></Link>
+                        <Link legacyBehavior href='/signup' replace={true}><a className='btn btn-linknpm'>{`Don't have an account? Signup`}</a></Link>
                     </p>
                 </form>
             </div>
