@@ -14,6 +14,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [isVeganChecked, setIsVeganChecked] = useState(false);
   const [isHalalChecked, setIsHalalChecked] = useState(false);
+  const [isMexicanChecked, setIsMexicanChecked] = useState(false);
 
   const languages = ["English", "Spanish"]; // List of languages
 
@@ -32,11 +33,12 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         const data = await response.json();
         let filteredTrucks = data.FoodTrucks;
 
-        if (isVeganChecked || isHalalChecked) {
+        if (isVeganChecked || isHalalChecked || isMexicanChecked) {
           filteredTrucks = filteredTrucks.filter((truck) => {
             return (
               (!isVeganChecked || truck.vegan) &&
-              (!isHalalChecked || truck.halal)
+              (!isHalalChecked || truck.halal) &&
+              (!isMexicanChecked || truck.mexican)
             );
           });
         }
@@ -47,7 +49,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
       }
     };
     fetchData();
-  }, [debounceSearch, isVeganChecked, isHalalChecked]);
+  }, [debounceSearch, isVeganChecked, isHalalChecked, isMexicanChecked]);
 
   const signout = async () => {
     await logout();
@@ -104,7 +106,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         Food Truck Finder
       </h1>
       <div
-        style={{ textAlign: "left", marginBottom: "20px", paddingLeft: "20px" }}
+        style={{ textAlign: "left", marginBottom: "20px"}}
       >
         <input
           type="text"
@@ -118,29 +120,12 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
             fontSize: "1em",
           }}
         />
-        <div>
-          <input
-            type="checkbox"
-            id="vegan"
-            checked={isVeganChecked}
-            onChange={() => setIsVeganChecked(!isVeganChecked)}
-          />
-          <label style={{ color: "white" }} htmlFor="vegan">
-            Vegan
-          </label>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            id="halal"
-            checked={isHalalChecked}
-            onChange={() => setIsHalalChecked(!isHalalChecked)}
-          />
-          <label style={{ color: "white" }} htmlFor="halal">
-            Halal
-          </label>
-        </div>
-        <ul style={{ color: "white" }}>
+
+        <button className={`highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
+        <button className={`highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
+        <button className={`highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
+
+        <ul style={{ color: "white", paddingTop: "20px"}}>
           {searchFoodTrucks.map((foodTruck) => {
             {
             }
@@ -177,7 +162,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
 
       {/* Trucks near you */}
       <div
-        style={{ textAlign: "left", marginBottom: "20px", paddingLeft: "20px" }}
+        style={{ textAlign: "left", marginBottom: "20px"}}
       >
         <h2
           style={{

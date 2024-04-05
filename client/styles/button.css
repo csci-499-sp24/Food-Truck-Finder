@@ -1,0 +1,25 @@
+.highlight-button {
+    padding: 7px 15px;
+    margin-left: 10px;
+    font-size: small;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+}
+
+.halal-highlighted {
+    background-color: #FBBC04;
+}
+
+.vegan-highlighted {
+    background-color:#008000;
+}
+
+.mexican-highlighted {
+    background-color: #f15d0d;;
+}
+
