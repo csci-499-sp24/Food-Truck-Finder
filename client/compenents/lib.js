@@ -45,10 +45,8 @@ export async function logout() {
 export async function getSession() {
   const session = getCookie("session");
   console.log(session);
-  // const name = getCookie("name");
-  // console.log(session);
   if (!session) return null;
-  return await decrypt(session);
+  return session;
 }
 
 // export async function updateSession(request) {
