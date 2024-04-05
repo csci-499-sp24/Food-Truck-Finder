@@ -2,7 +2,7 @@ import React from "react";
 import { AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 
 const CustomMarker = ({ foodTruck, onClick }) => {
-  const { vegan, halal, lat, lng } = foodTruck;
+  const { vegan, halal, mexican, lat, lng } = foodTruck;
   let pinColor = {
     background: "#FF0000", // Default color
     glyphColor: "#000",
@@ -17,10 +17,16 @@ const CustomMarker = ({ foodTruck, onClick }) => {
     };
   } else if (halal) {
     pinColor = {
-      background: "#FBBC04", // Red for halal
+      background: "#FBBC04", // Orange for halal
       glyphColor: "#000",
       borderColor: "#000",
     };
+  } else if(mexican) {
+    pinColor = {
+      background: "#F15D0D", // Red for Mexican
+      glyphColor: "#000",
+      borderColor: "#000",
+    }
   }
 
   return (

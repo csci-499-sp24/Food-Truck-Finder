@@ -9,7 +9,7 @@ function Index() {
   const updateVisibleMarkers = (markers) => {
     setVisibleMarkers(markers);
   };
-  const [center, setCenter] = useState({ lat: 40.76785, lng: -73.96455 });
+  const [center, setCenter] = useState({ lat: 40.7661914, lng: -73.958878 });
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <Sidebar selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck} visibleMarkers={visibleMarkers} setCenter={setCenter}/>
