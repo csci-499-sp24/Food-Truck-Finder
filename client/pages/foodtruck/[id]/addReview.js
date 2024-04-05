@@ -5,6 +5,7 @@ import {
     Stack, Button, Typography, Card, TextField, Rating
 } from "@mui/material";
 import { getSession } from '@/compenents/lib';
+import Image from "next/image";
 import { getCookie } from "cookies-next";
 
 export default function AddReview() {
