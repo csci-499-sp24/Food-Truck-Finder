@@ -7,7 +7,9 @@ import {
  InfoWindow,
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
+import CustomMarker from "./CustomMarker";
 require('dotenv').config();
+
 
 function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
@@ -87,9 +89,9 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
             mapId={process.env.NEXT_PUBLIC_MAP_ID}
             >
               {foodTrucks.map((foodTruck) => (
-                <AdvancedMarker 
-                key={foodTruck.id} 
-                position={{ lat: parseFloat(foodTruck.lat), lng: parseFloat(foodTruck.lng)}}
+                <CustomMarker
+                key={foodTruck.id}
+                foodTruck={foodTruck}
                 onClick={() => handleMarkerClick(foodTruck)}
                 />
                 ))}
