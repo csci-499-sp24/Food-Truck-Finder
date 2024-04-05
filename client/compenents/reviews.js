@@ -12,17 +12,8 @@ export default function Reviews(props) {
                 <p>Rating: {review.rating}</p>
             </div>
         ))
-    ) : (
-        <div>
-            <p style = {{ textAlign: "center" }}>No reviews available</p>
-            <div style = {{ textAlign: "center" }}>
-                <Link legacyBehavior href={`/foodtruck/${foodTruckId}/addReview`}>
-                    <Button variant="outlined">
-                        ADD REVIEW 
-                    </Button>
-                </Link>
-            </div>
-        </div>
+    ) : ( 
+    <p style = {{ textAlign: "center" }}>No reviews available</p>
     );
 
     return (
@@ -30,6 +21,15 @@ export default function Reviews(props) {
             <Card sx={{ backgroundColor: "#105372", padding: 2, height: "500px", overflowY: "auto" }}>
                 <h5 style = {{color: "white", textAlign: "center"}}>REVIEWS and RATINGS</h5>
                 {reviews}
+                <div>
+                    <div style = {{ textAlign: "center" }}>
+                        <Link legacyBehavior href={`/foodtruck/${foodTruckId}/addReview`}>
+                            <Button variant="outlined">
+                                ADD REVIEW 
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
             </Card>
         </>
     );
