@@ -24,32 +24,35 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const searchQuery = debounceSearch.trim()
-          ? `search=${debounceSearch.trim()}`
-          : "search=";
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/searchFoodTrucks?${searchQuery}`
-        );
-        const data = await response.json();
-        let filteredTrucks = data.FoodTrucks;
-
-        if (isVeganChecked || isHalalChecked || isMexicanChecked) {
-          filteredTrucks = filteredTrucks.filter((truck) => {
-            return (
-              (!isVeganChecked || truck.vegan) &&
-              (!isHalalChecked || truck.halal) &&
-              (!isMexicanChecked || truck.mexican)
-            );
-          });
+        if (debounceSearch.trim() !== '') {
+          const searchQuery = `search=${debounceSearch.trim()}`;
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/searchFoodTrucks?${searchQuery}`
+          );
+          const data = await response.json();
+          let filteredTrucks = data.FoodTrucks;
+  
+          if (isVeganChecked || isHalalChecked || isMexicanChecked) {
+            filteredTrucks = filteredTrucks.filter((truck) => {
+              return (
+                (!isVeganChecked || truck.vegan) &&
+                (!isHalalChecked || truck.halal) &&
+                (!isMexicanChecked || truck.mexican)
+              );
+            });
+          }
+  
+          setSearchFoodTrucks(filteredTrucks);
+        } else {
+          setSearchFoodTrucks([]); // Reset food trucks when no search term
         }
-
-        setSearchFoodTrucks(filteredTrucks);
       } catch (error) {
         console.error("Error fetching food trucks:", error);
       }
     };
     fetchData();
   }, [debounceSearch, isVeganChecked, isHalalChecked, isMexicanChecked]);
+  
 
   const signout = async () => {
     await logout();
@@ -125,40 +128,38 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         <button className={`highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
         <button className={`highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
 
+        
+      {searchTerm.trim() !== '' && (
         <ul style={{ color: "white", paddingTop: "20px"}}>
-          {searchFoodTrucks.map((foodTruck) => {
-            {
-            }
-
-            return (
-              <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
-                <span onMouseEnter={() => handleTruckHover(foodTruck)}>
-                  <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
-                    <a
-                      style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        transition: "text-decoration 0.3s",
-                      }}
+          {searchFoodTrucks.map((foodTruck) => (
+            <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
+              <span onMouseEnter={() => handleTruckHover(foodTruck)}>
+                <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
+                  <a
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                      transition: "text-decoration 0.3s",
+                    }}
+                  >
+                    <span
+                      onMouseEnter={(e) =>
+                        (e.target.style.textDecoration = "underline")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.textDecoration = "none")
+                      }
                     >
-                      <span
-                        onMouseEnter={(e) =>
-                          (e.target.style.textDecoration = "underline")
-                        }
-                        onMouseLeave={(e) =>
-                          (e.target.style.textDecoration = "none")
-                        }
-                      >
-                        {foodTruck.name}
-                      </span>
-                    </a>
-                  </Link>
-                </span>
-              </li>
-            );
-          })}
+                      {foodTruck.name}
+                    </span>
+                  </a>
+                </Link>
+              </span>
+            </li>
+          ))}
         </ul>
-      </div>
+      )}
+    </div>
 
       {/* Trucks near you */}
       <div
