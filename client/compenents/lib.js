@@ -42,7 +42,7 @@ export async function logout() {
   setCookie("name", "", { expires: new Date(0) });
 }
 
-export async function getSession() {
+export function getSession() {
   const session = getCookie("session");
   console.log(session);
   if (!session) return null;

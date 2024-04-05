@@ -145,7 +145,6 @@ app.post('/api/signup', urlencodedParser, async(req, res) => {
             console.log(error);
         }
     }
-    console.log(result)
     res.send(result);
 })
 

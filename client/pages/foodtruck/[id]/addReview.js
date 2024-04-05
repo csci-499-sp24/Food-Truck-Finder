@@ -5,6 +5,7 @@ import {
     Stack, Button, Typography, Card, TextField, Rating
 } from "@mui/material";
 import { getSession } from '@/compenents/lib';
+import Image from 'next/image';
 
 export default function AddReview() {
     const router = useRouter();
@@ -60,6 +61,7 @@ export default function AddReview() {
         );
     }
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -70,7 +72,7 @@ export default function AddReview() {
                 Session: getSession()
             }
 
-            const response = await fetch(`/api/foodtrucks/${id}/addReview`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/addReview`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
