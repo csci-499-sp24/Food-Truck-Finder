@@ -1,6 +1,7 @@
-import { useRouter } from "next/router";
+"use client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import styles from "../truck.module.css";
+import styles from "../../truck.module.css";
 import {
     Stack, Button, Typography, Card, TextField, Rating
 } from "@mui/material";
@@ -8,9 +9,10 @@ import { getSession } from '@/compenents/lib';
 import Image from "next/image";
 import { getCookie } from "cookies-next";
 
-export default function AddReview() {
+
+export default function Page(slug) {
     const router = useRouter();
-    const { id } = router.query;
+    const id = slug.params.id;
     const [foodTruck, setFoodTruck] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

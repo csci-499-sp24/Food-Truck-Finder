@@ -1,4 +1,5 @@
-import { useRouter } from "next/router";
+"use client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "../truck.module.css";
@@ -13,9 +14,12 @@ import FTTitle from '../../../compenents/Title';
 import DropDown from "../../../compenents/dropDown";
 require("dotenv").config();
 
-export default function Index() {
+
+
+export default function Page(slug) {
   const router = useRouter();
-  const { id } = router.query;
+  const id = slug.params.id;
+
   const [foodTruck, setFoodTruck] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,7 +34,6 @@ export default function Index() {
           throw new Error("Failed to fetch food truck");
         }
         const data = await response.json();
-        console.log("Fetched data:", data);
         setFoodTruck(data);
         setLoading(false);
         if(foodTruck)
