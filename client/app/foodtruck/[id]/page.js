@@ -17,7 +17,10 @@ require("dotenv").config();
 const fetchData = async (id) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/info`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/info`,
+      {
+        next: { revalidate: 10 }
+      }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch food truck");

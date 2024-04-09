@@ -177,6 +177,10 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
             'INSERT INTO public."Reviews" (FoodTruckID, Rating, Review, UserId, Name) VALUES ($1, $2, $3, $4, $5);',
             [id, Rating, Review, userid, name]
         );
+        await itemsPool.query(
+            'update public."FoodTruck" set ratings = ratings + $1, review_count = review_count + 1 where id = $2;',
+            [Rating, id]
+        )
 
         res.json({ success: true });
     } catch (error) {
