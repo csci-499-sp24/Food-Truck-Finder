@@ -8,6 +8,8 @@ import {
 import { getSession } from '@/compenents/lib';
 import Image from "next/image";
 import { getCookie } from "cookies-next";
+import { revalidatePath } from "next/cache";
+
 
 
 export default function Page(slug) {
