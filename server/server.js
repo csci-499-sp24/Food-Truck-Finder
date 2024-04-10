@@ -12,7 +12,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 const bucket_name = process.env.bucket_name;
 const bucketregion = process.env.bucket_region;
 const accesskey = process.env.aws_Access_key;
-const awsSecret = process.env.aws_Secret;
+const awsSecret = process.env.aws_sec_key;
 
 const s3 = new S3Client({
     credentials: {
