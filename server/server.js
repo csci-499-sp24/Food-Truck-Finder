@@ -6,6 +6,24 @@ import bodyParser from 'body-parser';
 import { jwtVerify } from "jose";
 import { decrypt } from './encryption.js';
 
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+
+const bucket_name = process.env.bucket_name;
+const bucketregion = process.env.bucket_region;
+const accesskey = process.env.aws_Access_key;
+const awsSecret = process.env.aws_Secret;
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accesskey,
+        secretAccessKey: awsSecret
+    },
+    region: bucketregion
+});
+
+
+
 import pkg from 'pg';
 const { Pool } = pkg;
 
@@ -51,12 +69,6 @@ app.get('/api/getFoodTrucks', async(req, res) => {
         east: x - 0.006,
         west: x + 0.006
     }
-    
-    // console.log('SELECT * FROM public."FoodTruck" where' +
-    // '( lat < ' + bounds.north + 
-    // ' and lat > ' + bounds.south  + 
-    // ' and lng > ' + bounds.east +
-    // ' and lng < ' + bounds.west + ')');
     try {
         const allItems = await itemsPool.query(
             'SELECT * FROM public."FoodTruck" where' +
@@ -188,6 +200,30 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+
+//Images
+app.post('/api/foodtrucks/:id/images', async(req, res) => {
+    const id = req.params.id;
+    
+    const data = await itemsPool.query(
+        'SELECT imagename FROM public."FoodTruckImages" where foodtruckid = $1;',
+        [id]
+    );
+    const rows = data.rows;
+    for(const row of rows){
+        const getObjectParams = {
+            Bucket: bucket_name,
+            Key: row.imagename,
+        }
+
+        const command = new GetObjectCommand(getObjectParams);
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        row.imageUrl = url;
+    }
+    res.send(data.rows);
+})
 
 
 const port = process.env.PORT || 8080;
