@@ -29,6 +29,42 @@ const fetchData = async (id) => {
   }
 };
 
+const fetchImage = async (id) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/image`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch food truck image");
+    }
+    const images = await response.json();
+
+    return images.length > 0 ? images[0].imageUrl : "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+    } catch (error) {
+      console.error("Error fetching food truck image:", error);
+    return null;
+  }
+};
+
+export async function generateMetadata({ params }) {
+  const id = params.id;
+  
+  const foodTruck = await fetchData(id);  
+  const imageUrl = await fetchImage(id);
+  
+  return {
+    title: `${foodTruck.foodTruck.name}`,
+    description: `Discover delicious food at ${foodTruck.foodTruck.name}. Located at ${foodTruck.foodTruck.address}.`,
+    openGraph: {
+      images: [imageUrl],
+      type: 'website',
+      url: `foodtruck/${id}`,
+      title: `${foodTruck.foodTruck.name}`,
+      description: `Discover delicious food at ${foodTruck.foodTruck.name}. Located at ${foodTruck.foodTruck.address}.`,
+    },
+  };
+}
+
 export default async function Page(slug) {
   const id = slug.params.id;
 
