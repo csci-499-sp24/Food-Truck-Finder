@@ -5,6 +5,7 @@ import { getCookie, hasCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import { logout } from "./lib";
+import "@/styles/sidebar.css";
 
 require("dotenv").config();
 
@@ -65,14 +66,11 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
     setCenter(cords);
   };
   return (
-    <div
-      className="sidebar"
-      style={{ width: "20%", backgroundColor: "black", padding: "20px" }}
-    >
+    <div className="sidebar">
       {/* If logged in */}
       {hasCookie("name") && (
         <>
-          <a style={{ marginRight: "10px", color: "white" }}>
+          <a className="sign-out">
             {"Hello, " + getCookie("name")}
           </a>
           <Button onClick={signout}>Sign-out</Button>
@@ -80,54 +78,37 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
       )}
       {/* Sign-in and sign-up buttons */}
       {!hasCookie("name") && (
-        <div style={{ marginBottom: "20px" }}>
+        <div>
           <Link legacyBehavior href="/login">
             <a
-              className="btn btn-primary"
-              style={{ cursor: "pointer", marginRight: "10px" }}
+              className="sign-in btn btn-primary"
             >
               Sign In
             </a>
           </Link>
           <Link legacyBehavior href="/signup">
-            <a className="btn btn-secondary" style={{ cursor: "pointer" }}>
+            <a className="sign-up btn btn-secondary">
               Sign Up
             </a>
           </Link>
         </div>
       )}
       {/* Sidebar content goes here */}
-      <h1
-        style={{
-          padding: "10px 20px",
-          textAlign: "center",
-          fontWeight: "bold",
-          color: "white",
-          fontSize: "1.5em",
-        }}
-      >
+      <h1 className="sidebar-header">
         Food Truck Finder
       </h1>
-      <div
-        style={{ textAlign: "left", marginBottom: "20px"}}
-      >
-        <input
+      <div className="search-container">
+        <input className="search-bar"
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search Food Trucks"
-          style={{
-            width: "100%",
-            marginBottom: "10px",
-            padding: "10px",
-            fontSize: "1em",
-          }}
         />
-
-        <button className={`highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
-        <button className={`highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
-        <button className={`highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
-
+        <div className="filter-button-container">
+          <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
+          <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
+          <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
+        </div>
         
       {searchTerm.trim() !== '' && (
         <ul style={{ color: "white", paddingTop: "20px"}}>
@@ -162,18 +143,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
     </div>
 
       {/* Trucks near you */}
-      <div
-        style={{ textAlign: "left", marginBottom: "20px"}}
-      >
-        <h2
-          style={{
-            padding: "10px 20px",
-            textAlign: "center",
-            fontWeight: "bold",
-            color: "white",
-            fontSize: "1.5em",
-          }}
-        >
+      <div className="trucks-nearby-container">
+        <h2 className="trucks-nearby">
           Trucks near you
         </h2>
         <ul style={{ color: "white" }}>
@@ -181,21 +152,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
             <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
               <span onMouseEnter={() => handleTruckHover(foodTruck)}>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
-                  <a
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      transition: "text-decoration 0.3s",
-                    }}
-                  >
-                    <span
-                      onMouseEnter={(e) =>
-                        (e.target.style.textDecoration = "underline")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.textDecoration = "none")
-                      }
-                    >
+                  <a className="truck-link">
+                    <span>
                       {foodTruck.name}
                     </span>
                   </a>
@@ -207,17 +165,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
       </div>
 
       {/* Language dropdown */}
-      <select
-        style={{
-          position: "absolute",
-          bottom: "10px",
-          left: "10px",
-          backgroundColor: "black",
-          color: "white",
-          padding: "5px",
-          border: "none",
-        }}
-      >
+      <select className="language-dropdown">
         {languages.map((language, index) => (
           <option key={index}>{language}</option>
         ))}

@@ -107,6 +107,8 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
             foodTruck,
             reviews,
             menu,
+            address,
+            ratings
         };
 
         res.json(result);

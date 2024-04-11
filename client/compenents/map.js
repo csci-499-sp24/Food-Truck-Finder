@@ -102,6 +102,8 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  >
                     <div>
                       <h5>{selectedTruck.name}</h5>
+                      <h6>{selectedTruck.address}</h6>
+                      <h6>Number of Ratings: {selectedTruck.ratings}</h6>
                       <br />
                       <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
                         <a style={{ textDecoration: 'underline' }}>Go to Food Truck Page</a>
