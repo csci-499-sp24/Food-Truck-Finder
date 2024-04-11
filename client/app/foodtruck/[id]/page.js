@@ -9,6 +9,7 @@ import Address from "../../../compenents/address";
 import FTTitle from '../../../compenents/Title';
 import DropDown from "../../../compenents/dropDown";
 import Link from "next/link";
+import { headers } from "next/headers";
 require("dotenv").config();
 
 
@@ -34,8 +35,10 @@ const fetchData = async (id) => {
 
 export default async function Page(slug) {
   const id = slug.params.id;
-
   const data = await fetchData(id);
+
+  const headersList = headers();
+  const URL = headersList.get('referer');
 
   const foodTruck = data;
 
@@ -66,6 +69,6 @@ export default async function Page(slug) {
         </Stack>
       </Stack>
 
-        <DropDown></DropDown>
+        <DropDown URL ={URL} ></DropDown>
     </section>
   )}
