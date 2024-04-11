@@ -8,4 +8,5 @@ server/node_modules/
 server/.next/
 server/.swc/
 server/.*.env
-
+server/.env
+server/.env.local
