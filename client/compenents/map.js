@@ -8,6 +8,8 @@ import {
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 import CustomMarker from "./CustomMarker";
+import Rating from 'react-rating-stars-component';
+import "@/styles/map.css"
 require('dotenv').config();
 
 
@@ -74,9 +76,9 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
     }, []);
 
     return (
-        <div style={{ width: "80%", position: "relative" }}>
+        <div className="api-provider-container">
         <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
-          <div style={{ height: "100%", position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
+          <div className="map-container">
             <Map 
             streetViewControl={false} 
             zoomControl={false} 
@@ -103,10 +105,24 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                     <div>
                       <h5>{selectedTruck.name}</h5>
                       <h6>{selectedTruck.address}</h6>
-                      <h6>Number of Ratings: {selectedTruck.ratings}</h6>
+                      <div className="rating">
+                        <Rating value={selectedTruck.ratings/selectedTruck.review_count}
+                          count={5}
+                          size={24}
+                          activeColor="gold"
+                          inactiveColor="#FFF"
+                          edit={false}>
+                        </Rating>  
+                        <div className="review-count"> ({selectedTruck.review_count}) </div>
+                        </div>
                       <br />
+                      <div className="cuisines">
+                        <p className={selectedTruck.vegan ? "vegan" : ""}>{selectedTruck.vegan ? "Vegan": null}</p>
+                        <p className={selectedTruck.halal ? "halal" : ""}>{selectedTruck.halal ? "Halal": null}</p>
+                        <p className={selectedTruck.mexican ? "mexican" : ""}>{selectedTruck.mexican ? "Mexican": null}</p>
+                      </div>
                       <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
-                        <a style={{ textDecoration: 'underline' }}>Go to Food Truck Page</a>
+                        <a className="truck-card-link">Go to Food Truck Page</a>
                       </Link>
                     </div>
                  </InfoWindow>
