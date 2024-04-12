@@ -75,8 +75,7 @@ export default async function Page(slug) {
   const data = await fetchData(id);
 
   const headersList = headers();
-  const URL = headersList.get('x-url') || '';
-  console.log(URL);
+  const URL = process.env.NEXT_PUBLIC_SITE_URL+ headersList.get('x-path');
 
   const foodTruck = data;
 
