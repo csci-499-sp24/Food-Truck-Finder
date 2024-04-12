@@ -13,6 +13,5 @@ export default async function handler(req, res) {
     body: JSON.stringify(info)
     });
     const data = await response.json();
-    console.log(data);
     res.send(data);
 }

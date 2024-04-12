@@ -68,8 +68,6 @@ export default function Menu(props) {
     ) : (
       <p>No promotions available</p>
     );
-
-  console.log(foodTruck.events);
   return (
     <>
       <Card

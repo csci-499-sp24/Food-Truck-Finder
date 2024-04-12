@@ -36,8 +36,9 @@ const fetchData = async (id) => {
 const fetchImage = async (id) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/image`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/images`
     );
+
     if (!response.ok) {
       throw new Error("Failed to fetch food truck image");
     }
@@ -74,7 +75,8 @@ export default async function Page(slug) {
   const data = await fetchData(id);
 
   const headersList = headers();
-  const URL = headersList.get('referer');
+  const URL = headersList.get('x-url') || '';
+  console.log(URL);
 
   const foodTruck = data;
 

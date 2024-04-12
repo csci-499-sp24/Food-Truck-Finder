@@ -108,19 +108,10 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
             [id]
         );
         const menu = menuQuery.rows;
-
-        const locationQuery = await itemsPool.query(
-            'SELECT name, lng, lat FROM public."FoodTruck" WHERE id = $1',
-            [id]
-        );
-        const location = locationQuery.rows[0];
-
         const result = {
             foodTruck,
             reviews,
             menu,
-            address,
-            ratings
         };
 
         res.json(result);
@@ -206,7 +197,7 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
 
 
 //Images
-app.post('/api/foodtrucks/:id/images', async(req, res) => {
+app.get('/api/foodtrucks/:id/images', async(req, res) => {
     const id = req.params.id;
     
     const data = await itemsPool.query(
@@ -224,7 +215,7 @@ app.post('/api/foodtrucks/:id/images', async(req, res) => {
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
         row.imageUrl = url;
     }
-    res.send(data.rows);
+    res.json(data.rows);
 })
 
 
