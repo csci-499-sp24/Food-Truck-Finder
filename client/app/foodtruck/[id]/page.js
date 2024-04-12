@@ -69,6 +69,8 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: 'summary_large_image',
+      site: '@foodtruckfinder',
+      creator : '@foodtruckfinder',
       title: `${foodTruck.foodTruck.name}`,
       description: `Discover delicous food at ${foodTruck.foodTruck.address}.`,
       image: imageUrl,
