@@ -59,14 +59,20 @@ export async function generateMetadata({ params }) {
   
   return {
     title: `${foodTruck.foodTruck.name}`,
-    description: `Discover delicious food at ${foodTruck.foodTruck.name}. Located at ${foodTruck.foodTruck.address}.`,
+    description: `Discover delicous food at ${foodTruck.foodTruck.address}.`,
     openGraph: {
       images: [imageUrl],
       type: 'website',
       url: `foodtruck/${id}`,
       title: `${foodTruck.foodTruck.name}`,
-      description: `Discover delicious food at ${foodTruck.foodTruck.name}. Located at ${foodTruck.foodTruck.address}.`,
+      description: `Discover delicous food at ${foodTruck.foodTruck.address}.`,
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${foodTruck.foodTruck.name}`,
+      description: `Discover delicous food at ${foodTruck.foodTruck.address}.`,
+      image: imageUrl,
+    }
   };
 }
 
