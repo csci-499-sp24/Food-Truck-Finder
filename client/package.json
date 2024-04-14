@@ -11,7 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.14",
+    "@mui/material": "^5.15.15",
     "@vis.gl/react-google-maps": "^0.7.1",
     "bcrypt": "^5.1.1",
     "bootstrap": "^4.6.2",
@@ -26,6 +26,7 @@
     "react": "^18",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^18",
+    "react-rating-stars-component": "^2.2.0",
     "swr": "^2.2.5",
     "use-debounce": "^10.0.0"
   },
