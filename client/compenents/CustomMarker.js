@@ -1,5 +1,5 @@
 import React from "react";
-import { AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Marker, Pin } from "@vis.gl/react-google-maps";
 
 const CustomMarker = ({ foodTruck, onClick }) => {
   const { vegan, halal, mexican, lat, lng } = foodTruck;
@@ -29,13 +29,49 @@ const CustomMarker = ({ foodTruck, onClick }) => {
     }
   }
 
+  let pinUrl = "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; // Default pin icon URL
+
+  if (vegan) {
+    pinUrl = "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; // Green pin icon for vegan
+  } else if (halal) {
+    pinUrl = "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"; // Yellow pin icon for halal
+  } else if (mexican) {
+    pinUrl = "http://maps.google.com/mapfiles/ms/micons/orange-dot.png"; // Orange pin icon for Mexican
+  }
+
+  const icon = {
+    url: pinUrl, // Pin icon URL
+    scaledSize: new window.google.maps.Size(40, 40), // Adjust the size of the pin icon
+    labelOrigin: new window.google.maps.Point(40, 50), // Adjust label position
+  };
+
   return (
-    <AdvancedMarker
+    //original marker
+    // <AdvancedMarker
+    //   position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
+    //   onClick={() => onClick(foodTruck)}
+    //   title={foodTruck.name}
+    //   label={foodTruck.name}
+    //   labelAnchor="bottom" 
+    // >
+    //   <Pin {...pinColor} />
+    // </AdvancedMarker>
+    
+    //marker with label
+    <Marker
       position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
       onClick={() => onClick(foodTruck)}
+      title={foodTruck.name}
+      label={{
+        text: foodTruck.name,
+        color: pinColor.background,
+        fontSize: "14px",
+        fontWeight: "bold",
+      }}
+      icon={icon}
     >
-      <Pin {...pinColor} />
-    </AdvancedMarker>
+      
+    </Marker>
   );
 };
 
