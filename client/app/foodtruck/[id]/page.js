@@ -78,7 +78,6 @@ export default async function Page(slug) {
   const URL = process.env.NEXT_PUBLIC_SITE_URL+ headersList.get('x-path');
 
   const foodTruck = data;
-
   if (!foodTruck) {
     return <div>No food truck found.</div>;
   }
