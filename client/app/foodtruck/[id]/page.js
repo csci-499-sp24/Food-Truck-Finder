@@ -122,6 +122,13 @@ export default async function Page(slug) {
             <Button variant="outlined" >
               <Link href={'/'} style={{textDecoration: 'none', color: 'white'}} >Home</Link>
             </Button>
+
+
+            <Button variant="outlined" >
+              <Link href={'/ContactUs'} style={{textDecoration: 'none', color: 'white'}} >Contact US</Link>
+            </Button>
+
+
         </Stack>
 
         {/* Right side stack */}
