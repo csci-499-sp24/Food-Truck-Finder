@@ -110,11 +110,7 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
         const menu = menuQuery.rows;
         const result = {
             foodTruck,
-            review_count,
-            ratings,
-            halal,
-            vegan,
-            mexican,
+            reviews,
             menu,
         };
 

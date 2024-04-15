@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import { logout } from "./lib";
 import "@/styles/sidebar.css";
+import TruckDetail from "./truckDetail"; 
 
 require("dotenv").config();
 
@@ -123,7 +124,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
                       transition: "text-decoration 0.3s",
                     }}
                   >
-                    <span
+                    {/* <span
                       onMouseEnter={(e) =>
                         (e.target.style.textDecoration = "underline")
                       }
@@ -132,7 +133,9 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
                       }
                     >
                       {foodTruck.name}
-                    </span>
+                      
+                    </span> */}
+                    <TruckDetail selectedTruck={foodTruck} />
                   </a>
                 </Link>
               </span>
@@ -153,9 +156,10 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
               <span onMouseEnter={() => handleTruckHover(foodTruck)}>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                   <a className="truck-link">
-                    <span>
+                    {/* <span>
                       {foodTruck.name}
-                    </span>
+                    </span> */}
+                    <TruckDetail selectedTruck={foodTruck} />
                   </a>
                 </Link>
               </span>
