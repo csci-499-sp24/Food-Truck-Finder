@@ -51,6 +51,7 @@
 
 import { Card, Typography, Button, List, ListItem, ListItemText, Divider } from "@mui/material";
 import Link from "next/link";
+import "@/styles/reviews.css"
 
 export default function Reviews(props) {
     const foodTruck = props.foodTruck;

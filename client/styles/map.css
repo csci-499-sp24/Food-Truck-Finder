@@ -1,0 +1,66 @@
+.api-provider-container{
+    width: 80%;
+    position: relative;
+}
+
+.map-container{
+    height: 100%;
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0;
+    bottom: 0;
+}
+
+.rating{
+    display:flex; 
+    align-items: center;
+}
+
+.review-count{
+    margin-top: 1.5%;
+    margin-left: 5px;
+}
+
+.truck-card-link{
+    color: black;
+}
+
+.truck-card-link:hover{
+    color: black;
+    text-decoration: underline;
+}
+
+.cuisines{
+    display: flex;
+}
+
+.halal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #FBBC04;
+    margin-left: 5px;
+}
+
+.vegan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 50px;
+    background-color:#008000;
+    margin-left: 5px;
+}
+
+.mexican{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #f15d0d;
+    margin-left: 5px;
+}

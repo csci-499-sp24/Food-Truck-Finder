@@ -1,0 +1,27 @@
+.reviws{
+    background-color: '#02092c'; 
+    padding: '10px'; 
+    margin: '10px'; 
+    border-radius: '10px'; 
+    color: white;
+}
+
+.review-card{
+    background-color: #105372; 
+    padding: 2; 
+    height: 500px; 
+    overflow-y: auto;
+}
+
+.no-reviews{
+    text-align: center;
+}
+
+.review-header{
+    color: white; 
+    text-align: center;
+}
+
+.add-review{
+    text-align: center;
+}
