@@ -1,137 +1,163 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import {
- APIProvider,
- Map,
- AdvancedMarker,
- InfoWindow,
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 import CustomMarker from "./CustomMarker";
-import Rating from 'react-rating-stars-component';
-import "@/styles/map.css"
-require('dotenv').config();
+import Rating from "react-rating-stars-component";
+import "@/styles/map.css";
+require("dotenv").config();
 
+function FoodTruckMap({
+  selectedTruck,
+  setSelectedTruck,
+  updateVisibleMarkers,
+  center,
+  setCenter,
+}) {
+  const [foodTrucks, setFoodTrucks] = useState([]);
+  var tempCenter = center;
 
-function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
-    const [foodTrucks, setFoodTrucks] = useState([]);
-    var tempCenter = center;
-    
-    const handleCenterChange = (ev) => {
-      tempCenter = ev.detail.center;
-    }
-    const updateCenter = () =>{
-      setCenter(tempCenter);
-    }
-    useEffect(() => {
-      updateVisibleMarkers(foodTrucks);
-    }, [foodTrucks]);
+  const handleCenterChange = (ev) => {
+    tempCenter = ev.detail.center;
+  };
+  const updateCenter = () => {
+    setCenter(tempCenter);
+  };
+  useEffect(() => {
+    updateVisibleMarkers(foodTrucks);
+  }, [foodTrucks]);
 
-    useEffect(() => {
-        var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
+  useEffect(() => {
+    var get = async () =>
+      fetch(
+        process.env.NEXT_PUBLIC_SERVER_URL +
+          "/api/getFoodTrucks?lat=" +
+          center.lat +
+          "&lng=" +
+          center.lng,
+        {}
+      )
         .then((res) => res.json())
         .then((data) => {
-        setFoodTrucks(data.FoodTrucks);
-        }).catch((err) => console.log(err));
-        get();
-    }, [center, selectedTruck]) 
+          setFoodTrucks(data.FoodTrucks);
+        })
+        .catch((err) => console.log(err));
+    get();
+  }, [center, selectedTruck]);
 
-    const handleMarkerClick = (truck) => {
-      if (selectedTruck && selectedTruck.id === truck.id) {
-        setSelectedTruck(null); // Close InfoWindow if clicked again
-      } else {
-        setSelectedTruck(truck);
-      }
-    };
+  const handleMarkerHover = (truck) => {
+    if (!selectedTruck || selectedTruck.id != truck.id) {
+      setSelectedTruck(truck);
+    }
+  };
 
-    const handleMapDrag = () => {
-      if (selectedTruck) {
-        setSelectedTruck(null); // Close InfoWindow when map is dragged
-      }
-    };
-  
-    const handleInfoWindowClose = () => {
-      setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
-    };
+  const handleMapDrag = () => {
+    if (selectedTruck) {
+      setSelectedTruck(null);
+    }
+  };
 
-    useEffect(() => {
-      // Get user's current position
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
+  const handleInfoWindowClose = () => {
+    setSelectedTruck(null);
+  };
+
+  useEffect(() => {
+    // Get user's current position
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
           const { latitude, longitude } = position.coords;
           console.log("User's current position:", { latitude, longitude });
-            setCenter({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            });
-          },
-          (error) => {
-            console.error("Error getting user's location:", error);
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    }, []);
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting user's location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
-    return (
-        <div className="api-provider-container">
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
-          <div className="map-container">
-            <Map 
-            streetViewControl={false} 
-            zoomControl={false} 
-            mapTypeControl={false} 
-            defaultCenter={center} 
-            defaultZoom={17} 
+  return (
+    <div className="api-provider-container">
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
+        <div className="map-container">
+          <Map
+            streetViewControl={false}
+            zoomControl={false}
+            mapTypeControl={false}
+            defaultCenter={center}
+            defaultZoom={17}
             onCenterChanged={handleCenterChange}
             onDrag={handleMapDrag}
             onDragend={updateCenter}
             mapId={process.env.NEXT_PUBLIC_MAP_ID}
-            >
-              {foodTrucks.map((foodTruck) => (
-                <CustomMarker
+          >
+            {foodTrucks.map((foodTruck) => (
+              <CustomMarker
                 key={foodTruck.id}
                 foodTruck={foodTruck}
-                onClick={() => handleMarkerClick(foodTruck)}
-                />
-                ))}
-                {selectedTruck && (
-                 <InfoWindow 
-                 position={{ lat: parseFloat(selectedTruck.lat), lng: parseFloat(selectedTruck.lng)}}
-                 onClose={handleInfoWindowClose}
-                 >
-                    <div>
-                      <h5>{selectedTruck.name}</h5>
-                      <h6>{selectedTruck.address}</h6>
-                      <div className="rating">
-                        <Rating value={selectedTruck.ratings/selectedTruck.review_count}
-                          count={5}
-                          size={24}
-                          activeColor="gold"
-                          inactiveColor="#FFF"
-                          edit={false}>
-                        </Rating>  
-                        <div className="review-count"> ({selectedTruck.review_count}) </div>
-                        </div>
-                      <br />
-                      <div className="cuisines">
-                        <p className={selectedTruck.vegan ? "vegan" : ""}>{selectedTruck.vegan ? "Vegan": null}</p>
-                        <p className={selectedTruck.halal ? "halal" : ""}>{selectedTruck.halal ? "Halal": null}</p>
-                        <p className={selectedTruck.mexican ? "mexican" : ""}>{selectedTruck.mexican ? "Mexican": null}</p>
-                      </div>
-                      <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
-                        <a className="truck-card-link">Go to Food Truck Page</a>
-                      </Link>
+                // onClick={() => handleMarkerClick(foodTruck)}
+                onHover={() => handleMarkerHover(foodTruck)}
+              />
+            ))}
+            {selectedTruck && (
+              <InfoWindow
+                position={{
+                  lat: parseFloat(selectedTruck.lat),
+                  lng: parseFloat(selectedTruck.lng),
+                }}
+                onClose={handleInfoWindowClose}
+              >
+                <div>
+                  <h5>{selectedTruck.name}</h5>
+                  <h6>{selectedTruck.address}</h6>
+                  <div className="rating">
+                    <Rating
+                      value={selectedTruck.ratings / selectedTruck.review_count}
+                      count={5}
+                      size={24}
+                      activeColor="gold"
+                      inactiveColor="#FFF"
+                      edit={false}
+                    ></Rating>
+                    <div className="review-count">
+                      {" "}
+                      ({selectedTruck.review_count}){" "}
                     </div>
-                 </InfoWindow>
-                 )}
-                 </Map>
-              </div>
-          </APIProvider>
-      </div> 
- );
+                  </div>
+                  <br />
+                  <div className="cuisines">
+                    <p className={selectedTruck.vegan ? "vegan" : ""}>
+                      {selectedTruck.vegan ? "Vegan" : null}
+                    </p>
+                    <p className={selectedTruck.halal ? "halal" : ""}>
+                      {selectedTruck.halal ? "Halal" : null}
+                    </p>
+                    <p className={selectedTruck.mexican ? "mexican" : ""}>
+                      {selectedTruck.mexican ? "Mexican" : null}
+                    </p>
+                  </div>
+                  <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
+                    <a className="truck-card-link">Go to Food Truck Page</a>
+                  </Link>
+                </div>
+              </InfoWindow>
+            )}
+          </Map>
+        </div>
+      </APIProvider>
+    </div>
+  );
 }
 
 export default FoodTruckMap;
