@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import pkg from 'pg';
 const { Pool } = pkg;
 
-dotenv.config();
+dotenv.config({ path: './.env.test'});
 
 //Database Connection
 const itemsPool = new Pool({

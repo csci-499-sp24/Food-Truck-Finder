@@ -9,6 +9,14 @@ import { decrypt } from './encryption.js';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
+import pkg from 'pg';
+const { Pool } = pkg;
+
+
+const app = express();
+dotenv.config();
+
+
 const bucket_name = process.env.bucket_name;
 const bucketregion = process.env.bucket_region;
 const accesskey = process.env.aws_Access_key;
@@ -22,14 +30,6 @@ const s3 = new S3Client({
     region: bucketregion
 });
 
-
-
-import pkg from 'pg';
-const { Pool } = pkg;
-
-
-const app = express();
-dotenv.config();
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
