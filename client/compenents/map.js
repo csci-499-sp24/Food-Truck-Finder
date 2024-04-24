@@ -87,6 +87,10 @@ function FoodTruckMap({
     }
   }, []);
 
+  const handleMarkerLeave = () => {
+    setSelectedTruck(null);
+  };
+
   return (
     <div className="api-provider-container">
       <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
@@ -106,8 +110,8 @@ function FoodTruckMap({
               <CustomMarker
                 key={foodTruck.id}
                 foodTruck={foodTruck}
-                // onClick={() => handleMarkerClick(foodTruck)}
                 onHover={() => handleMarkerHover(foodTruck)}
+                onMouseOut={handleMarkerLeave}
               />
             ))}
             {selectedTruck && (
@@ -131,8 +135,7 @@ function FoodTruckMap({
                       edit={false}
                     ></Rating>
                     <div className="review-count">
-                      {" "}
-                      ({selectedTruck.review_count}){" "}
+                      ({selectedTruck.review_count})
                     </div>
                   </div>
                   <br />
