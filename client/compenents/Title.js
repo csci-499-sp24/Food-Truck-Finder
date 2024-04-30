@@ -7,8 +7,10 @@ import {
 import { Favorite, FavoriteBorder, SystemSecurityUpdateGoodOutlined } from '@mui/icons-material';
 import { getCookie, hasCookie } from "cookies-next";
 import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 
 export default function FTTitle(props) {
+    const router = useRouter();
     const [favorited, setIsFavorited] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const foodTruck = props.foodTruck;
@@ -37,18 +39,15 @@ export default function FTTitle(props) {
                     console.log(err);
                 }
             }
-            firstUpdate.current = false;
         };
         isFavorited();
     }, []);
 
     useEffect(() => {
         const change = async () => {
-            console.log(firstUpdate.current)
             if(!firstUpdate.current) {
-                console.log(123)
                 if(!hasCookie("session")) {
-                    router.push('/login');
+                    return;
                 }else {
                     const result = { Session: getCookie("session"), ft_id: id}
                     let response = "";
@@ -81,6 +80,7 @@ export default function FTTitle(props) {
         change();
         
     } ,[favoriteClick]);
+
 
     return (
         <>
