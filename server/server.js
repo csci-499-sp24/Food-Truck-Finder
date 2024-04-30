@@ -250,7 +250,8 @@ app.post('/api/removeFavorite', urlencodedParser, async(req, res) => {
             [userid, ft_id]
         )
         res.json({ success: true });
-    }catch (error) {    
+
+    }catch (error) {
         console.error("Error adding review:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
