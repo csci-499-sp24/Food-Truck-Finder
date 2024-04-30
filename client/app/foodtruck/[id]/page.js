@@ -52,6 +52,7 @@ const fetchImage = async (id) => {
   }
 };
 
+
 const fetchImageList = async (id) => {
   try {
     const response = await fetch(
@@ -114,7 +115,7 @@ export default async function Page(slug) {
       <Stack direction={"row"} gap={4}>
         {/* left side */}
         <Stack direction="column" flexGrow={1} gap={4} padding={4}>
-            <FTTitle foodTruck={foodTruck}></FTTitle>
+            <FTTitle foodTruck={foodTruck} id={id}></FTTitle>
             <Address foodTruck ={foodTruck}></Address>
             <ImageList images={images}></ImageList>
             <Menu foodTruck ={foodTruck}></Menu>

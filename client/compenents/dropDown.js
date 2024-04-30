@@ -11,19 +11,13 @@ export default function DropDown(props) {
   const URL = props.URL;
   return (
       <>
-
-<FormControl>
-      <InputLabel id="demo-simple-select-label">Share Via</InputLabel>
-      <FacebookShareButton
-        url = {URL}
-      >
-        <FacebookIcon size={32} />
+      <FacebookShareButton url = {URL}>
+        <FacebookIcon size={50} />
       </FacebookShareButton>
       <TwitterShareButton url={URL}> 
-        <TwitterIcon size={32} />
+        <TwitterIcon size={50} />
       </TwitterShareButton>
-    </FormControl>
-    <FormControl>
+    {/* <FormControl>
       <InputLabel id="demo-simple-select-label">Language</InputLabel>
       <Select
         color="secondary"
@@ -41,7 +35,7 @@ export default function DropDown(props) {
         <MenuItem value={20}>FRENCH</MenuItem>
         <MenuItem value={30}>SPANISH</MenuItem>
       </Select>
-    </FormControl>
+    </FormControl> */}
       </>
   )
 }
