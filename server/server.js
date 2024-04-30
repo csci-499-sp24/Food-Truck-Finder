@@ -185,6 +185,35 @@ app.post('/api/getfavorites', urlencodedParser, async(req, res) => {
     }
 })
 
+app.post('/api/:id/favorited', urlencodedParser, async(req, res) => {
+    const {Session} = req.body;
+    const ft_id = req.params.id;
+    console.log(Session);
+    console.log(req.body);
+    if(!Session) {
+        res.json({ favorited: false })
+    }else {
+        try{
+            const decryptedSession = await decrypt(Session);
+            if(!decryptedSession){
+                return res.status(401).json({error: 'Unauthorized'});
+            }
+    
+            const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+            const userid = loginInfo.user_id;
+            const result = await itemsPool.query(
+                'Select * from public."Favorites" Where user_id = $1 and ft_id = $2',
+                [userid, ft_id]
+            )
+            res.json({ favorited: result.rows.length > 0 });
+        }catch (error) {
+            console.error("Error adding review:", error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    
+})
+
 app.post('/api/addFavorite', urlencodedParser, async(req, res) => {
     const {Session, ft_id} = req.body;
     try{
@@ -221,6 +250,7 @@ app.post('/api/removeFavorite', urlencodedParser, async(req, res) => {
             [userid, ft_id]
         )
         res.json({ success: true });
+
     }catch (error) {
         console.error("Error adding review:", error);
         res.status(500).json({ error: 'Internal server error' });
@@ -285,7 +315,6 @@ app.get('/api/foodtrucks/:id/images', async(req, res) => {
             Bucket: bucket_name,
             Key: row.imagename,
         }
-
         const command = new GetObjectCommand(getObjectParams);
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
         row.imageUrl = url;
