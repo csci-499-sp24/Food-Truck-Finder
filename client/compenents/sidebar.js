@@ -98,7 +98,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
       <h1 className="sidebar-header">
         Food Truck Finder
       </h1>
-      {/* <div className="search-container">
+      <div className="search-container">
         <input className="search-bar"
           type="text"
           value={searchTerm}
@@ -143,7 +143,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
           ))}
         </ul>
       )}
-    </div> */}
+    </div>
 
       {/* Trucks near you */}
       <div className="trucks-nearby-container">
