@@ -7,11 +7,19 @@ import { jwtVerify } from "jose";
 import { decrypt } from './encryption.js';
 
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import multer from 'multer';
+import crypto from 'crypto';
+
+
+const storage = multer.memoryStorage();
+const upload  = multer({ storage: storage });
+
 
 import pkg from 'pg';
 const { Pool } = pkg;
 
+const randomImageName = (byte = 16) => crypto.randomBytes(byte).toString('hex');
 
 const app = express();
 dotenv.config();
@@ -258,9 +266,14 @@ app.post('/api/removeFavorite', urlencodedParser, async(req, res) => {
 })
 
 //Add Review
-app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => {
+app.post('/api/foodtrucks/:id/addReview', upload.single('image'), async (req, res) => {
+    
+    
+
     const id = req.params.id;
-    const { Rating, Review, Session } = req.body;
+
+    const data = JSON.parse(req.body.jsonData);
+    const { Rating, Review, Session } = data;
 
     try {
         const decryptedSession = await decrypt(Session);
@@ -291,6 +304,25 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
             'update public."FoodTruck" set ratings = ratings + $1, review_count = review_count + 1 where id = $2;',
             [Rating, id]
         )
+
+        if(req.file){
+            const imageUrl = `/upload/${req.file.filename}`;
+            const imgName = randomImageName();
+
+            const params = {
+                Bucket: bucket_name,
+                Key: imgName,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype,
+            }
+            const command = new PutObjectCommand(params);
+            await s3.send(command); 
+
+            await itemsPool.query(
+                'INSERT INTO public."FoodTruckImages"(foodtruckid, userid, imagename) VALUES ($1, $2, $3);',
+                [id, userid, imgName]
+            )
+        }
 
         res.json({ success: true });
     } catch (error) {
