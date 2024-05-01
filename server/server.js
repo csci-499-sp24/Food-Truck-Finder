@@ -9,6 +9,14 @@ import { decrypt } from './encryption.js';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
+import pkg from 'pg';
+const { Pool } = pkg;
+
+
+const app = express();
+dotenv.config();
+
+
 const bucket_name = process.env.bucket_name;
 const bucketregion = process.env.bucket_region;
 const accesskey = process.env.aws_Access_key;
@@ -22,14 +30,6 @@ const s3 = new S3Client({
     region: bucketregion
 });
 
-
-
-import pkg from 'pg';
-const { Pool } = pkg;
-
-
-const app = express();
-dotenv.config();
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -121,6 +121,7 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
     }
 });
 
+
 //Login
 app.post('/api/login', urlencodedParser , async(req, res) => {
     console.log(req.body);
@@ -153,6 +154,110 @@ app.post('/api/signup', urlencodedParser, async(req, res) => {
     res.send(result);
 })
 
+
+//Favorites
+
+app.post('/api/getfavorites', urlencodedParser, async(req, res) => {
+
+    const {Session} = req.body;
+    try{
+        const decryptedSession = await decrypt(Session);
+        if(!decryptedSession){
+            return res.status(401).json({error: 'Unauthorized'});
+        }
+
+        const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+
+        const userid = loginInfo.user_id;
+        const result = await itemsPool.query(
+            'Select ft_id, id from public."Favorites" Where user_id = $1',
+            [userid]
+        )
+        const rows = result.rows;
+        const json_list = {};
+        rows.forEach((row) => {
+            json_list[row.ft_id] = true;
+        })
+        res.json(json_list);
+    }catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
+app.post('/api/:id/favorited', urlencodedParser, async(req, res) => {
+    const {Session} = req.body;
+    const ft_id = req.params.id;
+    console.log(Session);
+    console.log(req.body);
+    if(!Session) {
+        res.json({ favorited: false })
+    }else {
+        try{
+            const decryptedSession = await decrypt(Session);
+            if(!decryptedSession){
+                return res.status(401).json({error: 'Unauthorized'});
+            }
+    
+            const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+            const userid = loginInfo.user_id;
+            const result = await itemsPool.query(
+                'Select * from public."Favorites" Where user_id = $1 and ft_id = $2',
+                [userid, ft_id]
+            )
+            res.json({ favorited: result.rows.length > 0 });
+        }catch (error) {
+            console.error("Error adding review:", error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    
+})
+
+app.post('/api/addFavorite', urlencodedParser, async(req, res) => {
+    const {Session, ft_id} = req.body;
+    try{
+        const decryptedSession = await decrypt(Session);
+        if(!decryptedSession){
+            return res.status(401).json({error: 'Unauthorized'});
+        }
+
+        const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+        const userid = loginInfo.user_id;
+        await itemsPool.query(
+            'INSERT INTO public."Favorites" (user_id, ft_id) VALUES ($1, $2);',
+            [userid, ft_id]
+        )
+        res.json({ success: true });
+    }catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
+
+app.post('/api/removeFavorite', urlencodedParser, async(req, res) => {
+    const {Session, ft_id} = req.body;
+    try{
+        const decryptedSession = await decrypt(Session);
+        if(!decryptedSession){
+            return res.status(401).json({error: 'Unauthorized'});
+        }
+        const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+        const userid = loginInfo.user_id;
+        await itemsPool.query(
+            'DELETE FROM public."Favorites" where user_id = $1 and ft_id = $2;',
+            [userid, ft_id]
+        )
+        res.json({ success: true });
+
+    }catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
+//Add Review
 app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => {
     const id = req.params.id;
     const { Rating, Review, Session } = req.body;
@@ -210,7 +315,6 @@ app.get('/api/foodtrucks/:id/images', async(req, res) => {
             Bucket: bucket_name,
             Key: row.imagename,
         }
-
         const command = new GetObjectCommand(getObjectParams);
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
         row.imageUrl = url;

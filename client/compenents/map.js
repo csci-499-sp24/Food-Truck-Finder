@@ -136,6 +136,7 @@ function FoodTruckMap({
                     ></Rating>
                     <div className="review-count">
                       ({selectedTruck.review_count})
+
                     </div>
                   </div>
                   <br />
