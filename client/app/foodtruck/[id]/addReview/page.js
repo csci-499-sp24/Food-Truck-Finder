@@ -9,6 +9,7 @@ import { getSession } from '@/compenents/lib';
 import Image from "next/image";
 import { getCookie } from "cookies-next";
 import { revalidatePath } from "next/cache";
+import ImageDropzone from "@/compenents/ImageDropzone";
 
 
 
@@ -20,6 +21,14 @@ export default function Page(slug) {
     const [error, setError] = useState(null);
     const [rating, setRating] = useState(null);
     const [review, setReview] = useState('');
+
+    const [droppedImage, setDroppedImage] = useState(null);
+
+    const handleDrop = (files) => {
+        // Do something with the dropped image
+        const imageUrl = URL.createObjectURL(files[0]);
+        setDroppedImage(imageUrl);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,20 +85,28 @@ export default function Page(slug) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         try {
+            const formData = new FormData();
+            console.log(droppedImage);
+            if(droppedImage){
+                const response = await fetch(droppedImage);
+                const blob = await response.blob();
+                formData.append('image', blob, 'image.jpg');
+                console.log(1234);
+            }
+
+
             const reviewData = {
                 Rating: e.target.rating.value,
                 Review: review,
                 Session: getSession()
             }
+            formData.append('jsonData', JSON.stringify(reviewData));
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/addReview`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(reviewData)
+                body: formData
             });
 
             console.log('Added a review successfully');
@@ -143,6 +160,12 @@ export default function Page(slug) {
                                 }}
                             />
                         </div>
+                        <div>
+                            <h1>Image Upload</h1>
+                            <ImageDropzone onDrop={handleDrop} />
+                            {droppedImage && <img src={droppedImage} alt="Dropped" />}
+                        </div>
+
 
                         <TextField
                             sx={{ width: "80%", background: "white", borderRadius: "5px"}}
