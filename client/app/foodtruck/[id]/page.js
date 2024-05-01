@@ -21,7 +21,7 @@ const fetchData = async (id) => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/info`,
       {
-        next: { revalidate: 10 }
+        next: { revalidate: 3600, tags: ['pageRefresh'] }
       }
     );
     if (!response.ok) {
@@ -52,12 +52,13 @@ const fetchImage = async (id) => {
   }
 };
 
+
 const fetchImageList = async (id) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/images`,
       {
-        next: { revalidate: 10 }
+        next: { revalidate: 3600, tags: ['pageRefresh']  }
       }
     );
 
@@ -114,9 +115,9 @@ export default async function Page(slug) {
       <Stack direction={"row"} gap={4}>
         {/* left side */}
         <Stack direction="column" flexGrow={1} gap={4} padding={4}>
-            <FTTitle foodTruck={foodTruck}></FTTitle>
+            <FTTitle foodTruck={foodTruck} id={id}></FTTitle>
             <Address foodTruck ={foodTruck}></Address>
-            <ImageList images={images}></ImageList>
+            <ImageList id={id}></ImageList>
             <Menu foodTruck ={foodTruck}></Menu>
             
             <Button variant="outlined" >

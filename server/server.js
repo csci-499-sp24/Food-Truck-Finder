@@ -7,11 +7,19 @@ import { jwtVerify } from "jose";
 import { decrypt } from './encryption.js';
 
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import multer from 'multer';
+import crypto from 'crypto';
+
+
+const storage = multer.memoryStorage();
+const upload  = multer({ storage: storage });
+
 
 import pkg from 'pg';
 const { Pool } = pkg;
 
+const randomImageName = (byte = 16) => crypto.randomBytes(byte).toString('hex');
 
 const app = express();
 dotenv.config();
@@ -185,6 +193,35 @@ app.post('/api/getfavorites', urlencodedParser, async(req, res) => {
     }
 })
 
+app.post('/api/:id/favorited', urlencodedParser, async(req, res) => {
+    const {Session} = req.body;
+    const ft_id = req.params.id;
+    console.log(Session);
+    console.log(req.body);
+    if(!Session) {
+        res.json({ favorited: false })
+    }else {
+        try{
+            const decryptedSession = await decrypt(Session);
+            if(!decryptedSession){
+                return res.status(401).json({error: 'Unauthorized'});
+            }
+    
+            const loginInfo = await getUserInfo({email: decryptedSession.user.email});
+            const userid = loginInfo.user_id;
+            const result = await itemsPool.query(
+                'Select * from public."Favorites" Where user_id = $1 and ft_id = $2',
+                [userid, ft_id]
+            )
+            res.json({ favorited: result.rows.length > 0 });
+        }catch (error) {
+            console.error("Error adding review:", error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    
+})
+
 app.post('/api/addFavorite', urlencodedParser, async(req, res) => {
     const {Session, ft_id} = req.body;
     try{
@@ -221,6 +258,7 @@ app.post('/api/removeFavorite', urlencodedParser, async(req, res) => {
             [userid, ft_id]
         )
         res.json({ success: true });
+
     }catch (error) {
         console.error("Error adding review:", error);
         res.status(500).json({ error: 'Internal server error' });
@@ -228,9 +266,14 @@ app.post('/api/removeFavorite', urlencodedParser, async(req, res) => {
 })
 
 //Add Review
-app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => {
+app.post('/api/foodtrucks/:id/addReview', upload.single('image'), async (req, res) => {
+    
+    
+
     const id = req.params.id;
-    const { Rating, Review, Session } = req.body;
+
+    const data = JSON.parse(req.body.jsonData);
+    const { Rating, Review, Session } = data;
 
     try {
         const decryptedSession = await decrypt(Session);
@@ -262,6 +305,25 @@ app.post('/api/foodtrucks/:id/addReview', urlencodedParser, async (req, res) => 
             [Rating, id]
         )
 
+        if(req.file){
+            const imageUrl = `/upload/${req.file.filename}`;
+            const imgName = randomImageName();
+
+            const params = {
+                Bucket: bucket_name,
+                Key: imgName,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype,
+            }
+            const command = new PutObjectCommand(params);
+            await s3.send(command); 
+
+            await itemsPool.query(
+                'INSERT INTO public."FoodTruckImages"(foodtruckid, userid, imagename) VALUES ($1, $2, $3);',
+                [id, userid, imgName]
+            )
+        }
+
         res.json({ success: true });
     } catch (error) {
         console.error("Error adding review:", error);
@@ -285,7 +347,6 @@ app.get('/api/foodtrucks/:id/images', async(req, res) => {
             Bucket: bucket_name,
             Key: row.imagename,
         }
-
         const command = new GetObjectCommand(getObjectParams);
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
         row.imageUrl = url;

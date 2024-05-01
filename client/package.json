@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@vis.gl/react-google-maps": "^0.7.1",
     "bcrypt": "^5.1.1",
@@ -19,13 +20,14 @@
     "cookies-next": "^4.1.1",
     "dotenv": "^16.4.5",
     "jose": "^5.2.3",
-    "next": "14.1.0",
+    "next": "^14.2.3",
     "next-auth": "^5.0.0-beta.16",
     "next-client-cookies": "^1.1.1",
     "next-share": "^0.27.0",
     "react": "^18",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "react-rating-stars-component": "^2.2.0",
     "swr": "^2.2.5",
     "use-debounce": "^10.0.0"
