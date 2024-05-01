@@ -67,6 +67,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
     setCenter(cords);
   };
   return (
+    <>
     <div className="sidebar">
       {/* If logged in */}
       {hasCookie("name") && (
@@ -124,7 +125,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
                       transition: "text-decoration 0.3s",
                     }}
                   >
-                    {/* <span
+                    <span
                       onMouseEnter={(e) =>
                         (e.target.style.textDecoration = "underline")
                       }
@@ -134,7 +135,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
                     >
                       {foodTruck.name}
                       
-                    </span> */}
+                    </span>
                     <TruckDetail selectedTruck={foodTruck} />
                   </a>
                 </Link>
@@ -143,7 +144,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
           ))}
         </ul>
       )}
-    </div> */}
+    </div>  */}
 
       {/* Trucks near you */}
       <div className="trucks-nearby-container">
@@ -175,6 +176,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         ))}
       </select>
     </div>
+
+    </>
   );
 }
 
