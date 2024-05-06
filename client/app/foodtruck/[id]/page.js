@@ -123,6 +123,9 @@ export default async function Page(slug) {
             <Button variant="outlined" >
               <Link href={'/'} style={{textDecoration: 'none', color: 'white'}} >Home</Link>
             </Button>
+            <Button variant="outlined" >
+              <Link href={'/'} style={{textDecoration: 'none', color: 'white'}} >Contact Us</Link>
+            </Button>
         </Stack>
 
         {/* Right side stack */}
