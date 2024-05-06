@@ -12,8 +12,29 @@
   min-height: 100vh; /* Ensure full viewport height */
 }
 
+
 .errorMessage {
   margin: auto;
   font-size: 30px;
   color: white; /* Set text color to white for visibility */
 }
+
+
+/* styles.css */
+
+.dropzone {
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropzone.active {
+  border-color: #6c6;
+}
+
+.dropzone p {
+  margin: 0;
+}
+
