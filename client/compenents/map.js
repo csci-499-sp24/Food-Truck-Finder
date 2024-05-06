@@ -11,11 +11,9 @@ import CustomMarker from "./CustomMarker";
 import Rating from 'react-rating-stars-component';
 import "@/styles/map.css"
 require('dotenv').config();
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
 function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
-    const [isFavorite, setIsFavorite] = useState(false);
     const [truckImages, setTruckImages] = useState([]);
     var tempCenter = center;
     
@@ -112,15 +110,8 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  onClose={handleInfoWindowClose}
                  >
                     <div>
-                      <h5 onMouseEnter={() => setIsFavorite(true)}
-                          onMouseLeave={() => setIsFavorite(false)}
-                          >
+                      <h5>
                           {selectedTruck.name}
-                          {isFavorite ? ( 
-                            <Favorite className="favorite-icon" />
-                          ) : (
-                            <FavoriteBorder className="favorite-icon" />
-                          )}
                       </h5>
                       <h6>{selectedTruck.address}</h6>
                       <div className="rating">

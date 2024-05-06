@@ -31,10 +31,6 @@
     text-decoration: underline;
 }
 
-.cuisines{
-    display: flex;
-}
-
 .halal{
     display: flex;
     justify-content: center;
@@ -63,4 +59,24 @@
     border-radius: 50px;
     background-color: #f15d0d;
     margin-left: 5px;
+}
+
+.cuisines-container {
+    display: flex;
+  }
+  
+.cuisines {
+    flex-grow: 1; 
+}
+  
+.image-container {
+    margin-left: 20px;
+}
+  
+.food-truck-image {
+    width: 100px; 
+    height: 100px; 
+    object-fit: cover; 
+    border-radius: 50%; 
+    align-items: center;
 }
