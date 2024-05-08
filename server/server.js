@@ -67,7 +67,7 @@ app.get('/api/searchFoodTrucks', async(req, res) =>{
     }
 })
 
-app.get('/api/getFoodTrucks', async(req, res) => {
+app.get('/api/getFoodTrucks', async (req, res) => {
     const x = Number(parseFloat(req.query.lat).toFixed(6));
     const y = Number(parseFloat(req.query.lng).toFixed(6));
 
@@ -77,21 +77,48 @@ app.get('/api/getFoodTrucks', async(req, res) => {
         east: x - 0.006,
         west: x + 0.006
     }
+
     try {
         const allItems = await itemsPool.query(
             'SELECT * FROM public."FoodTruck" where' +
-            '( lng < ' + bounds.north + 
-            ' and lng > ' + bounds.south  + 
-            ' and lat > ' + bounds.east +
-            ' and lat < ' + bounds.west + ')'
+            '( lng < $1 and lng > $2 and lat > $3 and lat < $4)',
+            [bounds.north, bounds.south, bounds.east, bounds.west]
         );
+
         const FoodTrucks = allItems.rows;
+
+        // Fetch images for each food truck
+        for (const truck of FoodTrucks) {
+            const data = await itemsPool.query(
+                'SELECT imagename FROM public."FoodTruckImages" where foodtruckid = $1;',
+                [truck.id]
+            );
+            const images = data.rows;
+
+            // Get signed URL for each image
+            for (const image of images) {
+                const getObjectParams = {
+                    Bucket: bucket_name,
+                    Key: image.imagename,
+                };
+                const command = new GetObjectCommand(getObjectParams);
+                const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+                image.imageUrl = url;
+            }
+
+            // Assign images to the food truck
+            truck.images = images;
+        }
+
         res.json({ FoodTrucks });
     } catch (error) {
         console.log(error);
-        res.status(500).send(error.message)
+        res.status(500).send(error.message);
     }
 });
+
+
+
 
 app.get('/api/foodtrucks/:id/info', async (req, res) => {
     const id = req.params.id;
