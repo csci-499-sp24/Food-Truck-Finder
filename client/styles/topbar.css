@@ -64,3 +64,47 @@
     background-color: #f0f0f0;
   }
 
+  
+
+  .topbar-signout-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 17px; 
+  }
+  
+  .topbar-signout-button {
+    background-color: #433f3f;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 17px; 
+  }
+  .topbar-sign-in{
+    display: flex;
+    justify-content: flex-start; /* Changed to align buttons to the left */
+    margin-bottom: 5px;
+    cursor: pointer;
+    margin-right: 10px; /* Updated margin-right value */
+    margin-left: 10px; /* Updated margin-left value */
+    padding: 8px 16px; /* Added padding */
+    border: 2px solid #433f3f; /* Highlighted box for sign-in button */
+    border-radius: 5px; /* Rounded corners for sign-in button */
+    color: #fff; /* Make the letters white */
+  }
+
+  .topbar-sign-up{
+    display: flex;
+    justify-content: flex-start; /* Changed to align buttons to the left */
+    margin-bottom: 5px;
+    margin-right: 10px; /* Updated margin-right value */
+    margin-left: 10px; /* Updated margin-left value */
+    cursor: pointer;
+    padding: 8px 16px; /* Added padding */
+    border: 2px solid #433f3f; /* Highlighted box for sign-up button */
+    border-radius: 5px; /* Rounded corners for sign-up button */
+    color: #fff; /* Make the letters white */
+  }

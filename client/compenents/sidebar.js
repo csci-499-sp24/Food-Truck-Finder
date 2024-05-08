@@ -78,8 +78,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         </>
       )}
       {/* Sign-in and sign-up buttons */}
-      {!hasCookie("name") && (
-        <div>
+      {/* {!hasCookie("name") && (
+        <div className="sign-buttons">
           <Link legacyBehavior href="/login">
             <a
               className="sign-in btn btn-primary"
@@ -93,7 +93,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
             </a>
           </Link>
         </div>
-      )}
+      )} */}
       {/* Sidebar content goes here */}
       <h1 className="sidebar-header">
         Food Truck Finder
@@ -135,7 +135,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
                       {foodTruck.name}
                       
                     </span> */}
-                    <TruckDetail selectedTruck={foodTruck} />
+                    {/* <TruckDetail selectedTruck={foodTruck} />
                   </a>
                 </Link>
               </span>
@@ -143,7 +143,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
           ))}
         </ul>
       )}
-    </div> */}
+    </div>
 
       {/* Trucks near you */}
       <div className="trucks-nearby-container">
