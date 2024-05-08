@@ -1,10 +1,10 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import {
- APIProvider,
- Map,
- AdvancedMarker,
- InfoWindow,
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 import CustomMarker from "./CustomMarker";
@@ -27,8 +27,16 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
       updateVisibleMarkers(foodTrucks);
     }, [foodTrucks]);
 
-    useEffect(() => {
-        var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
+  useEffect(() => {
+    var get = async () =>
+      fetch(
+        process.env.NEXT_PUBLIC_SERVER_URL +
+          "/api/getFoodTrucks?lat=" +
+          center.lat +
+          "&lng=" +
+          center.lng,
+        {}
+      )
         .then((res) => res.json())
         .then((data) => {
         setFoodTrucks(data.FoodTrucks);
@@ -51,54 +59,54 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
       }
     };
 
-    const handleMapDrag = () => {
-      if (selectedTruck) {
-        setSelectedTruck(null); // Close InfoWindow when map is dragged
-      }
-    };
-  
-    const handleInfoWindowClose = () => {
-      setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
-    };
+  const handleMapDrag = () => {
+    if (selectedTruck) {
+      setSelectedTruck(null); // Close InfoWindow when map is dragged
+    }
+  };
 
-    useEffect(() => {
-      // Get user's current position
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
+  const handleInfoWindowClose = () => {
+    setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
+  };
+
+  useEffect(() => {
+    // Get user's current position
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
           const { latitude, longitude } = position.coords;
           console.log("User's current position:", { latitude, longitude });
-            setCenter({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            });
-          },
-          (error) => {
-            console.error("Error getting user's location:", error);
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    }, []);
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting user's location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
-    return (
-        <div className="api-provider-container">
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
-          <div className="map-container">
-            <Map 
-            streetViewControl={false} 
-            zoomControl={false} 
-            mapTypeControl={false} 
-            defaultCenter={center} 
-            defaultZoom={17} 
+  return (
+    <div className="api-provider-container">
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
+        <div className="map-container">
+          <Map
+            streetViewControl={false}
+            zoomControl={false}
+            mapTypeControl={false}
+            defaultCenter={center}
+            defaultZoom={17}
             onCenterChanged={handleCenterChange}
             onDrag={handleMapDrag}
             onDragend={updateCenter}
             mapId={process.env.NEXT_PUBLIC_MAP_ID}
-            >
-              {foodTrucks.map((foodTruck) => (
-                <CustomMarker
+          >
+            {foodTrucks.map((foodTruck) => (
+              <CustomMarker
                 key={foodTruck.id}
                 foodTruck={foodTruck}
                 onClick={() => handleMarkerClick(foodTruck)}
