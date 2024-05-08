@@ -11,11 +11,10 @@ import CustomMarker from "./CustomMarker";
 import Rating from 'react-rating-stars-component';
 import "@/styles/map.css"
 require('dotenv').config();
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
 function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [truckImages, setTruckImages] = useState([]);
     var tempCenter = center;
     
     const handleCenterChange = (ev) => {
@@ -42,6 +41,13 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
         setSelectedTruck(null); // Close InfoWindow if clicked again
       } else {
         setSelectedTruck(truck);
+        // Fetch images for the selected food truck
+        fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/api/foodtrucks/' + truck.id + '/images')
+        .then((res) => res.json())
+        .then((data) => {
+        setTruckImages(data);
+        })
+        .catch((err) => console.log(err));
       }
     };
 
@@ -104,15 +110,8 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  onClose={handleInfoWindowClose}
                  >
                     <div>
-                      <h5 onMouseEnter={() => setIsFavorite(true)}
-                          onMouseLeave={() => setIsFavorite(false)}
-                          >
+                      <h5>
                           {selectedTruck.name}
-                          {isFavorite ? ( 
-                            <Favorite className="favorite-icon" />
-                          ) : (
-                            <FavoriteBorder className="favorite-icon" />
-                          )}
                       </h5>
                       <h6>{selectedTruck.address}</h6>
                       <div className="rating">
@@ -126,10 +125,20 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                         <div className="review-count"> ({selectedTruck.review_count}) </div>
                         </div>
                       <br />
+                      <div className="cuisines-container">
                       <div className="cuisines">
+
                         <p className={selectedTruck.vegan ? "vegan" : ""}>{selectedTruck.vegan ? "Vegan": null}</p>
                         <p className={selectedTruck.halal ? "halal" : ""}>{selectedTruck.halal ? "Halal": null}</p>
                         <p className={selectedTruck.mexican ? "mexican" : ""}>{selectedTruck.mexican ? "Mexican": null}</p>
+                        </div>
+                        <div className="image-container">
+                        {truckImages.length > 0 ? (
+                        <img src={truckImages[0].imageUrl} alt="Food Truck" className="food-truck-image"/>
+                        ) : (
+                        <img src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg" alt="Default" className="food-truck-image"/>
+                        )}
+                      </div>
                       </div>
                       <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
                         <a className="truck-card-link">Go to Food Truck Page</a>
