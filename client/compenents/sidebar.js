@@ -79,8 +79,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         </>
       )}
       {/* Sign-in and sign-up buttons */}
-      {!hasCookie("name") && (
-        <div>
+      {/* {!hasCookie("name") && (
+        <div className="sign-buttons">
           <Link legacyBehavior href="/login">
             <a
               className="sign-in btn btn-primary"
@@ -94,7 +94,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
             </a>
           </Link>
         </div>
-      )}
+      )} */}
       {/* Sidebar content goes here */}
       <h1 className="sidebar-header">
         Food Truck Finder
