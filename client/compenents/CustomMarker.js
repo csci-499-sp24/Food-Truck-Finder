@@ -1,7 +1,7 @@
 import React from "react";
 import { AdvancedMarker, Marker, Pin } from "@vis.gl/react-google-maps";
 
-const CustomMarker = ({ foodTruck, onClick, onHover }) => {
+const CustomMarker = ({ foodTruck, onClick}) => {
   const { vegan, halal, mexican, lat, lng } = foodTruck;
   let pinColor = {
     background: "#FF0000", // Default color
@@ -48,9 +48,7 @@ const CustomMarker = ({ foodTruck, onClick, onHover }) => {
   return (
     <Marker
       position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
-      // onClick={() => onClick(foodTruck)}
-      onHover={() => onHover(foodTruck)}
-      onMouseOver={() => onHover(foodTruck)} // Activate on hover
+      onClick={() => onClick(foodTruck)}
       title={foodTruck.name}
       label={{
         text: foodTruck.name,
