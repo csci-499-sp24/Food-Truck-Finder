@@ -111,16 +111,19 @@ export default async function Page(slug) {
       <Stack direction={"row"} gap={4}>
         {/* left side */}
         <Stack direction="column" flexGrow={1} gap={4} padding={4}>
-          <FTTitle foodTruck={foodTruck} id={id}></FTTitle>
-          <Address foodTruck={foodTruck}></Address>
-          <ImageList id={id}></ImageList>
-          <Menu foodTruck={foodTruck}></Menu>
-
-          <Button variant="outlined">
-            <Link href={"/"} style={{ textDecoration: "none", color: "white" }}>
-              Home
-            </Link>
-          </Button>
+            <FTTitle foodTruck={foodTruck} id={id}></FTTitle>
+            <Address foodTruck ={foodTruck}></Address>
+            <ImageList id={id}></ImageList>
+            <Menu foodTruck ={foodTruck}></Menu>
+            
+            <Button variant="outlined" >
+              <Link href={{
+                pathname: '/'
+              }} style={{textDecoration: 'none', color: 'white'}} >Home</Link>
+            </Button>
+            <Button variant="outlined" >
+              <Link href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} >Contact Us</Link>
+            </Button>
         </Stack>
 
         {/* Right side stack */}

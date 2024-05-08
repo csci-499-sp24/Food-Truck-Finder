@@ -1,9 +1,22 @@
-.container {
+/* .container {
   background-color: #02092c;
 }
 .errorMessage {
   margin: auto;
   font-size: 30px;
+} */
+
+.container {
+  background: linear-gradient(to bottom right, #181d7b, #00fffc);
+  padding: 20px;
+  min-height: 100vh; /* Ensure full viewport height */
+}
+
+
+.errorMessage {
+  margin: auto;
+  font-size: 30px;
+  color: white; /* Set text color to white for visibility */
 }
 
 /* styles.css */
@@ -23,3 +36,4 @@
 .dropzone p {
   margin: 0;
 }
+
