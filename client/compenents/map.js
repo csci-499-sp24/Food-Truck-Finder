@@ -8,29 +8,24 @@ import {
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 import CustomMarker from "./CustomMarker";
-import Rating from "react-rating-stars-component";
-import "@/styles/map.css";
-require("dotenv").config();
+import Rating from 'react-rating-stars-component';
+import "@/styles/map.css"
+require('dotenv').config();
 
-function FoodTruckMap({
-  selectedTruck,
-  setSelectedTruck,
-  updateVisibleMarkers,
-  center,
-  setCenter,
-}) {
-  const [foodTrucks, setFoodTrucks] = useState([]);
-  var tempCenter = center;
-
-  const handleCenterChange = (ev) => {
-    tempCenter = ev.detail.center;
-  };
-  const updateCenter = () => {
-    setCenter(tempCenter);
-  };
-  useEffect(() => {
-    updateVisibleMarkers(foodTrucks);
-  }, [foodTrucks]);
+function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
+    const [foodTrucks, setFoodTrucks] = useState([]);
+    const [truckImages, setTruckImages] = useState([]);
+    var tempCenter = center;
+    
+    const handleCenterChange = (ev) => {
+      tempCenter = ev.detail.center;
+    }
+    const updateCenter = () =>{
+      setCenter(tempCenter);
+    }
+    useEffect(() => {
+      updateVisibleMarkers(foodTrucks);
+    }, [foodTrucks]);
 
   useEffect(() => {
     var get = async () =>
@@ -44,17 +39,25 @@ function FoodTruckMap({
       )
         .then((res) => res.json())
         .then((data) => {
-          setFoodTrucks(data.FoodTrucks);
+        setFoodTrucks(data.FoodTrucks);
+        }).catch((err) => console.log(err));
+        get();
+    }, [center, selectedTruck]) 
+
+    const handleMarkerClick = (truck) => {
+      if (selectedTruck && selectedTruck.id === truck.id) {
+        setSelectedTruck(null); // Close InfoWindow if clicked again
+      } else {
+        setSelectedTruck(truck);
+        // Fetch images for the selected food truck
+        fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/api/foodtrucks/' + truck.id + '/images')
+        .then((res) => res.json())
+        .then((data) => {
+        setTruckImages(data);
         })
         .catch((err) => console.log(err));
-    get();
-  }, [center, selectedTruck]);
-
-  const handleMarkerHover = (truck) => {
-    if (!selectedTruck || selectedTruck.id != truck.id) {
-      setSelectedTruck(truck); // Reset only when hovered over another truck or not selected
-    }
-  };
+      }
+    };
 
   const handleMapDrag = () => {
     if (selectedTruck) {
@@ -106,57 +109,56 @@ function FoodTruckMap({
               <CustomMarker
                 key={foodTruck.id}
                 foodTruck={foodTruck}
-                onHover={() => handleMarkerHover(foodTruck)}
-              />
-            ))}
-            {selectedTruck && (
-              <InfoWindow
-                position={{
-                  lat: parseFloat(selectedTruck.lat),
-                  lng: parseFloat(selectedTruck.lng),
-                }}
-                onClose={handleInfoWindowClose}
-              >
-                <div>
-                  <h5>{selectedTruck.name}</h5>
-                  <h6>{selectedTruck.address}</h6>
-                  <div className="rating">
-                    <Rating
-                      value={selectedTruck.ratings / selectedTruck.review_count}
-                      count={5}
-                      size={24}
-                      activeColor="gold"
-                      inactiveColor="#FFF"
-                      edit={false}
-                    ></Rating>
-                    <div className="review-count">
-                      {" "}
-                      ({selectedTruck.review_count}){" "}
+                onClick={() => handleMarkerClick(foodTruck)}
+                />
+                ))}
+                {selectedTruck && (
+                 <InfoWindow 
+                 position={{ lat: parseFloat(selectedTruck.lat), lng: parseFloat(selectedTruck.lng)}}
+                 onClose={handleInfoWindowClose}
+                 >
+                    <div>
+                      <h5>
+                          {selectedTruck.name}
+                      </h5>
+                      <h6>{selectedTruck.address}</h6>
+                      <div className="rating">
+                        <Rating value={selectedTruck.ratings/selectedTruck.review_count}
+                          count={5}
+                          size={24}
+                          activeColor="gold"
+                          inactiveColor="#FFF"
+                          edit={false}>
+                        </Rating>  
+                        <div className="review-count"> ({selectedTruck.review_count}) </div>
+                        </div>
+                      <br />
+                      <div className="cuisines-container">
+                      <div className="cuisines">
+
+                        <p className={selectedTruck.vegan ? "vegan" : ""}>{selectedTruck.vegan ? "Vegan": null}</p>
+                        <p className={selectedTruck.halal ? "halal" : ""}>{selectedTruck.halal ? "Halal": null}</p>
+                        <p className={selectedTruck.mexican ? "mexican" : ""}>{selectedTruck.mexican ? "Mexican": null}</p>
+                        </div>
+                        <div className="image-container">
+                        {truckImages.length > 0 ? (
+                        <img src={truckImages[0].imageUrl} alt="Food Truck" className="food-truck-image"/>
+                        ) : (
+                        <img src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg" alt="Default" className="food-truck-image"/>
+                        )}
+                      </div>
+                      </div>
+                      <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
+                        <a className="truck-card-link">Go to Food Truck Page</a>
+                      </Link>
                     </div>
-                  </div>
-                  <br />
-                  <div className="cuisines">
-                    <p className={selectedTruck.vegan ? "vegan" : ""}>
-                      {selectedTruck.vegan ? "Vegan" : null}
-                    </p>
-                    <p className={selectedTruck.halal ? "halal" : ""}>
-                      {selectedTruck.halal ? "Halal" : null}
-                    </p>
-                    <p className={selectedTruck.mexican ? "mexican" : ""}>
-                      {selectedTruck.mexican ? "Mexican" : null}
-                    </p>
-                  </div>
-                  <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
-                    <a className="truck-card-link">Go to Food Truck Page</a>
-                  </Link>
-                </div>
-              </InfoWindow>
-            )}
-          </Map>
-        </div>
-      </APIProvider>
-    </div>
-  );
+                 </InfoWindow>
+                 )}
+                 </Map>
+              </div>
+          </APIProvider>
+      </div> 
+ );
 }
 
 export default FoodTruckMap;
