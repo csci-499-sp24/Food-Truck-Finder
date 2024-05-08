@@ -1,14 +1,17 @@
 .topbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background-color: black;
-    z-index: 1000; /* Ensures the topbar stays on top of the map */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 15%;
+  right: 0;
+  height: 110px;
+  background-color: black;
+  z-index: 1000; /* Ensures the topbar stays on top of the map */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%; /* Set width to 80% of the viewport */
+  margin: 0 auto; /* Center the topbar horizontally */
+  border-radius: 40px;
 }
 
 /* .topbar .search-bar {

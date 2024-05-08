@@ -71,17 +71,17 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search Food Trucks"
         />
-        {/* <div className="filter-button-container">
+        <div className="filter-button-container">
           <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
           <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
           <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
-        </div> */}
+        </div>
         {/* Sign-in and sign-up buttons */}
       
         
       {searchTerm.trim() !== '' && (
         <ul className="topbar-search-results">
-          {searchFoodTrucks.map((foodTruck) => (
+          {searchFoodTrucks.slice(0,15).map((foodTruck) => (
             <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
               <span>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
