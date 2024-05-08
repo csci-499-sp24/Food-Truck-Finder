@@ -110,19 +110,20 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
         </ul>
       )}
     </div>
+    {hasCookie("name") &&
     <div className="topbar-signout-button">
-      <Link legacyBehavior href="/logout">
+      <Link legacyBehavior href={"/logout"}>
         <a onClick={signout}>Sign Out</a>
       </Link>
-    </div>
+    </div>}
     {!hasCookie("name") && (
         <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: '20px' }}>
-          <Link legacyBehavior href="/login">
+          <Link legacyBehavior href={"/login"}>
             <a className="sign-in topbar-sign-in" style={{ marginRight: '10px', padding: '8px 16px', marginLeft: '20px' }}>
               Sign In
             </a>
           </Link>
-          <Link legacyBehavior href="/signup">
+          <Link legacyBehavior href={"/signup"}>
             <a className="sign-up topbar-sign-up" style={{ padding: '8px 16px', marginLeft: '20px' }}>
               Sign Up
             </a>
