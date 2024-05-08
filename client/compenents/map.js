@@ -1,21 +1,20 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import {
- APIProvider,
- Map,
- AdvancedMarker,
- InfoWindow,
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 import CustomMarker from "./CustomMarker";
 import Rating from 'react-rating-stars-component';
 import "@/styles/map.css"
 require('dotenv').config();
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
 function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [truckImages, setTruckImages] = useState([]);
     var tempCenter = center;
     
     const handleCenterChange = (ev) => {
@@ -28,8 +27,16 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
       updateVisibleMarkers(foodTrucks);
     }, [foodTrucks]);
 
-    useEffect(() => {
-        var get = async () => fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getFoodTrucks?lat=' + center.lat + '&lng=' + center.lng,{})
+  useEffect(() => {
+    var get = async () =>
+      fetch(
+        process.env.NEXT_PUBLIC_SERVER_URL +
+          "/api/getFoodTrucks?lat=" +
+          center.lat +
+          "&lng=" +
+          center.lng,
+        {}
+      )
         .then((res) => res.json())
         .then((data) => {
         setFoodTrucks(data.FoodTrucks);
@@ -42,57 +49,64 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
         setSelectedTruck(null); // Close InfoWindow if clicked again
       } else {
         setSelectedTruck(truck);
+        // Fetch images for the selected food truck
+        fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/api/foodtrucks/' + truck.id + '/images')
+        .then((res) => res.json())
+        .then((data) => {
+        setTruckImages(data);
+        })
+        .catch((err) => console.log(err));
       }
     };
 
-    const handleMapDrag = () => {
-      if (selectedTruck) {
-        setSelectedTruck(null); // Close InfoWindow when map is dragged
-      }
-    };
-  
-    const handleInfoWindowClose = () => {
-      setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
-    };
+  const handleMapDrag = () => {
+    if (selectedTruck) {
+      setSelectedTruck(null); // Close InfoWindow when map is dragged
+    }
+  };
 
-    useEffect(() => {
-      // Get user's current position
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
+  const handleInfoWindowClose = () => {
+    setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
+  };
+
+  useEffect(() => {
+    // Get user's current position
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
           const { latitude, longitude } = position.coords;
           console.log("User's current position:", { latitude, longitude });
-            setCenter({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            });
-          },
-          (error) => {
-            console.error("Error getting user's location:", error);
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    }, []);
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting user's location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
-    return (
-        <div className="api-provider-container">
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
-          <div className="map-container">
-            <Map 
-            streetViewControl={false} 
-            zoomControl={false} 
-            mapTypeControl={false} 
-            defaultCenter={center} 
-            defaultZoom={17} 
+  return (
+    <div className="api-provider-container">
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
+        <div className="map-container">
+          <Map
+            streetViewControl={false}
+            zoomControl={false}
+            mapTypeControl={false}
+            defaultCenter={center}
+            defaultZoom={17}
             onCenterChanged={handleCenterChange}
             onDrag={handleMapDrag}
             onDragend={updateCenter}
             mapId={process.env.NEXT_PUBLIC_MAP_ID}
-            >
-              {foodTrucks.map((foodTruck) => (
-                <CustomMarker
+          >
+            {foodTrucks.map((foodTruck) => (
+              <CustomMarker
                 key={foodTruck.id}
                 foodTruck={foodTruck}
                 onClick={() => handleMarkerClick(foodTruck)}
@@ -104,15 +118,8 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  onClose={handleInfoWindowClose}
                  >
                     <div>
-                      <h5 onMouseEnter={() => setIsFavorite(true)}
-                          onMouseLeave={() => setIsFavorite(false)}
-                          >
+                      <h5>
                           {selectedTruck.name}
-                          {isFavorite ? ( 
-                            <Favorite className="favorite-icon" />
-                          ) : (
-                            <FavoriteBorder className="favorite-icon" />
-                          )}
                       </h5>
                       <h6>{selectedTruck.address}</h6>
                       <div className="rating">
@@ -126,10 +133,20 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                         <div className="review-count"> ({selectedTruck.review_count}) </div>
                         </div>
                       <br />
+                      <div className="cuisines-container">
                       <div className="cuisines">
+
                         <p className={selectedTruck.vegan ? "vegan" : ""}>{selectedTruck.vegan ? "Vegan": null}</p>
                         <p className={selectedTruck.halal ? "halal" : ""}>{selectedTruck.halal ? "Halal": null}</p>
                         <p className={selectedTruck.mexican ? "mexican" : ""}>{selectedTruck.mexican ? "Mexican": null}</p>
+                        </div>
+                        <div className="image-container">
+                        {truckImages.length > 0 ? (
+                        <img src={truckImages[0].imageUrl} alt="Food Truck" className="food-truck-image"/>
+                        ) : (
+                        <img src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg" alt="Default" className="food-truck-image"/>
+                        )}
+                      </div>
                       </div>
                       <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
                         <a className="truck-card-link">Go to Food Truck Page</a>
