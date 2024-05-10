@@ -117,12 +117,12 @@ export default async function Page(slug) {
             <Menu foodTruck ={foodTruck}></Menu>
             
             <Button variant="outlined" >
-              <Link href={{
+              <Link legacyBehavior href={{
                 pathname: '/'
               }} style={{textDecoration: 'none', color: 'white'}} >Home</Link>
             </Button>
             <Button variant="outlined" >
-              <Link href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} >Contact Us</Link>
+              <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} >Contact Us</Link>
             </Button>
         </Stack>
 
