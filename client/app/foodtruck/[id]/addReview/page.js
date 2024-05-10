@@ -26,11 +26,18 @@ export default function Page(slug) {
   const [review, setReview] = useState("");
 
   const [droppedImage, setDroppedImage] = useState(null);
+  const [showDropzone, setShowDropzone] = useState(true);
 
   const handleDrop = (files) => {
     // Do something with the dropped image
     const imageUrl = URL.createObjectURL(files[0]);
     setDroppedImage(imageUrl);
+    setShowDropzone(false);
+  };
+  
+  const handleDeleteImage = () => {
+    setDroppedImage(null);
+    setShowDropzone(true);
   };
 
   useEffect(() => {
@@ -183,10 +190,31 @@ export default function Page(slug) {
                 }}
               />
             </div>
+
             <div>
-              <h1 className="image">Image Upload</h1>
-              <ImageDropzone onDrop={handleDrop} />
-              {droppedImage && <img src={droppedImage} alt="Dropped" />}
+                {showDropzone && (
+                    <div style={{ padding: "10px 0" }}>
+                        <Typography color="Black" variant="h6" align="center">
+                            Image Upload
+                        </Typography>
+                        <ImageDropzone onDrop={handleDrop} />
+            </div>
+            )}
+            {droppedImage && (
+            <div>
+              <img src={droppedImage} alt="Dropped" style={{ width: "200px", height: "200px" }} />
+                <div>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleDeleteImage}
+                    style={{ marginTop: "10px", position: "center", marginBottom: "10px" }}
+                >
+                    Delete Image
+                </Button>
+                </div>
+            </div>
+            )}
             </div>
 
             <TextField
