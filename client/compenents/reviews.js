@@ -26,7 +26,18 @@ export default function Reviews(props) {
                 <h5 className="review-header">
                     REVIEWS and RATINGS
                 </h5>
-                {reviews}
+                <div
+                style={{
+                    backgroundColor: "#02092c",
+                    padding: "10px",
+                    margin: "10px",
+                    borderRadius: "10px",
+                    color: "white",
+                    maxHeight: "300px", 
+                    overflowY: "auto",
+                  }}>
+                    {reviews} 
+                </div>
                 <div>
                     <div className="add-review">
                         <Link legacyBehavior href={`/foodtruck/${foodTruckId}/addReview`}>
