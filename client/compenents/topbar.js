@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
 import { styled } from '@mui/system';
 import { useDebounce } from 'use-debounce';
-import "../styles/topbar.css";
+import styles from "../styles/topbar.css";
 import Link from "next/link";
 import { getCookie, hasCookie, deleteCookie } from "cookies-next";
+import Rating from 'react-rating-stars-component';
+
 
 
 
@@ -38,7 +40,7 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
               );
             });
           }
-
+          console.log(filteredTrucks);
           setSearchFoodTrucks(filteredTrucks);
         } else {
           setSearchFoodTrucks([]); // Reset food trucks when no search term
@@ -64,6 +66,12 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
 
   return (
     <div className="topbar">
+        <div className="topbar-filter-button-container">
+          <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
+          <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
+          <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
+        </div>
+
       <div className="topbar-search-container">
         <input className="topbar-search-bar"
           type="text"
@@ -71,18 +79,14 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search Food Trucks"
         />
-        <div className="filter-button-container">
-          <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
-          <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
-          <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
-        </div>
-        {/* Sign-in and sign-up buttons */}
+        
+        
       
         
       {searchTerm.trim() !== '' && (
         <ul className="topbar-search-results">
-          {searchFoodTrucks.slice(0,15).map((foodTruck) => (
-            <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
+          {searchFoodTrucks.slice(0,10).map((foodTruck) => (
+            <li className="topbar-result" key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
               <span>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                   <a
@@ -102,6 +106,19 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
                     >
                       {foodTruck.name}
                     </span>
+
+                    <h6>{foodTruck.address}</h6>
+                      <div className="rating">
+                        <Rating value={foodTruck.ratings/foodTruck.review_count}
+                          count={5}
+                          size={24}
+                          activeColor="gold"
+                          inactiveColor="#FFF"
+                          edit={false}>
+                        </Rating>  
+                        <div className="review-count"> ({foodTruck.review_count}) </div>
+                      </div>
+                    
                   </a>
                 </Link>
               </span>
@@ -110,26 +127,29 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
         </ul>
       )}
     </div>
-    {hasCookie("name") &&
-    <div className="topbar-signout-button">
-      <Link legacyBehavior href={"/logout"}>
-        <a onClick={signout}>Sign Out</a>
-      </Link>
-    </div>}
-    {!hasCookie("name") && (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: '20px' }}>
-          <Link legacyBehavior href={"/login"}>
-            <a className="sign-in topbar-sign-in" style={{ marginRight: '10px', padding: '8px 16px', marginLeft: '20px' }}>
-              Sign In
-            </a>
-          </Link>
-          <Link legacyBehavior href={"/signup"}>
-            <a className="sign-up topbar-sign-up" style={{ padding: '8px 16px', marginLeft: '20px' }}>
-              Sign Up
-            </a>
-          </Link>
-        </div>
-      )}
+
+    <div className="topbar-login-container">
+        {hasCookie("name") &&
+        <div className="topbar-signout-button">
+        <Link legacyBehavior href={"/logout"}>
+            <a onClick={signout}>Sign Out</a>
+        </Link>
+        </div>}
+        {!hasCookie("name") && (
+            <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+            <Link legacyBehavior href={"/login"}>
+                <a className="sign-in topbar-sign-in" style={{ marginRight: '10px', padding: '8px 16px', marginLeft: '20px' }}>
+                Sign In
+                </a>
+            </Link>
+            <Link legacyBehavior href={"/signup"}>
+                <a className="sign-up topbar-sign-up" style={{ padding: '8px 16px', marginLeft: '20px' }}>
+                Sign Up
+                </a>
+            </Link>
+            </div>
+        )}
+      </div>
     </div>
   );
 }

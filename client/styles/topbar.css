@@ -7,7 +7,8 @@
   background-color: black;
   z-index: 1000; /* Ensures the topbar stays on top of the map */
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   width: 70%; /* Set width to 80% of the viewport */
   margin: 0 auto; /* Center the topbar horizontally */
@@ -24,7 +25,10 @@
     color: #333;
     background-color: #fff;
 } */
-
+.topbar-filter-button-container{
+    display: flex;
+    
+}
 
 .topbar-search-container{
     width: 1000px;
@@ -45,13 +49,16 @@
     color: #333;
     background-color: #fff;
 }
+.topbar-result{
+    border-bottom: 1px solid grey;
+}
 
 .topbar-search-results {
     list-style-type: none;
     padding: 0;
     margin: 0;
     position: absolute;
-    background-color: #ffffff;
+    background-color: #fffefe;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     z-index: 100;
@@ -78,6 +85,7 @@
     cursor: pointer;
     margin-top: 17px; 
   }
+  
   
   .topbar-signout-button {
     background-color: #433f3f;
@@ -110,4 +118,12 @@
     border: 2px solid #433f3f; /* Highlighted box for sign-up button */
     border-radius: 5px; /* Rounded corners for sign-up button */
     color: #fff; /* Make the letters white */
+  }
+
+  @media screen and (max-width: 800px) {
+    .topbar-sign-out-button,
+    .topbar-sign-in,
+    .topbar-sign-up {
+      display: none;
+    }
   }
