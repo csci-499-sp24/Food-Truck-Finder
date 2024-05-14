@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import { logout } from "./lib";
 import "@/styles/sidebar.css";
-import TruckDetail from "./truckDetail"; 
+import TruckDetail from "./truckDetail";
 
 require("dotenv").config();
 
@@ -26,14 +26,14 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (debounceSearch.trim() !== '') {
+        if (debounceSearch.trim() !== "") {
           const searchQuery = `search=${debounceSearch.trim()}`;
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/searchFoodTrucks?${searchQuery}`
           );
           const data = await response.json();
           let filteredTrucks = data.FoodTrucks;
-  
+
           if (isVeganChecked || isHalalChecked || isMexicanChecked) {
             filteredTrucks = filteredTrucks.filter((truck) => {
               return (
@@ -43,7 +43,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
               );
             });
           }
-  
+
           setSearchFoodTrucks(filteredTrucks);
         } else {
           setSearchFoodTrucks([]); // Reset food trucks when no search term
@@ -54,7 +54,6 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
     };
     fetchData();
   }, [debounceSearch, isVeganChecked, isHalalChecked, isMexicanChecked]);
-  
 
   const signout = async () => {
     await logout();
@@ -68,18 +67,16 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
   };
   return (
     <>
-    <div className="sidebar">
-      {/* If logged in */}
-      {hasCookie("name") && (
-        <>
-          <a className="sign-out">
-            {"Hello, " + getCookie("name")}
-          </a>
-          <Button onClick={signout}>Sign-out</Button>
-        </>
-      )}
-      {/* Sign-in and sign-up buttons */}
-      {/* {!hasCookie("name") && (
+      <div className="sidebar">
+        {/* If logged in */}
+        {hasCookie("name") && (
+          <>
+            <a className="sign-out">{"Hello, " + getCookie("name")}</a>
+            <Button onClick={signout}>Sign-out</Button>
+          </>
+        )}
+        {/* Sign-in and sign-up buttons */}
+        {/* {!hasCookie("name") && (
         <div className="sign-buttons">
           <Link legacyBehavior href="/login">
             <a
@@ -95,11 +92,9 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
           </Link>
         </div>
       )} */}
-      {/* Sidebar content goes here */}
-      <h1 className="sidebar-header">
-        Food Truck Finder
-      </h1>
-      {/* <div className="search-container">
+        {/* Sidebar content goes here */}
+        <h1 className="sidebar-header">Food Truck Finder</h1>
+        {/* <div className="search-container">
         <input className="search-bar"
           type="text"
           value={searchTerm}
@@ -146,37 +141,34 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
       )}
     </div>  */}
 
-      {/* Trucks near you */}
-      <div className="trucks-nearby-container">
-        <h2 className="trucks-nearby">
-          Trucks near you
-        </h2>
-        <ul style={{ color: "white" }}>
-          {visibleMarkers.map((foodTruck) => (
-            <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
-              <span onMouseEnter={() => handleTruckHover(foodTruck)}>
-                <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
-                  <a className="truck-link">
-                    {/* <span>
+        {/* Trucks near you */}
+        <div className="trucks-nearby-container">
+          <h2 className="trucks-nearby">Trucks near you</h2>
+          <ul style={{ color: "white" }}>
+            {visibleMarkers.map((foodTruck) => (
+              <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
+                <span onMouseEnter={() => handleTruckHover(foodTruck)}>
+                  <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
+                    <a className="truck-link">
+                      {/* <span>
                       {foodTruck.name}
                     </span> */}
-                    <TruckDetail selectedTruck={foodTruck} />
-                  </a>
-                </Link>
-              </span>
-            </li>
+                      <TruckDetail selectedTruck={foodTruck} />
+                    </a>
+                  </Link>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Language dropdown */}
+        <select className="language-dropdown">
+          {languages.map((language, index) => (
+            <option key={index}>{language}</option>
           ))}
-        </ul>
+        </select>
       </div>
-
-      {/* Language dropdown */}
-      <select className="language-dropdown">
-        {languages.map((language, index) => (
-          <option key={index}>{language}</option>
-        ))}
-      </select>
-    </div>
-
     </>
   );
 }
