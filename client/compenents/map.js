@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import CustomMarker from "./CustomMarker";
 import Rating from 'react-rating-stars-component';
+import InfoWindowData from "./infowindowdata";
 import "@/styles/map.css"
 require('dotenv').config();
 
@@ -116,8 +117,12 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  <InfoWindow 
                  position={{ lat: parseFloat(selectedTruck.lat), lng: parseFloat(selectedTruck.lng)}}
                  onClose={handleInfoWindowClose}
+                 maxWidth={350}
+                 minWidth={350}
                  >
-                    <div>
+                  <InfoWindowData selectedTruck={selectedTruck} truckImages={truckImages}/>
+
+                    {/* <div>
                       <h5>
                           {selectedTruck.name}
                       </h5>
@@ -151,7 +156,7 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                       <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
                         <a className="truck-card-link">Go to Food Truck Page</a>
                       </Link>
-                    </div>
+                    </div> */}
                  </InfoWindow>
                  )}
                  </Map>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDebounce } from "use-debounce";
 import Link from "next/link";
 import { getCookie, hasCookie, deleteCookie } from "cookies-next";
@@ -22,6 +22,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
 
   const [debounceSearch] = useDebounce(searchTerm, 500);
   const defaultSearch = "";
+
+  const didMount = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,14 +54,11 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         console.error("Error fetching food trucks:", error);
       }
     };
-    fetchData();
+    if(didMount.current)
+      fetchData();
+    else
+      didMount.current = true;
   }, [debounceSearch, isVeganChecked, isHalalChecked, isMexicanChecked]);
-  
-
-  const signout = async () => {
-    await logout();
-    router.reload();
-  };
 
   const handleTruckHover = (truck) => {
     setSelectedTruck(truck);
@@ -68,16 +67,8 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
   };
   return (
     <>
-    <div className="sidebar">
+    <div className="sidebar h-screen">
       {/* If logged in */}
-      {hasCookie("name") && (
-        <>
-          <a className="sign-out">
-            {"Hello, " + getCookie("name")}
-          </a>
-          <Button onClick={signout}>Sign-out</Button>
-        </>
-      )}
       {/* Sign-in and sign-up buttons */}
       {/* {!hasCookie("name") && (
         <div className="sign-buttons">
