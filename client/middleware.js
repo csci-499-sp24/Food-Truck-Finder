@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getSession } from "./compenents/lib";
+import { getSession } from "./components/lib";
 
 
 

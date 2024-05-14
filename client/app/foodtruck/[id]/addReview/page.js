@@ -10,11 +10,11 @@ import {
   TextField,
   Rating,
 } from "@mui/material";
-import { getSession } from "@/compenents/lib";
+import { getSession } from "@/components/lib";
 import Image from "next/image";
 import { getCookie } from "cookies-next";
 import { revalidatePath } from "next/cache";
-import ImageDropzone from "@/compenents/ImageDropzone";
+import ImageDropzone from "@/components/ImageDropzone";
 
 export default function Page(slug) {
   const router = useRouter();

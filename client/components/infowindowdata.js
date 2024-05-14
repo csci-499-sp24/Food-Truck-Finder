@@ -2,10 +2,10 @@ import Rating from 'react-rating-stars-component';
 
 const InfoWindowData = ({selectedTruck, truckImages}) => {
     return (
-        <>
+        <button>
         <div className='flex'>
             <div >
-                      <p className="text-2xl text-blue-600 text-clip w-16">
+                      <p className="text-2xl font-semibold pt-2 truncate w-48">
                           {selectedTruck.name}
                       </p>
                       <p className='text-l'>{selectedTruck.address}</p>
@@ -30,7 +30,7 @@ const InfoWindowData = ({selectedTruck, truckImages}) => {
 
                       </div>
                     </div>
-                    <div className="image-container">
+                    <div className="image-container pt-3">
                         {truckImages.length > 0 ? (
                         <img src={truckImages[0].imageUrl} alt="Food Truck" className="food-truck-image"/>
                         ) : (
@@ -39,7 +39,7 @@ const InfoWindowData = ({selectedTruck, truckImages}) => {
                       </div>
 
                 </div>
-        </>
+        </ button>
     )
 }
 

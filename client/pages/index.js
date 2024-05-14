@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react"
-import Topbar from "../compenents/topbar";
-import Sidebar from "../compenents/sidebar";
-import FoodTruckMap from "../compenents/map";
+import Topbar from "../components/topbar";
+import Sidebar from "../components/sidebar";
+import FoodTruckMap from "../components/map";
 require('dotenv').config();
 
 function Index() {
