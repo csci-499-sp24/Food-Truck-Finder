@@ -131,10 +131,6 @@ export default async function Page(slug) {
                   pathname: '/'
                 }} style={{textDecoration: 'none', color: 'white'}} className="" >Home</Link>
         </Button>
-        <br/>
-          <Button variant="outlined" className="" >
-          <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} className="w-full h-full">Contact Us</Link>
-        </Button>
       </Stack>
       <DropDown URL={URL}></DropDown>
 
