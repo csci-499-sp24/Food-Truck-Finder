@@ -6,54 +6,16 @@
   font-size: 30px;
 } */
 
-/* .container {
+.container {
   background: linear-gradient(to bottom right, #181d7b, #00fffc);
   padding: 20px;
-  min-height: 100vh; 
-}
-
-.errorMessage {
-  margin: auto;
-  font-size: 30px;
-  color: white; 
-}
- */
-
- 
-.container {
-  background-image: url('Zcop.jpg'); 
-  background-size: cover; 
-  background-position: center; 
-  padding: 10px;
-  min-height: 100vh; 
+  min-height: 100vh; /* Ensure full viewport height */
 }
 
 
 .errorMessage {
   margin: auto;
   font-size: 30px;
-  color: white; 
-} 
-
-/*
-.container {
-  // Use linear gradient for picnic blanket effect 
-  background: linear-gradient(
-    45deg, 
-    #ffffff 0%,  
-    #ffb6c1 50%,  
-    #e8747a 100% 
-  );
-  padding: 20px;
-  min-height: 100vh; // Ensure full viewport height 
-}
-
-.errorMessage {
-  margin: auto;
-  font-size: 30px;
-  color: white; // Set text color to white for visibility 
-}
-*/
   color: white; /* Set text color to white for visibility */
 }
 
@@ -74,3 +36,4 @@
 .dropzone p {
   margin: 0;
 }
+
