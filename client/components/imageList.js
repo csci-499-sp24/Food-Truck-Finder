@@ -78,7 +78,7 @@ export default function ImageList(props) {
       >
         {images &&
           images.map((item, index) => (
-            <ImageWithPreviewModal url={item.imageUrl} />
+            <ImageWithPreviewModal url={item.imageUrl} key={index} style={{ flex: "0 0 auto" }} />
           ))}
       </Card>}
     </>
