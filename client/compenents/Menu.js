@@ -181,7 +181,7 @@ export default function Menu(props) {
         </div>
       ))
     ) : (
-      <p>No menu available for this cart</p>
+      <p>No menu available for this cart!!! Look above in the pictures section!</p>
     );
 
   const promotions =
@@ -212,7 +212,7 @@ export default function Menu(props) {
   return (
     <Card
       sx={{
-        backgroundColor: "#105372",
+        backgroundColor: "#ffffff",
         padding: 3,
         height: "430px",
         overflowY: "auto",

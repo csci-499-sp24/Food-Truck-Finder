@@ -10,8 +10,8 @@ export default function Address(props) {
     return (
         <>
         {/* 105372 */}
-            <Card sx={{ backgroundColor: "#105372", padding: 2, height: "30px", overflowY: "auto" }}>
-                <Typography color="white" variant="h7" align="center">
+            <Card sx={{ backgroundColor: "#ffffff", padding: 2, height: "30px", overflowY: "auto" }}>
+                <Typography color="black" variant="h7" align="center">
                     {foodTruck.foodTruck.address ? (
                         `Address: ${foodTruck.foodTruck.address}`
                     ) : (
