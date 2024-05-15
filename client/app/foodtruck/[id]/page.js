@@ -1,12 +1,12 @@
 import styles from "../truck.module.css";
 import { Stack, Button } from "@mui/material";
-import Reviews from "../../../compenents/reviews";
-import FTMap from "../../../compenents/ftMap";
-import Menu from "../../../compenents/Menu";
-import Address from "../../../compenents/address";
-import FTTitle from "../../../compenents/Title";
-import DropDown from "../../../compenents/dropDown";
-import ImageList from "@/compenents/imageList";
+import Reviews from "../../../components/reviews";
+import FTMap from "../../../components/ftMap";
+import Menu from "../../../components/Menu";
+import Address from "../../../components/address";
+import FTTitle from "../../../components/Title";
+import DropDown from "../../../components/dropDown";
+import ImageList from "@/components/imageList";
 import Link from "next/link";
 import { headers } from "next/headers";
 require("dotenv").config();
@@ -108,32 +108,36 @@ export default async function Page(slug) {
   };
   return (
     <section className={styles.container}>
-      <Stack direction={"row"} gap={4}>
+      <Stack className="flex lg:flex-row" >
         {/* left side */}
-        <Stack direction="column" flexGrow={1} gap={4} padding={4}>
+        <Stack direction="column" flexGrow={1} gap={4} padding={4} >
             <FTTitle foodTruck={foodTruck} id={id}></FTTitle>
             <Address foodTruck ={foodTruck}></Address>
             <ImageList id={id}></ImageList>
             <Menu foodTruck ={foodTruck}></Menu>
-            
-            <Button variant="outlined" >
-              <Link legacyBehavior href={{
-                pathname: '/'
-              }} style={{textDecoration: 'none', color: 'white'}} >Home</Link>
-            </Button>
-            <Button variant="outlined" >
-              <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} >Contact Us</Link>
-            </Button>
         </Stack>
 
         {/* Right side stack */}
-        <Stack direction="column" padding={10} gap={2}>
+        <Stack direction="column" gap={2} className="p-4">
           <FTMap position={position}></FTMap>
           <Reviews foodTruck={foodTruck}></Reviews>
         </Stack>
       </Stack>
 
+      <Stack className="pt-0">
+        <Button variant="outlined" className="">
+          <Link legacyBehavior href={{
+                  pathname: '/'
+                }} style={{textDecoration: 'none', color: 'white'}} className="" >Home</Link>
+        </Button>
+        <br/>
+          <Button variant="outlined" className="" >
+          <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} className="w-full h-full">Contact Us</Link>
+        </Button>
+      </Stack>
       <DropDown URL={URL}></DropDown>
+
     </section>
   );
 }
+

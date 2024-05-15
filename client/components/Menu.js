@@ -210,28 +210,36 @@ export default function Menu(props) {
     );
 
   return (
+
+    <>
     <Card
       sx={{
         backgroundColor: "#105372",
-        padding: 3,
         height: "430px",
-        overflowY: "auto",
+        overflowY:"auto"
       }}
     >
-      <Stack direction="row" gap={1}>
-        <Button variant="outlined" onClick={handleMenuClick}>
-          Menu
-        </Button>
-        <Button variant="outlined" onClick={handlePromotionsClick}>
-          Promotions/Events
-        </Button>
-        <Button variant="outlined" onClick={handleAddEventClick}>
-          Add Event
-        </Button>
-      </Stack>
-
+      <div className="bg-inherit w-11/12 bg-black relative">
+        <div className="h-20 pt-5 pl-5 bg-inherit" >
+          <Stack direction="row" gap={1}>
+            <Button variant="outlined" onClick={handleMenuClick}>
+              Menu
+            </Button>
+            <Button variant="outlined" onClick={handlePromotionsClick}>
+              Promotions/Events
+            </Button>
+            <Button variant="outlined" onClick={handleAddEventClick}>
+              Add Event
+            </Button>
+          </Stack>
+          <div className="bg-black w-full"></div>
+        </div>
+      </div>
+      <div className="py-18">
       {showAddEventForm && (
-        <form onSubmit={handleAddEventSubmit}>
+        <form 
+        className="py-20"
+        onSubmit={handleAddEventSubmit}>
           <TextField
             label="Start Date"
             name="startDate"
@@ -273,11 +281,15 @@ export default function Menu(props) {
       )}
 
       {/* Conditionally rendering content */}
-      {activeView === "menu" && <div>{menuItems}</div>}
-      {activeView === "promotions" && <div>{promotions}</div>}
+      {activeView === "menu" && <div className="overflow-auto">{menuItems}</div>}
+      {activeView === "promotions" && <div className="">{promotions}</div>}
 
       <Typography color="white"></Typography>
       <pre></pre>
+      </div>
+      
     </Card>
+    </>
+
   );
 }

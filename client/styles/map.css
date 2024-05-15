@@ -33,6 +33,9 @@
 
 .halal{
     display: flex;
+    width: 50px;
+    font-size: x-small;
+    height: 25px;
     justify-content: center;
     align-items: center;
     padding: 10px;
@@ -45,6 +48,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 50px;
+    font-size: x-small;
+    height: 25px;
     padding: 10px;
     border-radius: 50px;
     background-color:#008000;
@@ -55,6 +61,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 50px;
+    font-size: x-small;
+    height: 25px;
     padding: 10px;
     border-radius: 50px;
     background-color: #f15d0d;
@@ -80,3 +89,7 @@
     border-radius: 50%; 
     align-items: center;
 }
+
+.gm-style-iw button[title="Close"] {
+    display: none !important;
+  }

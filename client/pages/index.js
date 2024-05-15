@@ -1,7 +1,8 @@
+"use client";
 import { useState } from "react"
-import Topbar from "../compenents/topbar";
-import Sidebar from "../compenents/sidebar";
-import FoodTruckMap from "../compenents/map";
+import Topbar from "../components/topbar";
+import Sidebar from "../components/sidebar";
+import FoodTruckMap from "../components/map";
 require('dotenv').config();
 
 function Index() {
@@ -12,10 +13,9 @@ function Index() {
   };
   const [center, setCenter] = useState({ lat: 40.7661914, lng: -73.958878 });
   return (
-    <div style={{  height: "100vh" }}>
-
+    <div className="h-screen">
       <Topbar selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck} visibleMarkers={visibleMarkers} setCenter={setCenter} />
-      <div style={{ display: "flex", height: "100vh" }}>
+      <div className="flex h-screen">
         <Sidebar selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck} visibleMarkers={visibleMarkers} setCenter={setCenter}/>
         <FoodTruckMap selectedTruck={selectedTruck} setSelectedTruck={setSelectedTruck} updateVisibleMarkers={updateVisibleMarkers} center={center} setCenter={setCenter}/>
       </div>

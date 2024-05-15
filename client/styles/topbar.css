@@ -1,6 +1,6 @@
 .topbar {
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 15%;
   right: 0;
   height: 110px;
@@ -27,7 +27,6 @@
 
 
 .topbar-search-container{
-    width: 1000px;
     height: 50px;
     text-align: left;
     margin-bottom: 20px;
@@ -55,7 +54,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     z-index: 100;
-    width: 960px;
   }
   
   .topbar-search-results li {

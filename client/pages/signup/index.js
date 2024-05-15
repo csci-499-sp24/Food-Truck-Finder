@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Validation from '../../compenents/SignupValidation';
+import Validation from '../../components/SignupValidation';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
-import { storeSession } from '@/compenents/lib';
+import { storeSession } from '@/components/lib';
 
 export default function Signup() {
     const router = useRouter();

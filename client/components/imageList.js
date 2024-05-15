@@ -36,7 +36,7 @@ const ImageWithPreviewModal = ({ url }) => {
         </div>
       )}
 
-      <img src={url} width={100} height={100} onClick={() => setOpen(true)} />
+      <img src={url} className="h-32 px-1" onClick={() => setOpen(true)} />
     </div>
   );
 };
@@ -67,21 +67,20 @@ export default function ImageList(props) {
 
   return (
     <>
-      <Card
+      {images.length > 0 && <Card
         sx={{
           backgroundColor: "#105372",
           padding: 3,
-          height: "110px",
-          overflowX: "auto",
-          display: "flex",
-          gap: "5px",
+          height: "170px",
+          overflowX:"auto"
         }}
+        className="flex flex-row"
       >
         {images &&
           images.map((item, index) => (
             <ImageWithPreviewModal url={item.imageUrl} key={index} style={{ flex: "0 0 auto" }} />
           ))}
-      </Card>
+      </Card>}
     </>
   );
 }

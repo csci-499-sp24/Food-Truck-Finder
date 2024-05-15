@@ -1,8 +1,11 @@
 import React from "react";
 import { AdvancedMarker, Marker, Pin } from "@vis.gl/react-google-maps";
+import Image from "next/image";
+import '@/styles/globals.css';
 
 const CustomMarker = ({ foodTruck, onClick}) => {
-  const { vegan, halal, mexican, lat, lng } = foodTruck;
+  let collisionbehavior = google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY;
+  const { vegan, halal, mexican, lat, lng, review_count } = foodTruck;
   let pinColor = {
     background: "#FF0000", // Default color
     glyphColor: "#000",
@@ -46,18 +49,17 @@ const CustomMarker = ({ foodTruck, onClick}) => {
   };
 
   return (
-    <Marker
-      position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
-      onClick={() => onClick(foodTruck)}
-      title={foodTruck.name}
-      label={{
-        text: foodTruck.name,
-        color: pinColor.background,
-        fontSize: "14px",
-        fontWeight: "bold",
-      }}
-      icon={icon}
-    ></Marker>
+    <AdvancedMarker
+          position={{ lat: parseFloat(lat), lng: parseFloat(lng) }}
+          onClick={() => onClick(foodTruck)}
+          collisionBehavior={collisionbehavior}
+          zIndex={review_count}
+          className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300"
+        >
+          <Pin {...pinColor} scale={1.5}>
+            <Image src='/fticon.png' width={25} height={25} ></Image>
+          </Pin>
+    </AdvancedMarker>
   );
 };
 
