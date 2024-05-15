@@ -16,7 +16,7 @@ const fetchData = async (id) => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/info`,
       {
-        next: { revalidate: 3600, tags: ["pageRefresh"] },
+        next: { revalidate: 60, tags: ["pageRefresh"] },
       }
     );
     if (!response.ok) {
@@ -55,7 +55,7 @@ const fetchImageList = async (id) => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/foodtrucks/${id}/images`,
       {
-        next: { revalidate: 3600, tags: ["pageRefresh"] },
+        next: { revalidate: 60, tags: ["pageRefresh"] },
       }
     );
 
@@ -130,10 +130,6 @@ export default async function Page(slug) {
           <Link legacyBehavior href={{
                   pathname: '/'
                 }} style={{textDecoration: 'none', color: 'white'}} className="" >Home</Link>
-        </Button>
-        <br/>
-          <Button variant="outlined" className="" >
-          <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} className="w-full h-full">Contact Us</Link>
         </Button>
       </Stack>
       <DropDown URL={URL}></DropDown>

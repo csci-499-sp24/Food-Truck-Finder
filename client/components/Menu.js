@@ -1,159 +1,18 @@
-// "use client";
-// import { Button, Card, Stack, Typography } from "@mui/material";
-// import { useEffect, useState } from "react";
-
-// export default function Menu(props) {
-//   const foodTruck = props.foodTruck;
-
-//   // State to track the active view
-//   const [activeView, setActiveView] = useState("menu");
-
-//   // Event handler for Menu button
-//   const handleMenuClick = () => {
-//     setActiveView("menu");
-//   };
-//   // Event handler for Promotions/Events button
-//   const handlePromotionsClick = () => {
-//     setActiveView("promotions");
-//   };
-//   const menuItems =
-//     foodTruck.menu && foodTruck.menu.length > 0 ? (
-//       foodTruck.menu.map((item, index) => (
-//         <div
-//           key={index}
-//           style={{
-//             backgroundColor: "#02092c",
-//             padding: "10px",
-//             margin: "10px",
-//             borderRadius: "10px",
-//             color: "white",
-//           }}
-//         >
-//           {typeof item.price === "number" ? (
-//             <h4 key={index}>
-//               {item.item}: ${item.price.toFixed(2)}
-//             </h4>
-//           ) : (
-//             <h4 key={index}>
-//               {item.item}: ${parseFloat(item.price).toFixed(2)}
-//             </h4>
-//           )}
-//         </div>
-//       ))
-//     ) : (
-//       <p>No menu available for this cart</p>
-//     );
-
-//   const promotions =
-//     foodTruck.events && foodTruck.events.length > 0 ? (
-//       foodTruck.events.map((event, index) => (
-//         <div
-//           key={index}
-//           style={{
-//             backgroundColor: "#02092c",
-//             padding: "10px",
-//             margin: "10px",
-//             borderRadius: "10px",
-//             color: "white",
-//           }}
-//         >
-//           <h3>
-//             {event.start_date.substring(0, 10) +
-//               " - " +
-//               event.end_date.substring(0, 10)}
-//           </h3>
-//           <p>{event.event_description}</p>
-//         </div>
-//       ))
-//     ) : (
-//       <p>No promotions available at the momment</p>
-//     );
-//   return (
-//     <>
-//       <Card
-//         sx={{
-//           backgroundColor: "#105372",
-//           padding: 3,
-//           height: "430px",
-//           overflowY: "auto",
-//         }}
-//       >
-//         <Stack direction={"row"} gap={1}>
-//           <Button variant="outlined" onClick={handleMenuClick}>
-//             Menu
-//           </Button>
-//           <Button variant="outlined" onClick={handlePromotionsClick}>
-//             Promotions/Events
-//           </Button>
-//         </Stack>
-//         {/* Conditionally rendering content */}
-//         {activeView === "menu" && <div>{menuItems}</div>}
-
-//         {activeView === "promotions" && <div>{promotions}</div>}
-
-//         <Typography color="white"></Typography>
-//         <pre></pre>
-//       </Card>
-//     </>
-//   );
-// }
-
-////////////////
-/////////////////
-////////////
-
 "use client";
-import { Button, Card, Stack, Typography, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-
+import { Button, Card, Stack, Typography} from "@mui/material";
+import { useState } from "react";
 
 export default function Menu(props) {
   const foodTruck = props.foodTruck;
 
   const [activeView, setActiveView] = useState("menu");
-  const [showAddEventForm, setShowAddEventForm] = useState(false);
-  const [eventFormData, setEventFormData] = useState({
-    startDate: "",
-    endDate: "",
-    eventDetails: "",
-    location: "",
-    startHour: "",
-    endHour: "",
-  });
 
   const handleMenuClick = () => {
     setActiveView("menu");
-    setShowAddEventForm(false); // Close form if switching view
   };
 
   const handlePromotionsClick = () => {
     setActiveView("promotions");
-    setShowAddEventForm(false); // Close form if switching view
-  };
-
-  const handleAddEventClick = () => {
-    setShowAddEventForm(true);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEventFormData({ ...eventFormData, [name]: value });
-  };
-
-  const handleAddEventSubmit = (e) => {
-    e.preventDefault();
-    // Here you can handle the submission of the event data
-    console.log("Event form submitted:", eventFormData);
-    // Reset form data and close the form
-    setEventFormData({
-      startDate: "",
-      endDate: "",
-      eventDetails: "",
-      location: "",
-      startHour: "",
-      endHour: "",
-    });
-    setShowAddEventForm(false);
   };
 
   const menuItems =
@@ -210,86 +69,38 @@ export default function Menu(props) {
     );
 
   return (
-
     <>
-    <Card
-      sx={{
-        backgroundColor: "#105372",
-        height: "430px",
-        overflowY:"auto"
-      }}
-    >
-      <div className="bg-inherit w-11/12 bg-black relative">
-        <div className="h-20 pt-5 pl-5 bg-inherit" >
-          <Stack direction="row" gap={1}>
-            <Button variant="outlined" onClick={handleMenuClick}>
-              Menu
-            </Button>
-            <Button variant="outlined" onClick={handlePromotionsClick}>
-              Promotions/Events
-            </Button>
-            <Button variant="outlined" onClick={handleAddEventClick}>
-              Add Event
-            </Button>
-          </Stack>
-          <div className="bg-black w-full"></div>
+      <Card
+        sx={{
+          backgroundColor: "#105372",
+          height: "430px",
+          overflowY: "auto",
+        }}
+      >
+        <div className="bg-inherit w-11/12 bg-black relative">
+          <div className="h-20 pt-5 pl-5 bg-inherit">
+            <Stack direction="row" gap={1}>
+              <Button variant="outlined" onClick={handleMenuClick}>
+                Menu
+              </Button>
+              <Button variant="outlined" onClick={handlePromotionsClick}>
+                Promotions/Events
+              </Button>
+            </Stack>
+            <div className="bg-black w-full"></div>
+          </div>
         </div>
-      </div>
-      <div className="py-18">
-      {showAddEventForm && (
-        <form 
-        className="py-20"
-        onSubmit={handleAddEventSubmit}>
-          <TextField
-            label="Start Date"
-            name="startDate"
-            value={eventFormData.startDate}
-            onChange={handleInputChange}
-          />
-          <TextField
-            label="End Date"
-            name="endDate"
-            value={eventFormData.endDate}
-            onChange={handleInputChange}
-          />
-          <TextField
-            label="Event Details"
-            name="eventDetails"
-            value={eventFormData.eventDetails}
-            onChange={handleInputChange}
-          />
-          <TextField
-            label="Location"
-            name="location"
-            value={eventFormData.location}
-            onChange={handleInputChange}
-          />
-          <TextField
-            label="Start Hour"
-            name="startHour"
-            value={eventFormData.startHour}
-            onChange={handleInputChange}
-          />
-          <TextField
-            label="End Hour"
-            name="endHour"
-            value={eventFormData.endHour}
-            onChange={handleInputChange}
-          />
-          <Button type="submit">Submit Event</Button>
-        </form>
-      )}
+        <div className="py-18">
+          {/* Conditionally rendering content */}
+          {activeView === "menu" && (
+            <div className="overflow-auto">{menuItems}</div>
+          )}
+          {activeView === "promotions" && <div className="">{promotions}</div>}
 
-      {/* Conditionally rendering content */}
-      {activeView === "menu" && <div className="overflow-auto">{menuItems}</div>}
-      {activeView === "promotions" && <div className="">{promotions}</div>}
-
-      <Typography color="white"></Typography>
-      <pre></pre>
-      </div>
-      
-    </Card>
+          <Typography color="white"></Typography>
+          <pre></pre>
+        </div>
+      </Card>
     </>
-
   );
 }
