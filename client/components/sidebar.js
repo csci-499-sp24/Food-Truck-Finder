@@ -65,77 +65,23 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
     const cords = { lat: truck.lat, lng: truck.lng };
     setCenter(cords);
   };
+
+
+  const signout = async () => {
+    await logout();
+    router.reload();
+  };
+
   return (
     <>
     <div className="sidebar h-screen">
       {/* If logged in */}
       {/* Sign-in and sign-up buttons */}
-      {/* {!hasCookie("name") && (
-        <div className="sign-buttons">
-          <Link legacyBehavior href="/login">
-            <a
-              className="sign-in btn btn-primary"
-            >
-              Sign In
-            </a>
-          </Link>
-          <Link legacyBehavior href="/signup">
-            <a className="sign-up btn btn-secondary">
-              Sign Up
-            </a>
-          </Link>
-        </div>
-      )} */}
+      
       {/* Sidebar content goes here */}
       <h1 className="sidebar-header">
         Food Truck Finder
       </h1>
-      {/* <div className="search-container">
-        <input className="search-bar"
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search Food Trucks"
-        />
-        <div className="filter-button-container">
-          <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
-          <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
-          <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
-        </div>
-        
-      {searchTerm.trim() !== '' && (
-        <ul style={{ color: "white", paddingTop: "20px"}}>
-          {searchFoodTrucks.map((foodTruck) => (
-            <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
-              <span onMouseEnter={() => handleTruckHover(foodTruck)}>
-                <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
-                  <a
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      transition: "text-decoration 0.3s",
-                    }}
-                  >
-                    <span
-                      onMouseEnter={(e) =>
-                        (e.target.style.textDecoration = "underline")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.textDecoration = "none")
-                      }
-                    >
-                      {foodTruck.name}
-                      
-                    </span>
-                    <TruckDetail selectedTruck={foodTruck} />
-                  </a>
-                </Link>
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>  */}
 
       {/* Trucks near you */}
       <div className="trucks-nearby-container">
@@ -148,10 +94,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
               <span onMouseEnter={() => handleTruckHover(foodTruck)}>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                   <a className="truck-link">
-                    {/* <span>
-                      {foodTruck.name}
-                    </span> */}
-                    <TruckDetail selectedTruck={foodTruck} />
+                    <TruckDetail selectedTruck={foodTruck}/>
                   </a>
                 </Link>
               </span>

@@ -4,7 +4,11 @@ import { styled } from '@mui/system';
 import { useDebounce } from 'use-debounce';
 import "../styles/topbar.css";
 import Link from "next/link";
+import { MdFilterListAlt } from "react-icons/md";
 import { getCookie, hasCookie, deleteCookie } from "cookies-next";
+import { logout } from './lib';
+import { useRouter } from 'next/router';
+
 
 
 
@@ -16,6 +20,10 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
   const [isMexicanChecked, setIsMexicanChecked] = useState(false);
   const [debounceSearch] = useDebounce(searchTerm, 500);
   const [options, setOptions] = useState([]);
+
+
+  const router = useRouter();
+  const [showAll, setShowAll] = useState(false);
   
 
   useEffect(() => {
@@ -63,73 +71,74 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
   };
 
   return (
-    <div className="topbar">
-      <div className="topbar-search-container">
-        <input className="topbar-search-bar"
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search Food Trucks"
-        />
-        <div className="filter-button-container">
-          <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
-          <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
-          <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
+    <div className="topbar absolute">
+      <div className='w-11/12 flex-col'>
+        <div className='w-full flex flex-row h-12'>
+          <div className="w-full flex flex-row-reverse bg-white rounded-xl h-12">
+            <MdFilterListAlt className='pl-2 pt-0 text-5xl pr-3' onClick={()=>setShowAll(!showAll)} />
+            <div className={`${ showAll ? "" : "hidden" } h-12 pt-2 flex pr-0 inset-y-0 right-0 rounded-xl` }>
+              <button className={`filter-button highlight-button ${isVeganChecked ? 'vegan-highlighted' : ''}`} onClick={() => setIsVeganChecked(!isVeganChecked)}> Vegan </button>
+              <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
+              <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
+            </div> 
+            <input className="w-full h-full pl-4 rounded-xl hidden"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search Food Trucks"
+            />
+            {/* Sign-in and sign-up buttons */}
         </div>
-        {/* Sign-in and sign-up buttons */}
-      
-        
-      {searchTerm.trim() !== '' && (
-        <ul className="topbar-search-results">
-          {searchFoodTrucks.slice(0,15).map((foodTruck) => (
-            <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
-              <span>
-                <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
+          <div className="h-12 w-36 pt-1 max-md:hidden">
+            {!hasCookie("name") ? (
+                <Link legacyBehavior href="/login" className="">
                   <a
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      transition: "text-decoration 0.3s",
-                    }}
+                    className="sign-in btn btn-primary"
                   >
-                    <span
-                      onMouseEnter={(e) =>
-                        (e.target.style.textDecoration = "underline")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.textDecoration = "none")
-                      }
-                    >
-                      {foodTruck.name}
-                    </span>
+                    Sign In
                   </a>
                 </Link>
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
+            ) :
+              (
+                <div className="sign-in btn btn-primary">
+                    <a onClick={signout}>Sign Out</a>
+                </div>
+              )
+            }
+      </div>
     </div>
-    {hasCookie("name") &&
-    <div className="topbar-signout-button">
-      <Link legacyBehavior href={"/logout"}>
-        <a onClick={signout}>Sign Out</a>
-      </Link>
-    </div>}
-    {!hasCookie("name") && (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: '20px' }}>
-          <Link legacyBehavior href={"/login"}>
-            <a className="sign-in topbar-sign-in" style={{ marginRight: '10px', padding: '8px 16px', marginLeft: '20px' }}>
-              Sign In
-            </a>
-          </Link>
-          <Link legacyBehavior href={"/signup"}>
-            <a className="sign-up topbar-sign-up" style={{ padding: '8px 16px', marginLeft: '20px' }}>
-              Sign Up
-            </a>
-          </Link>
-        </div>
-      )}
+
+        {searchTerm.trim() !== '' && (
+          <ul className="topbar-search-results w-11/12">
+            {searchFoodTrucks.slice(0,15).map((foodTruck) => (
+              <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
+                <span>
+                  <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
+                    <a
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                        transition: "text-decoration 0.3s",
+                      }}
+                    >
+                      <span
+                        onMouseEnter={(e) =>
+                          (e.target.style.textDecoration = "underline")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.textDecoration = "none")
+                        }
+                      >
+                        {foodTruck.name}
+                      </span>
+                    </a>
+                  </Link>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+  </div>  
     </div>
   );
 }

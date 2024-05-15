@@ -11,12 +11,15 @@ import CustomMarker from "./CustomMarker";
 import Rating from 'react-rating-stars-component';
 import InfoWindowData from "./infowindowdata";
 import "@/styles/map.css"
+import { useRouter } from "next/navigation";
 require('dotenv').config();
 
 function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, center, setCenter }) {
     const [foodTrucks, setFoodTrucks] = useState([]);
     const [truckImages, setTruckImages] = useState([]);
     var tempCenter = center;
+
+    const router = useRouter();
     
     const handleCenterChange = (ev) => {
       tempCenter = ev.detail.center;
@@ -76,7 +79,6 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log("User's current position:", { latitude, longitude });
           setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -120,43 +122,8 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
                  maxWidth={350}
                  minWidth={350}
                  >
-                  <InfoWindowData selectedTruck={selectedTruck} truckImages={truckImages}/>
-
-                    {/* <div>
-                      <h5>
-                          {selectedTruck.name}
-                      </h5>
-                      <h6>{selectedTruck.address}</h6>
-                      <div className="rating">
-                        <Rating value={selectedTruck.ratings/selectedTruck.review_count}
-                          count={5}
-                          size={24}
-                          activeColor="gold"
-                          inactiveColor="#FFF"
-                          edit={false}>
-                        </Rating>  
-                        <div className="review-count"> ({selectedTruck.review_count}) </div>
-                        </div>
-                      <br />
-                      <div className="cuisines-container">
-                      <div className="cuisines">
-
-                        <p className={selectedTruck.vegan ? "vegan" : ""}>{selectedTruck.vegan ? "Vegan": null}</p>
-                        <p className={selectedTruck.halal ? "halal" : ""}>{selectedTruck.halal ? "Halal": null}</p>
-                        <p className={selectedTruck.mexican ? "mexican" : ""}>{selectedTruck.mexican ? "Mexican": null}</p>
-                        </div>
-                        <div className="image-container">
-                        {truckImages.length > 0 ? (
-                        <img src={truckImages[0].imageUrl} alt="Food Truck" className="food-truck-image"/>
-                        ) : (
-                        <img src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg" alt="Default" className="food-truck-image"/>
-                        )}
-                      </div>
-                      </div>
-                      <Link legacyBehavior href={`/foodtruck/${selectedTruck.id}`}>
-                        <a className="truck-card-link">Go to Food Truck Page</a>
-                      </Link>
-                    </div> */}
+                    <button className="w-full h-full bg-black absolute z-10 bg-transparent" onClick={() => router.push(`/foodtruck/${selectedTruck.id}`)}></button>
+                    <InfoWindowData selectedTruck={selectedTruck} truckImages={truckImages} className="relative z-0"/>
                  </InfoWindow>
                  )}
                  </Map>

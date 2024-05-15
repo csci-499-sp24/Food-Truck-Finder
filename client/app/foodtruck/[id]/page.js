@@ -108,32 +108,35 @@ export default async function Page(slug) {
   };
   return (
     <section className={styles.container}>
-      <Stack direction={"row"} gap={4}>
+      <Stack className="flex lg:flex-row" >
         {/* left side */}
-        <Stack direction="column" flexGrow={1} gap={4} padding={4}>
+        <Stack direction="column" flexGrow={1} gap={4} padding={4} >
             <FTTitle foodTruck={foodTruck} id={id}></FTTitle>
             <Address foodTruck ={foodTruck}></Address>
             <ImageList id={id}></ImageList>
             <Menu foodTruck ={foodTruck}></Menu>
-            
-            <Button variant="outlined" >
-              <Link legacyBehavior href={{
-                pathname: '/'
-              }} style={{textDecoration: 'none', color: 'white'}} >Home</Link>
-            </Button>
-            <Button variant="outlined" >
-              <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} >Contact Us</Link>
-            </Button>
         </Stack>
 
         {/* Right side stack */}
-        <Stack direction="column" padding={10} gap={2}>
+        <Stack direction="column" gap={2} className="p-4">
           <FTMap position={position}></FTMap>
           <Reviews foodTruck={foodTruck}></Reviews>
         </Stack>
       </Stack>
 
+      <Stack className="pt-0">
+        <Button variant="outlined" className="">
+          <Link legacyBehavior href={{
+                  pathname: '/'
+                }} style={{textDecoration: 'none', color: 'white'}} className="" >Home</Link>
+        </Button>
+        <br/>
+          <Button variant="outlined" className="" >
+          <Link legacyBehavior href={{ pathname: '/' }} style={{textDecoration: 'none', color: 'white'}} className="w-full h-full">Contact Us</Link>
+        </Button>
+      </Stack>
       <DropDown URL={URL}></DropDown>
+
     </section>
   );
 }
