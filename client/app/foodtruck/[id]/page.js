@@ -140,5 +140,4 @@ export default async function Page(slug) {
     </section>
   );
 }
-  );
-}
+
