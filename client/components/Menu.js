@@ -181,7 +181,7 @@ export default function Menu(props) {
         </div>
       ))
     ) : (
-      <p>No menu available for this cart</p>
+      <p>No menu available for this cart!!! Look above in the pictures section!</p>
     );
 
   const promotions =
