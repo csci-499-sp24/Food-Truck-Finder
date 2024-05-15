@@ -21,9 +21,16 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
   const [debounceSearch] = useDebounce(searchTerm, 500);
   const [options, setOptions] = useState([]);
 
+  const[signedIn, setSignedIn] = useState(false);
+
 
   const router = useRouter();
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(()=>{
+    setSignedIn(hasCookie("name"));
+  }
+  ,[]);
   
 
   useEffect(() => {
@@ -63,7 +70,6 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
     router.reload();
   };
 
-
   const handleTruckHover = (truck) => {
     setSelectedTruck(truck);
     const cords = { lat: truck.lat, lng: truck.lng };
@@ -90,7 +96,7 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
             {/* Sign-in and sign-up buttons */}
         </div>
           <div className="h-12 w-36 pt-1 max-md:hidden">
-            {!hasCookie("name") ? (
+            {!signedIn ? (
                 <Link legacyBehavior href="/login" className="">
                   <a
                     className="sign-in btn btn-primary"
@@ -104,8 +110,11 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
                     <a onClick={signout}>Sign Out</a>
                 </div>
               )
+
+
+
             }
-      </div>
+          </div>
     </div>
 
         {searchTerm.trim() !== '' && (

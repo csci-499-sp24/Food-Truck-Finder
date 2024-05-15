@@ -23,6 +23,7 @@ const fetchData = async (id) => {
       throw new Error("Failed to fetch food truck");
     }
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching food truck:", error);
@@ -120,7 +121,7 @@ export default async function Page(slug) {
         {/* Right side stack */}
         <Stack direction="column" gap={2} className="p-4">
           <FTMap position={position}></FTMap>
-          <Reviews foodTruck={foodTruck}></Reviews>
+          <Reviews id={id} ></Reviews>
         </Stack>
       </Stack>
 
