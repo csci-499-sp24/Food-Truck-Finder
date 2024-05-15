@@ -191,72 +191,6 @@ export default function Page(slug) {
               />
             </div>
 
-    const navigateToTruck = () => {
-        router.back();
-    };
-
-    return (
-        <section className={styles.container} style={{ height: "100vh" }}>
-            <Stack direction="column" gap={4} padding={2}>
-                <Typography
-                    color={"white"}
-                    textAlign={"center"}
-                    fontWeight={"bold"}
-                    fontSize={50}
-                    >
-                    Add a Review
-                </Typography>
-            </Stack>
-
-            <Stack direction="column" justifyContent="center" alignItems="center" paddingTop={4} gap={6}>
-                <Card sx={{ backgroundColor: "#ffffff", padding: 2, width: "50%", overflowY: "auto" }}>
-                    <Typography
-                        color={"black"}
-                        textAlign={"center"}
-                        fontWeight={"bold"}
-                        fontSize={35}
-                        sx={{ paddingBottom: "10px" }}
-                    >
-                        {foodTruck.foodTruck.name}
-                    </Typography>
-
-                    <form onSubmit={handleSubmit} style={{ margin: "auto", marginBottom: "20px", textAlign: "center" }}>
-                        <div style={{ padding: "10px 0" }}>
-                            <Typography color="white" variant="h6" align="center">
-                                Overall Rating
-                            </Typography>
-                            <Rating
-                                name="rating"
-                                value={rating}
-                                onChange={(event, newValue) => {
-                                    setRating(newValue);
-                                }}
-                            />
-                        </div>
-
-                        <TextField
-                            sx={{ width: "80%", background: "white", borderRadius: "5px"}}
-                            id="outlined-multiline-static"
-                            placeholder="Write your review here"
-                            multiline
-                            rows={7}
-                            variant="outlined"
-                            value={review}
-                            required
-                            onChange={(e) => setReview(e.target.value)}
-                        >
-                        </TextField>
-
-                        <div style={{ marginTop: "30px" }}>
-                            <Button variant="outlined" type="submit">
-                                Submit
-                            </Button>
-                        </div>
-                    </form>
-                </Card>
-                
-                <Button variant="outlined" type="submit" style={{ width: "50%" }} onClick={navigateToTruck}>
-                    Back
             <div>
                 {showDropzone && (
                     <div style={{ padding: "10px 0" }}>
@@ -277,7 +211,6 @@ export default function Page(slug) {
                     style={{ marginTop: "10px", position: "center", marginBottom: "10px" }}
                 >
                     Delete Image
-main
                 </Button>
                 </div>
             </div>
