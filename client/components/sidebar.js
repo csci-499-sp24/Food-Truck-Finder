@@ -74,7 +74,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
 
   return (
     <>
-    <div className="sidebar h-screen">
+    <div className="sidebar h-screen max-md:hidden">
       {/* If logged in */}
       {/* Sign-in and sign-up buttons */}
       
