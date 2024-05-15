@@ -8,6 +8,7 @@ import { Favorite, FavoriteBorder, SystemSecurityUpdateGoodOutlined } from '@mui
 import { getCookie, hasCookie } from "cookies-next";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
+import Rating from 'react-rating-stars-component';
 
 export default function FTTitle(props) {
     const router = useRouter();
@@ -99,7 +100,7 @@ export default function FTTitle(props) {
                 fontSize={20}
                 onMouseEnter={() => setIsFavorite(true)}
                 onMouseLeave={() => setIsFavorite(favorited)}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',  marginBottom: "-60px" }}
                 
             >
                 Add to Favorite:
@@ -119,9 +120,21 @@ export default function FTTitle(props) {
         fontWeight={"bold"}
         fontSize={20}
         >
-        Rating: {(foodTruck.foodTruck.ratings / foodTruck.foodTruck.review_count).toFixed(2)} /5
         </Typography>
 
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Rating
+                value={foodTruck.foodTruck.ratings / foodTruck.foodTruck.review_count}
+                count={5}
+                size={24}
+                activeColor="gold"
+                inactiveColor="#FFF"
+                edit={false}
+            />
+            <div style={{ marginLeft: "5px" }}>
+                ({foodTruck.foodTruck.review_count})
+            </div>
+        </div>
         </>
     )
 }
