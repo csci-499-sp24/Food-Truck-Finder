@@ -119,9 +119,9 @@ export default function Page(slug) {
             </Stack>
 
             <Stack direction="column" justifyContent="center" alignItems="center" paddingTop={4} gap={6}>
-                <Card sx={{ backgroundColor: "#105372", padding: 2, width: "50%", overflowY: "auto" }}>
+                <Card sx={{ backgroundColor: "#ffffff", padding: 2, width: "50%", overflowY: "auto" }}>
                     <Typography
-                        color={"white"}
+                        color={"black"}
                         textAlign={"center"}
                         fontWeight={"bold"}
                         fontSize={35}

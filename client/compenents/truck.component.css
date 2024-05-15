@@ -1,0 +1,15 @@
+.container {
+    /* Set background image */
+    background-image: url('picnic.jpg'); /* Update with your image path */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image within the container */
+    padding: 20px;
+    min-height: 100vh; /* Ensure full viewport height */
+  }
+  
+  .errorMessage {
+    margin: auto;
+    font-size: 30px;
+    color: white; /* Set text color to white for visibility */
+  }
+  

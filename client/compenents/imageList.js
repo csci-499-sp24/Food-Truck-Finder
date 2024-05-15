@@ -7,7 +7,7 @@ export default function ImageList(props) {
         <>
             <Card
                 sx={{
-                    backgroundColor: "#105372",
+                    backgroundColor: "#ffffff",
                     padding: 3,
                     height: "110px",
                     overflowY: "auto",
