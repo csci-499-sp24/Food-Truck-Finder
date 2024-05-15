@@ -81,7 +81,7 @@ function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
               <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
               <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
             </div> 
-            <input className="w-full h-full pl-4 rounded-xl hidden"
+            <input className="w-full h-full pl-4 rounded-xl"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
