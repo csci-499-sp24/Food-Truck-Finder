@@ -143,10 +143,18 @@ app.get('/api/foodtrucks/:id/info', async (req, res) => {
             [id]
         );
         const menu = menuQuery.rows;
+
+        let today = new Date().toISOString().slice(0, 10)
+        const eventQuery = await itemsPool.query(
+            'Select * from public."Events" WHERE ft_id = $1 and end_date > $2',
+            [id, today]
+        )
+        const events = eventQuery.rows;
         const result = {
             foodTruck,
             reviews,
             menu,
+            events
         };
 
         res.json(result);

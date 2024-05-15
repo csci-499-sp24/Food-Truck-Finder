@@ -184,6 +184,7 @@ export default function Menu(props) {
       <p>No menu available for this cart</p>
     );
 
+  console.log(foodTruck.events);
   const promotions =
     foodTruck.events && foodTruck.events.length > 0 ? (
       foodTruck.events.map((event, index) => (

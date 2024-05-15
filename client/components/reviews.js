@@ -27,6 +27,7 @@ export default function Reviews(props) {
             };
 
             const r = await fetchData();
+            console.log(r);
           
             setFoodTruck(r);
         }
@@ -64,7 +65,7 @@ export default function Reviews(props) {
                     overflowY: "auto",
                   }}>
                     
-                    {foodTruck.reviews && foodTruck.reviews.length > 0 ? (
+                    {foodTruck?.reviews && foodTruck?.reviews.length > 0 ? (
                         foodTruck.reviews.map((review, index) => (
                             <div key={index} className="reviews">
                                 <h4>{review.name}: {review.review} </h4>
