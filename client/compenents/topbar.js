@@ -1,32 +1,27 @@
-import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import React, { useState, useEffect } from 'react';
+import { TextField, Autocomplete } from '@mui/material';
+import { styled } from '@mui/system';
+import { useDebounce } from 'use-debounce';
+import "../styles/topbar.css";
 import Link from "next/link";
 import { getCookie, hasCookie, deleteCookie } from "cookies-next";
-import { useRouter } from "next/router";
-import { Button } from "@mui/material";
-import { logout } from "./lib";
-import "@/styles/sidebar.css";
-import TruckDetail from "./truckDetail";
 
-require("dotenv").config();
 
-function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
-  const router = useRouter();
-  const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
+
+function TopBar({ setSelectedTruck, visibleMarkers, setCenter }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchFoodTrucks, setSearchFoodTrucks] = useState([]);
   const [isVeganChecked, setIsVeganChecked] = useState(false);
   const [isHalalChecked, setIsHalalChecked] = useState(false);
   const [isMexicanChecked, setIsMexicanChecked] = useState(false);
-
-  const languages = ["English", "Spanish"]; // List of languages
-
   const [debounceSearch] = useDebounce(searchTerm, 500);
-  const defaultSearch = "";
+  const [options, setOptions] = useState([]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (debounceSearch.trim() !== "") {
+        if (debounceSearch.trim() !== '') {
           const searchQuery = `search=${debounceSearch.trim()}`;
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/searchFoodTrucks?${searchQuery}`
@@ -60,42 +55,17 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
     router.reload();
   };
 
+
   const handleTruckHover = (truck) => {
     setSelectedTruck(truck);
     const cords = { lat: truck.lat, lng: truck.lng };
     setCenter(cords);
   };
+
   return (
-    <>
-      <div className="sidebar">
-        {/* If logged in */}
-        {hasCookie("name") && (
-          <>
-            <a className="sign-out">{"Hello, " + getCookie("name")}</a>
-            <Button onClick={signout}>Sign-out</Button>
-          </>
-        )}
-        {/* Sign-in and sign-up buttons */}
-        {/* {!hasCookie("name") && (
-        <div className="sign-buttons">
-          <Link legacyBehavior href="/login">
-            <a
-              className="sign-in btn btn-primary"
-            >
-              Sign In
-            </a>
-          </Link>
-          <Link legacyBehavior href="/signup">
-            <a className="sign-up btn btn-secondary">
-              Sign Up
-            </a>
-          </Link>
-        </div>
-      )} */}
-        {/* Sidebar content goes here */}
-        <h1 className="sidebar-header">Food Truck Finder</h1>
-        {/* <div className="search-container">
-        <input className="search-bar"
+    <div className="topbar">
+      <div className="topbar-search-container">
+        <input className="topbar-search-bar"
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -106,12 +76,14 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
           <button className={`filter-button highlight-button ${isHalalChecked ? 'halal-highlighted' : ''}`} onClick={() => setIsHalalChecked(!isHalalChecked)}> Halal </button>
           <button className={`filter-button highlight-button ${isMexicanChecked? 'mexican-highlighted' : ''}`} onClick={() => setIsMexicanChecked(!isMexicanChecked)}> Mexican </button>
         </div>
+        {/* Sign-in and sign-up buttons */}
+      
         
       {searchTerm.trim() !== '' && (
-        <ul style={{ color: "white", paddingTop: "20px"}}>
-          {searchFoodTrucks.map((foodTruck) => (
+        <ul className="topbar-search-results">
+          {searchFoodTrucks.slice(0,15).map((foodTruck) => (
             <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
-              <span onMouseEnter={() => handleTruckHover(foodTruck)}>
+              <span>
                 <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
                   <a
                     style={{
@@ -129,9 +101,7 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
                       }
                     >
                       {foodTruck.name}
-                      
                     </span>
-                    <TruckDetail selectedTruck={foodTruck} />
                   </a>
                 </Link>
               </span>
@@ -139,38 +109,29 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
           ))}
         </ul>
       )}
-    </div>  */}
-
-        {/* Trucks near you */}
-        <div className="trucks-nearby-container">
-          <h2 className="trucks-nearby">Trucks near you</h2>
-          <ul style={{ color: "white" }}>
-            {visibleMarkers.map((foodTruck) => (
-              <li key={foodTruck.id} onMouseEnter={(e) => e.stopPropagation()}>
-                <span onMouseEnter={() => handleTruckHover(foodTruck)}>
-                  <Link legacyBehavior href={`/foodtruck/${foodTruck.id}`}>
-                    <a className="truck-link">
-                      {/* <span>
-                      {foodTruck.name}
-                    </span> */}
-                      <TruckDetail selectedTruck={foodTruck} />
-                    </a>
-                  </Link>
-                </span>
-              </li>
-            ))}
-          </ul>
+    </div>
+    {hasCookie("name") &&
+    <div className="topbar-signout-button">
+      <Link legacyBehavior href={"/logout"}>
+        <a onClick={signout}>Sign Out</a>
+      </Link>
+    </div>}
+    {!hasCookie("name") && (
+        <div style={{ display: 'flex', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+          <Link legacyBehavior href={"/login"}>
+            <a className="sign-in topbar-sign-in" style={{ marginRight: '10px', padding: '8px 16px', marginLeft: '20px' }}>
+              Sign In
+            </a>
+          </Link>
+          <Link legacyBehavior href={"/signup"}>
+            <a className="sign-up topbar-sign-up" style={{ padding: '8px 16px', marginLeft: '20px' }}>
+              Sign Up
+            </a>
+          </Link>
         </div>
-
-        {/* Language dropdown */}
-        <select className="language-dropdown">
-          {languages.map((language, index) => (
-            <option key={index}>{language}</option>
-          ))}
-        </select>
-      </div>
-    </>
+      )}
+    </div>
   );
 }
 
-export default Sidebar;
+export default TopBar;

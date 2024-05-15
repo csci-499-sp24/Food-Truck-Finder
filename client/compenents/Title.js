@@ -119,7 +119,7 @@ export default function FTTitle(props) {
         fontWeight={"bold"}
         fontSize={20}
         >
-        Rating: {foodTruck.foodTruck.ratings / foodTruck.foodTruck.review_count} /5
+        Rating: {(foodTruck.foodTruck.ratings / foodTruck.foodTruck.review_count).toFixed(2)} /5
         </Typography>
 
         </>

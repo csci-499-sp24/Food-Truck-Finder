@@ -1,0 +1,113 @@
+.topbar {
+  position: absolute;
+  top: 10px;
+  left: 15%;
+  right: 0;
+  height: 110px;
+  background-color: black;
+  z-index: 1000; /* Ensures the topbar stays on top of the map */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%; /* Set width to 80% of the viewport */
+  margin: 0 auto; /* Center the topbar horizontally */
+  border-radius: 40px;
+}
+
+/* .topbar .search-bar {
+    width: 20%;
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    color: #333;
+    background-color: #fff;
+} */
+
+
+.topbar-search-container{
+    width: 1000px;
+    height: 50px;
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.topbar-search-bar{
+    
+    width: 100%;
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    color: #333;
+    background-color: #fff;
+}
+
+.topbar-search-results {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 100;
+    width: 960px;
+  }
+  
+  .topbar-search-results li {
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .topbar-search-results li:hover {
+    background-color: #f0f0f0;
+  }
+
+  
+
+  .topbar-signout-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 17px; 
+  }
+  
+  .topbar-signout-button {
+    background-color: #433f3f;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 17px; 
+  }
+  .topbar-sign-in{
+    display: flex;
+    justify-content: flex-start; /* Changed to align buttons to the left */
+    margin-bottom: 5px;
+    cursor: pointer;
+    margin-right: 10px; /* Updated margin-right value */
+    margin-left: 10px; /* Updated margin-left value */
+    padding: 8px 16px; /* Added padding */
+    border: 2px solid #433f3f; /* Highlighted box for sign-in button */
+    border-radius: 5px; /* Rounded corners for sign-in button */
+    color: #fff; /* Make the letters white */
+  }
+
+  .topbar-sign-up{
+    display: flex;
+    justify-content: flex-start; /* Changed to align buttons to the left */
+    margin-bottom: 5px;
+    margin-right: 10px; /* Updated margin-right value */
+    margin-left: 10px; /* Updated margin-left value */
+    cursor: pointer;
+    padding: 8px 16px; /* Added padding */
+    border: 2px solid #433f3f; /* Highlighted box for sign-up button */
+    border-radius: 5px; /* Rounded corners for sign-up button */
+    color: #fff; /* Make the letters white */
+  }

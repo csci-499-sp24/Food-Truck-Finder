@@ -1,0 +1,21 @@
+/* styles.css */
+
+.dropzone {
+  color: white;
+  border-radius: 5px;
+  border: 2px dashed lightblue;
+  border-image: none;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.dropzone.active {
+  border-color: #6c6;
+}
+
+.dropzone p {
+  margin: 0;
+}
