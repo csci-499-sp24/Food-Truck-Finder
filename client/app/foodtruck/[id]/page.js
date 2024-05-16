@@ -23,7 +23,6 @@ const fetchData = async (id) => {
       throw new Error("Failed to fetch food truck");
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching food truck:", error);
@@ -126,11 +125,11 @@ export default async function Page(slug) {
       </Stack>
 
       <Stack className="pt-0">
-        <Button variant="outlined" className="">
-          <Link legacyBehavior href={{
-                  pathname: '/'
-                }} style={{textDecoration: 'none', color: 'white'}} className="" >Home</Link>
-        </Button>
+        <Link legacyBehavior href={{ pathname: '/' }} passHref>
+          <Button variant="outlined" className="" style={{ textDecoration: 'none', color: 'white' }} >
+            Home
+          </Button>
+        </Link>
       </Stack>
       <DropDown URL={URL}></DropDown>
 

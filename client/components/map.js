@@ -73,26 +73,6 @@ function FoodTruckMap({ selectedTruck, setSelectedTruck, updateVisibleMarkers, c
     setSelectedTruck(null); // Reset selectedTruck when InfoWindow is closed
   };
 
-  useEffect(() => {
-    // Get user's current position
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCenter({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Error getting user's location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
-
   return (
     <div className="api-provider-container">
       <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>

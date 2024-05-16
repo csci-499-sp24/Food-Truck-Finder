@@ -103,12 +103,6 @@ function Sidebar({ setSelectedTruck, visibleMarkers, setCenter }) {
         </ul>
       </div>
 
-      {/* Language dropdown */}
-      <select className="language-dropdown">
-        {languages.map((language, index) => (
-          <option key={index}>{language}</option>
-        ))}
-      </select>
     </div>
 
     </>
