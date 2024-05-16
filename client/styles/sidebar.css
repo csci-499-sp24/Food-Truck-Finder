@@ -13,26 +13,6 @@
     margin-right: 10px;
     color: white;
 }
-/* 
-.sign-in{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-    cursor: pointer;
-    margin-right: 15%;
-    margin-left: 15%;
-    order: 2;
-}
-
-.sign-up{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-    margin-right: 15%;
-    margin-left: 15%;
-    cursor: pointer;
-    order: 2;
-} */
 
 .sidebar-header{
     display: flex;

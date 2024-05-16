@@ -35,19 +35,6 @@ export default function Reviews(props) {
     }
     ,[]);
 
-    // const reviews = foodTruck.reviews && foodTruck.reviews.length > 0 ? (
-    //     foodTruck.reviews.map((review, index) => (
-    //         <div key={index} className="reviews">
-    //             <h4>{review.name}: {review.review} </h4>
-    //             <p>Rating: {review.rating}</p>
-    //         </div>
-    //     ))
-    // ) : ( 
-    // <p className="no-reviews">
-    //     No reviews available
-    // </p>
-    // );
-
     return (
         <>
             <Card className="review-card">
