@@ -23,7 +23,6 @@ const fetchData = async (id) => {
       throw new Error("Failed to fetch food truck");
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching food truck:", error);
